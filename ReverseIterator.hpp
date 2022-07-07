@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/16 16:17:05 by ldelmas           #+#    #+#             */
-/*   Updated: 2021/11/18 15:26:00 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/07 16:05:30 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,12 @@ namespace ft
 	template <class Iterator>
 	class reverse_iterator
 	{
-		typedef Iterator										iterator_type;
-		typedef iterators_traits<Iterator>::iterator_category	iterator_category;
-		typedef iterators_traits<Iterator>::value_type			value_type;
-		typedef iterators_traits<Iterator>::difference_type		difference_type;
-		typedef	iterators_traits<Iterator>::pointer				pointer;
-		typedef iterators_traits<Iterator>::reference			reference;
+		typedef Iterator												iterator_type;
+		typedef typename iterators_traits<Iterator>::iterator_category	iterator_category;
+		typedef typename iterators_traits<Iterator>::value_type			value_type;
+		typedef typename iterators_traits<Iterator>::difference_type	difference_type;
+		typedef	typename iterators_traits<Iterator>::pointer			pointer;
+		typedef typename iterators_traits<Iterator>::reference			reference;
 
 		public:
 			reverse_iterator(void);
