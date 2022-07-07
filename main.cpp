@@ -1,32 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Iterator.hpp                                       :+:      :+:    :+:   */
+/*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/18 14:27:02 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/07 13:59:05 by ldelmas          ###   ########.fr       */
+/*   Created: 2022/07/07 11:31:47 by ldelmas           #+#    #+#             */
+/*   Updated: 2022/07/07 13:54:26 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ITERATOR_HPP
-# define ITERATOR_HPP
+#include "Iterator.hpp"
+#include "IteratorsTraits.hpp"
+#include "RandomAccessIterator.hpp"
 
-# include<cstddef>
-# include"IteratorsTraits.hpp"
+// static int	iterator_tester()
+// {
+// 	ft::iterator<ft::iterators_traits<int>, int>  
+// }
 
-namespace ft
+int		main(void)
 {
-	template<class Category, class T, class Distance, class Pointer, class Reference>
-	class iterator
-	{
-		typedef Category	iterator_category;
-		typedef T			value_type;
-		typedef Distance	difference_type;
-		typedef Pointer		pointer;
-		typedef Reference	reference;
-	};
+	return 0;
 }
-
-#endif
