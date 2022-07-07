@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lucas <lucas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 11:31:47 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/07 13:54:26 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/07 17:18:47 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Iterator.hpp"
 #include "IteratorsTraits.hpp"
 #include "RandomAccessIterator.hpp"
+#include "ReverseIterator.hpp"
 
 // static int	iterator_tester()
 // {
