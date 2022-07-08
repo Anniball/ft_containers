@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 10:13:41 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/08 14:57:16 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/08 16:54:06 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -306,11 +306,11 @@ namespace ft
 	template<class InputIterator>
 	void 													vector<T, Alloc>::assign(InputIterator first, InputIterator last)
 	{
-		vector<T, Alloc>::difference_type size = distance(first, last);
+		size_type size = distance(first, last);
 		this->clear();
 		if (size > this->_capacity)
 		{
-			Alloc::deallocate(this->_container, this->_capacity);
+			this->_alloc.deallocate(this->_container, this->_capacity);
 			this->_container = this->_alloc.allocate(size);
 			this->_capacity = size;
 		}
@@ -324,7 +324,7 @@ namespace ft
 		this->clear();
 		if (n > this->_capacity)
 		{
-			Alloc::deallocate(this->_container, this->_capacity);
+			this->_alloc.deallocate(this->_container, this->_capacity);
 			this->_container = this->_alloc.allocate(n);
 			this->_capacity = n;
 		}
@@ -350,16 +350,50 @@ namespace ft
 		this->_size--;
 	}
 
-	// template<typename T, class Alloc>
-	// vector<T, Alloc>::iterator								vector<T, Alloc>::insert(vector<T, Alloc>::iterator position, const vector<T, Alloc>::value_type &val)
-	// {
-	// 	if (this->_size + 1 > this->_capacity)
-	// 		this->reserve(!this->_capacity ? 1 : this->_capacity * 2);
-			
-	// }
+	template<typename T, class Alloc>
+	typename vector<T, Alloc>::iterator								vector<T, Alloc>::insert(vector<T, Alloc>::iterator position, const vector<T, Alloc>::value_type &val)
+	{
+		insert(position, 1, val);
+		return this->begin() + (distance(this->begin(), position));
+	}
 
-	// template<typename T, class Alloc>
-	// void										vector<T, Alloc>::insert(iterator position, size_type n, const value_type &val);
+	template<typename T, class Alloc>
+	void										vector<T, Alloc>::insert(vector<T, Alloc>::iterator position, size_type n, const value_type &val)
+	{
+		size_type pos = distance(this->_begin(), position);
+		if (this->_size + n > this->_capacity)
+		{
+			size_type size = 2;
+			while (this->_capacity * size < this->_size + n)
+				size *= 2;
+			if (this->_capacity * size > this->max_size())
+				throw std::out_of_range("vector::insert");
+			pointer tmp = this->_alloc.allocate(this->_capacity * size);
+			for (size_type i = 0; i < pos; i++)
+			{
+				this->_alloc.construct(tmp + i, this->_container[i]);
+				this->_alloc.destroy(this->_container + i);
+			}
+			for (size_type i = 0; i < n; i++)
+				this->_alloc.construct(tmp + pos + i, val);
+			for (size_type i = pos; i < this->_size; i++)
+			{
+				this->_alloc.construct(tmp + i + n, this->_container[i]);
+				this->_alloc.destroy(this->_container + i);
+			}
+			this->_alloc.deallocate(this->_container);
+			this->_container = tmp;
+			this->_capacity = this->_capacity * size;
+		}
+		else
+		{
+			for (size_type i = pos; i < this->_size; i++)
+				this->_container[i+n] = this->_container[i];
+			for (size_type i = pos; i < pos+n; i++)
+				this->_alloc(this->_container + i, val);
+		}
+		this->_size += n;
+	}
 
 	// template<typename T, class Alloc>
 	// template<class InputIterator>
