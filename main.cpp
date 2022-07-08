@@ -3,17 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucas <lucas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 11:31:47 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/07 17:18:47 by lucas            ###   ########.fr       */
+/*   Updated: 2022/07/08 11:28:41 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Iterator.hpp"
-#include "IteratorsTraits.hpp"
-#include "RandomAccessIterator.hpp"
-#include "ReverseIterator.hpp"
+#include "iter/Iterator.hpp"
+#include "iter/IteratorsTraits.hpp"
+#include "iter/RandomAccessIterator.hpp"
+#include "iter/ReverseIterator.hpp"
+#include "cont/Vector.hpp"
 
 // static int	iterator_tester()
 // {
