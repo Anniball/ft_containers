@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 10:13:41 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/08 16:54:06 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/08 17:24:07 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,8 +94,8 @@ namespace ft
 			void					assign(size_type n, const value_type &val); // ok
 			void					push_back(const value_type &val); //ok
 			void					pop_back(void); //ok
-			iterator				insert(iterator position, const value_type &val);
-			void					insert(iterator position, size_type n, const value_type &val);
+			iterator				insert(iterator position, const value_type &val); //ok
+			void					insert(iterator position, size_type n, const value_type &val); //ok
 			template<class InputIterator>
 			void					insert(iterator position, InputIterator first, InputIterator last);
 			iterator				erase(iterator position);
@@ -314,8 +314,8 @@ namespace ft
 			this->_container = this->_alloc.allocate(size);
 			this->_capacity = size;
 		}
-		while (--size > 0)
-			this->_alloc.construct(this->_container + size, *(first + size));
+		for (size_type i = 0; i < size; i++)
+			this->_alloc.construct(this->_container + i, first++);
 	}
 
 	template<typename T, class Alloc>
@@ -342,7 +342,7 @@ namespace ft
 	}
 
 	template<typename T, class Alloc>
-	void										vector<T, Alloc>::pop_back(void)
+	void													vector<T, Alloc>::pop_back(void)
 	{
 		if (!this->_size)
 			return ;
@@ -351,14 +351,14 @@ namespace ft
 	}
 
 	template<typename T, class Alloc>
-	typename vector<T, Alloc>::iterator								vector<T, Alloc>::insert(vector<T, Alloc>::iterator position, const vector<T, Alloc>::value_type &val)
+	typename vector<T, Alloc>::iterator						vector<T, Alloc>::insert(vector<T, Alloc>::iterator position, const vector<T, Alloc>::value_type &val)
 	{
 		insert(position, 1, val);
 		return this->begin() + (distance(this->begin(), position));
 	}
 
 	template<typename T, class Alloc>
-	void										vector<T, Alloc>::insert(vector<T, Alloc>::iterator position, size_type n, const value_type &val)
+	void													vector<T, Alloc>::insert(vector<T, Alloc>::iterator position, size_type n, const value_type &val)
 	{
 		size_type pos = distance(this->_begin(), position);
 		if (this->_size + n > this->_capacity)
@@ -395,9 +395,45 @@ namespace ft
 		this->_size += n;
 	}
 
-	// template<typename T, class Alloc>
-	// template<class InputIterator>
-	// void					insert(iterator position, InputIterator first, InputIterator last);
+	template<typename T, class Alloc>
+	template<class InputIterator>
+	void					vector<T, Alloc>::insert(typename vector<T, Alloc>::iterator position, InputIterator first, InputIterator last)
+	{
+		typename vector<T, Alloc>::size_type pos = distance(this->begin(), position);
+		typename vector<T, Alloc>::size_type dist = distance(first, last);
+		if (this->_size + dist > this->_capacity)
+		{
+			size_type size = 2;
+			while (this->_capacity * size < this->_size + dist)
+				size *= 2;
+			if (this->_capacity * size > this->max_size())
+				throw std::out_of_range("vector::insert");
+			pointer tmp = this->_alloc.allocate(this->_capacity * size);
+			for (size_type i = 0; i < pos; i++)
+			{
+				this->_alloc.construct(tmp + i, this->_container[i]);
+				this->_alloc.destroy(this->_container + i);
+			}
+			for (size_type i = 0; i < dist; i++)
+				this->_alloc.construct(tmp + pos + i, first++);
+			for (size_type i = pos; i < this->_size; i++)
+			{
+				this->_alloc.construct(tmp + i + dist, this->_container[i]);
+				this->_alloc.destroy(this->_container + i);
+			}
+			this->_alloc.deallocate(this->_container);
+			this->_container = tmp;
+			this->_capacity = this->_capacity * size;
+		}
+		else
+		{
+			for (size_type i = pos; i < this->_size; i++)
+				this->_container[i + dist] = this->_container[i];
+			for (size_type i = pos; i < pos + dist; i++)
+				this->_alloc(this->_container + i, first);
+		}
+		this->_size += dist;
+	}
 
 	// template<typename T, class Alloc>
 	// iterator				erase(iterator position);
