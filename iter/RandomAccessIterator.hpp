@@ -6,9 +6,12 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 13:42:10 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/08 11:12:19 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/08 14:42:51 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#ifndef ITERATORS_TRAITS_HPP
+# define ITERATORS_TRAITS_HPP
 
 #include "IteratorsTraits.hpp"
 
@@ -199,3 +202,5 @@ namespace ft
 		return (left._content - right._content);
 	}
 }
+
+#endif

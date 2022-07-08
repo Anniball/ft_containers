@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 10:13:41 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/08 14:02:35 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/08 14:57:16 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -222,18 +222,7 @@ namespace ft
 	{
 		if (n > this->max_size())
 			throw std::out_of_range("vector::resize");
-		else if (n > this->_capacity)
-		{
-			pointer tmp = this->_alloc.allocate(n);
-			for (size_type i = 0; i < this->_size; i++)
-			{
-				this->_alloc.construct(tmp + i, this->_container[i]);
-				this->_alloc.destroy(this->_container + i);
-			}
-			this->_alloc.deallocate(this->_container, this->_capacity);
-			this->_container = tmp;
-			this->_capacity = n;
-		}
+		this->reserve(n);
 		for (size_type i = this->_size; i < n; i++)
 			this->_alloc.construct(this->_container + i, val);
 		for (size_type i = this->size - 1; i >= n; i--)
@@ -260,10 +249,13 @@ namespace ft
 			throw std::out_of_range("vector::reserve");
 		else if (this->_capacity >= n)
 			return ;
-		vector<T, Alloc>::pointer tmp = this->_alloc.allocate(n);
-		for (int i = 0; i < n; i++)
-			tmp[i] = this->_container[i];
-		Alloc::deallocate(this->_container, this->_capacity);
+		pointer tmp = this->_alloc.allocate(n);
+		for (size_type i = 0; i < this->_size; i++)
+		{
+			this->_alloc.construct(tmp + i, this->_container[i]);
+			this->_alloc.destroy(this->_container + i);
+		}
+		this->_alloc.deallocate(this->_container, this->_capacity);
 		this->_container = tmp;
 		this->_capacity = n;
 	}
@@ -314,7 +306,7 @@ namespace ft
 	template<class InputIterator>
 	void 													vector<T, Alloc>::assign(InputIterator first, InputIterator last)
 	{
-		vector<T, Alloc>::difference_type size = last - first;
+		vector<T, Alloc>::difference_type size = distance(first, last);
 		this->clear();
 		if (size > this->_capacity)
 		{
@@ -344,17 +336,7 @@ namespace ft
 	void													vector<T, Alloc>::push_back(const value_type &val)
 	{
 		if (this->_size + 1 > this->_capacity)
-		{
-			pointer tmp = this->_alloc.allocate(this->_capacity * 2);
-			for (int i = 0; i < this->_size; i++)
-			{
-				this->_alloc.construct(tmp + i, this->_container[i]);
-				this->_alloc.destroy(this->_container + i);
-			}
-			this->_alloc.deallocate(this->_container);
-			this->_container = tmp;
-			this->_capacity = this->_capacity * 2;
-		}
+			this->reserve(!this->_capacity ? 1 : this->_capacity * 2);
 		this->_alloc.construct(this->_size, val);
 		this->_size++;
 	}
@@ -369,7 +351,12 @@ namespace ft
 	}
 
 	// template<typename T, class Alloc>
-	// iterator									vector<T, Alloc>::insert(iterator position, const value_type &val);
+	// vector<T, Alloc>::iterator								vector<T, Alloc>::insert(vector<T, Alloc>::iterator position, const vector<T, Alloc>::value_type &val)
+	// {
+	// 	if (this->_size + 1 > this->_capacity)
+	// 		this->reserve(!this->_capacity ? 1 : this->_capacity * 2);
+			
+	// }
 
 	// template<typename T, class Alloc>
 	// void										vector<T, Alloc>::insert(iterator position, size_type n, const value_type &val);
