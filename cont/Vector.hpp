@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 10:13:41 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/08 11:51:34 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/08 14:02:35 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,8 +90,8 @@ namespace ft
 			const_reference			back(void) const; //ok
 			/*Modifiers*/
 			template<class InputIterator>
-			void 					assign(InputIterator first, InputIterator last);
-			void					assign(size_type n, const value_type &val);
+			void 					assign(InputIterator first, InputIterator last); //ok
+			void					assign(size_type n, const value_type &val); // ok
 			void					push_back(const value_type &val); //ok
 			void					pop_back(void); //ok
 			iterator				insert(iterator position, const value_type &val);
@@ -220,7 +220,9 @@ namespace ft
 	template<typename T, class Alloc>
 	void													vector<T, Alloc>::resize(size_type n, value_type val)
 	{
-		if (n > this->_capacity)
+		if (n > this->max_size())
+			throw std::out_of_range("vector::resize");
+		else if (n > this->_capacity)
 		{
 			pointer tmp = this->_alloc.allocate(n);
 			for (size_type i = 0; i < this->_size; i++)
@@ -251,17 +253,18 @@ namespace ft
 		return (this->_size == 0);
 	}
 
-	//STILL TO CHANGE
 	template<typename T, class Alloc>
 	void													vector<T, Alloc>::reserve(size_type n)
 	{
-		if (this->_capacity >= n)
-			return ; //should I throw an error?
-		vector<T, Alloc>::pointer new_container = this->_alloc.allocate(n);
+		if (n > this->max_size())
+			throw std::out_of_range("vector::reserve");
+		else if (this->_capacity >= n)
+			return ;
+		vector<T, Alloc>::pointer tmp = this->_alloc.allocate(n);
 		for (int i = 0; i < n; i++)
-			new_container[i] = this->_container[i];
+			tmp[i] = this->_container[i];
 		Alloc::deallocate(this->_container, this->_capacity);
-		this->_container = new_container;
+		this->_container = tmp;
 		this->_capacity = n;
 	}
 
@@ -270,7 +273,7 @@ namespace ft
 	typename vector<T, Alloc>::reference					vector<T, Alloc>::at(size_type n)
 	{
 		if (n >= this->_size)
-			throw std::out_of_range("Out of vector's range");
+			throw std::out_of_range("vector::at");
 		return (this->_container[n]);
 	}
 
@@ -278,7 +281,7 @@ namespace ft
 	typename vector<T, Alloc>::const_reference				vector<T, Alloc>::at(size_type n) const
 	{
 		if (n >= this->_size)
-			throw std::out_of_range("Out of vector's range");
+			throw std::out_of_range("vector::at");
 		return (this->_container[n]);
 	}
 
@@ -311,13 +314,30 @@ namespace ft
 	template<class InputIterator>
 	void 													vector<T, Alloc>::assign(InputIterator first, InputIterator last)
 	{
-		//STILL TO DO
+		vector<T, Alloc>::difference_type size = last - first;
+		this->clear();
+		if (size > this->_capacity)
+		{
+			Alloc::deallocate(this->_container, this->_capacity);
+			this->_container = this->_alloc.allocate(size);
+			this->_capacity = size;
+		}
+		while (--size > 0)
+			this->_alloc.construct(this->_container + size, *(first + size));
 	}
 
 	template<typename T, class Alloc>
 	void													vector<T, Alloc>::assign(size_type n, const value_type &val)
 	{
-		//STILL TO DO
+		this->clear();
+		if (n > this->_capacity)
+		{
+			Alloc::deallocate(this->_container, this->_capacity);
+			this->_container = this->_alloc.allocate(n);
+			this->_capacity = n;
+		}
+		while (--n > 0)
+			this->_alloc.construct(this->_container + n, val);
 	}
 
 	template<typename T, class Alloc>
