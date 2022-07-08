@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 10:13:41 by ldelmas           #+#    #+#             */
-/*   Updated: 2021/11/25 13:46:28 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/08 11:26:47 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ namespace ft
 			size_type		_size;
 			size_type		_capacity;
 			allocator_type	_alloc;
+			
 		public:
 			/*
 				CONSTRUCTORS AND DESTRUCTORS
@@ -69,10 +70,10 @@ namespace ft
 			const_iterator			begin(void) const; //ok
 			iterator				end(void); //ok
 			const_iterator			end(void) const; //ok
-			reverse_iterator		rbegin(void);
-			const_reverse_iterator	rbegin(void) const;
-			reverse_iterator		rend(void);
-			const_reverse_iterator	rend(void) const;
+			reverse_iterator		rbegin(void); //ok
+			const_reverse_iterator	rbegin(void) const; //ok
+			reverse_iterator		rend(void); //ok
+			const_reverse_iterator	rend(void) const; //ok
 			/*Capacity*/
 			size_type				size(void) const; //ok
 			size_type				max_size(void) const; //ok
@@ -181,25 +182,25 @@ namespace ft
 	template<typename T, class Alloc>
 	vector<T, Alloc>::reverse_iterator			vector<T, Alloc>::rbegin(void)
 	{
-		//STILL TO DO
+		return reverse_iterator(this->end());
 	}
 
 	template<typename T, class Alloc>
 	vector<T, Alloc>::const_reverse_iterator	vector<T, Alloc>::rbegin(void) const
 	{
-		//STILL TO DO
+		return const_reverse_iterator(this->end());
 	}
 
 	template<typename T, class Alloc>
 	vector<T, Alloc>::reverse_iterator			vector<T, Alloc>::rend(void)
 	{
-		//STILL TO DO
+		return reverse_iterator(this->begin());
 	}
 
 	template<typename T, class Alloc>
 	vector<T, Alloc>::const_reverse_iterator	vector<T, Alloc>::rend(void) const
 	{
-		//STILL TO DO
+		return const_reverse_iterator(this->begin());
 	}
 
 	/*Capacity*/
