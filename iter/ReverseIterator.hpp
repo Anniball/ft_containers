@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ReverseIterator.hpp                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucas <lucas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/16 16:17:05 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/07 18:09:50 by lucas            ###   ########.fr       */
+/*   Updated: 2022/07/08 11:18:41 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ namespace ft
 		public:
 			reverse_iterator(void);
 			explicit reverse_iterator(iterator_type it);
-			template <class Iter>
-			reverse_iterator (const reverse_iterator<Iter> &rev_it);
+			template <class Iterator2>
+			reverse_iterator (const reverse_iterator<Iterator2> &rev_it);
 			~reverse_iterator(void);
 
 			reference			operator*(void) const;
@@ -52,10 +52,23 @@ namespace ft
 			iterator_type		_base_iterator;
 	};
 
+
 	/*
 		CONSTRUCTORS AND DESTRUCTORS
 	*/
 
+	template <class Iterator>
+	reverse_iterator<Iterator>::reverse_iterator(void) {return ;}
+	
+	template <class Iterator>
+	reverse_iterator<Iterator>::reverse_iterator(iterator_type it) : _base_iterator(it) {return ;}
+	
+	template <class Iterator1>
+	template <class Iterator2>
+	reverse_iterator<Iterator1>::reverse_iterator (const reverse_iterator<Iterator2> &rev_it) : _base_iterator(rev_it._base_iterator) {return ;}
+	
+	template <class Iterator>
+	reverse_iterator<Iterator>::~reverse_iterator(void) {return ;}
 
 
 	/*
@@ -143,10 +156,12 @@ namespace ft
 		PUBLIC UTILS
 	*/
 
+	template <class Iterator>
+	typename reverse_iterator<Iterator>::iterator_type reverse_iterator<Iterator>::base(void) const { return this->_base_iterator; }
 
 
 	/*
-		NON-MEMBER FUNCTIONS
+		NON-MEMBER OPERATOR OVERLOADS
 	*/
 
 	template <class Iterator>

@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 13:42:10 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/07 15:51:59 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/08 11:12:19 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,18 +29,17 @@ namespace ft
 			~random_access_iterator(void);
 
 			random_access_iterator	&operator=(random_access_iterator const &right);
-			reference				operator*(void); //does it manage *class = t, *class++ or *class--
-			pointer					operator->(void); //I'm really not sure
+			reference				operator*(void);
+			pointer					operator->(void);
 			random_access_iterator	&operator++(void); //prefix
 			random_access_iterator	operator++(int); //postfix
 			random_access_iterator	&operator--(void); //prefix
 			random_access_iterator	operator--(int); //postfix
 			random_access_iterator	operator+(difference_type right);
 			random_access_iterator	operator-(difference_type right);
-			//what for rvalue as 'n + a' -> extern overload -> ASK SOMEONE!!!
 			random_access_iterator	&operator+=(difference_type right);
 			random_access_iterator	&operator-=(difference_type right);
-			reference				operator[](difference_type val); //should you give a reference?
+			reference				operator[](difference_type val);
 		
 		private:
 			pointer				_content;
