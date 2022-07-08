@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 10:13:41 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/08 17:24:07 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/08 18:06:41 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -459,17 +459,40 @@ namespace ft
 	*/
 	/*Relational operators*/
 	template <class T, class Alloc>
-  	bool	operator==(const vector<T, Alloc>& lhs, const vector<T, Alloc>& rhs);
+  	bool	operator==(const vector<T, Alloc>& lhs, const vector<T, Alloc>& rhs)
+	{
+		return (lhs.size() == rhs.size() && equal(lhs.begin(), lhs.end(), rhs.begin()));
+	}
+
 	template <class T, class Alloc>
-	bool	operator!=(const vector<T, Alloc>& lhs, const vector<T, Alloc>& rhs);
+	bool	operator!=(const vector<T, Alloc>& lhs, const vector<T, Alloc>& rhs)
+	{
+		return !(lhs == rhs);
+	}
+
 	template <class T, class Alloc>
-  	bool	operator<(const vector<T, Alloc>& lhs, const vector<T, Alloc>& rhs);
+  	bool	operator<(const vector<T, Alloc>& lhs, const vector<T, Alloc>& rhs)
+	{
+		  return lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin());
+	}
 	template <class T, class Alloc>
-	bool	operator<=(const vector<T, Alloc>& lhs, const vector<T, Alloc>& rhs);
+	bool	operator<=(const vector<T, Alloc>& lhs, const vector<T, Alloc>& rhs)
+	{
+		return !(rhs < lhs);
+	}
+	
 	template <class T, class Alloc>
-	bool	operator>(const vector<T, Alloc>& lhs, const vector<T, Alloc>& rhs);
+	bool	operator>(const vector<T, Alloc>& lhs, const vector<T, Alloc>& rhs)
+	{
+		return (rhs < lhs);
+	}
+	
 	template <class T, class Alloc>
-	bool	operator>=(const vector<T, Alloc>& lhs, const vector<T, Alloc>& rhs);
+	bool	operator>=(const vector<T, Alloc>& lhs, const vector<T, Alloc>& rhs)
+	{
+		return !(lhs < rhs);
+	}
+	
 	/*swap*/
 	template <class T, class Alloc>
 	void	swap(vector<T, Alloc> &x, vector<T, Alloc> &y);
