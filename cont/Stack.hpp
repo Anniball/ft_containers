@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 10:14:33 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/11 15:56:41 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/11 16:01:01 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ namespace ft
 		typedef T				value_type;
 		typedef Container		container_type;
 		typedef size_t			size_type;
+		typedef T&				reference;
+		typedef const T&		const_reference;
 
 		protected :
 			Container 			c;
@@ -66,13 +68,13 @@ namespace ft
 	}
 	
 	template <class T, class Container>
-	typename stack<T, Container>::value_type&			stack<T, Container>::top()
+	typename stack<T, Container>::reference				stack<T, Container>::top()
 	{
 		return c.begin();
 	}
 	
 	template <class T, class Container>
-	const typename stack<T, Container>::value_type&		stack<T, Container>::top() const
+	typename stack<T, Container>::const_reference		stack<T, Container>::top() const
 	{
 		return c.begin();
 	}
