@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/08 14:42:08 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/08 18:07:29 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/11 11:09:34 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,16 +18,24 @@
 namespace ft
 {
 	template<class InputIterator>
-	typename iterator_traits<InputIterator>::difference_type	distance(InputIterator first, InputIterator last)
+	typename iterator_traits<InputIterator>::difference_type	_distance(InputIterator first, InputIterator last, random_access_iterator_tag)
 	{
-		if (iterator_traits<InputIterator>::iterator_category() == random_access_iterator_tag) //not possible
-			return last - first;
-		else
-		{
+		return last - first;
+	}
+
+	template<class InputIterator>
+	typename iterator_traits<InputIterator>::difference_type	_distance(InputIterator first, InputIterator last, input_iterator_tag)
+	{
 			typename iterator_traits<InputIterator>::difference_type n = 0;
 			while (first++ != last)
 				n++;
-		}
+			return n;
+	}
+
+	template<class InputIterator>
+	typename iterator_traits<InputIterator>::difference_type	distance(InputIterator first, InputIterator last)
+	{
+		return _distance(first, last, iterator_traits<InputIterator>::iterator_category());
 	}
 
 	template <class InputIterator1, class InputIterator2>
