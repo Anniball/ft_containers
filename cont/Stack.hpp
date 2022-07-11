@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 10:14:33 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/11 15:43:11 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/11 15:49:34 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,76 +42,76 @@ namespace ft
 			void 				pop();
 	};
 
-	// /*
-	// 	CONSTRUCTORS AND DESTRUCTORS
-	// */
-	// template <class T, class Container>
-	// stack(const stack<class T, class Container>::container_type &ctnr = container_type()) {}
+	/*
+		CONSTRUCTORS AND DESTRUCTORS
+	*/
+	template <class T, class Container>
+	stack<T, Container>::stack(const typename stack<T, Container>::container_type &ctnr) {}
 
-	// /*
-	// 	MEMBER FUNCTIONS
-	// */
+	/*
+		MEMBER FUNCTIONS
+	*/
 
 	
-	// template <class T, class Container>
-	// bool				empty() const
-	// {
-	// 	return c.empty();
-	// }
+	template <class T, class Container>
+	bool												stack<T, Container>::empty() const
+	{
+		return c.empty();
+	}
 	
-	// template <class T, class Container>
-	// size_type			size() const
-	// {
-	// 	return c.size();
-	// }
+	template <class T, class Container>
+	typename stack<T, Container>::size_type				stack<T, Container>::size() const
+	{
+		return c.size();
+	}
 	
-	// template <class T, class Container>
-	// value_type&			top()
-	// {
-	// 	return c.begin();
-	// }
+	template <class T, class Container>
+	typename stack<T, Container>::value_type&			stack<T, Container>::top()
+	{
+		return c.begin();
+	}
 	
-	// template <class T, class Container>
-	// const value_type&	top() const;
-	// {
-	// 	return c.begin();
-	// }
+	template <class T, class Container>
+	const typename stack<T, Container>::value_type&		stack<T, Container>::top() const
+	{
+		return c.begin();
+	}
 	
-	// template <class T, class Container>
-	// void 				push (const value_type& val)
-	// {
-	// 	c.push_back(val);
-	// }
+	template <class T, class Container>
+	void 												stack<T, Container>::push (const value_type& val)
+	{
+		c.push_back(val);
+	}
 	
-	// template <class T, class Container>
-	// void 				pop()
-	// {
-	// 	c.pop_back();
-	// }
+	template <class T, class Container>
+	void 												stack<T, Container>::pop()
+	{
+		c.pop_back();
+	}
 
 
-	// /*
-	// 	NON-MEMBER FUNCTIONS
-	// */
-	// /*Relational operators*/
+	/*
+		NON-MEMBER FUNCTIONS
+	*/
+	/*Relational operators*/
 
-	// template <class T, class Container>
-	// bool operator== (const stack<T,Container>& lhs, const stack<T,Container>& rhs);
+	template <class T, class Container>
+	bool operator== (const stack<T,Container>& lhs, const stack<T,Container>& rhs);
 
-	// template <class T, class Container>
-	// bool operator!= (const stack<T,Container>& lhs, const stack<T,Container>& rhs);
+	template <class T, class Container>
+	bool operator!= (const stack<T,Container>& lhs, const stack<T,Container>& rhs);
 
-	// template <class T, class Container>
-  	// bool operator<  (const stack<T,Container>& lhs, const stack<T,Container>& rhs);
+	template <class T, class Container>
+  	bool operator<  (const stack<T,Container>& lhs, const stack<T,Container>& rhs);
 
-	// template <class T, class Container>
-  	// bool operator<= (const stack<T,Container>& lhs, const stack<T,Container>& rhs);
+	template <class T, class Container>
+  	bool operator<= (const stack<T,Container>& lhs, const stack<T,Container>& rhs);
 
-	// template <class T, class Container>
-  	// bool operator>  (const stack<T,Container>& lhs, const stack<T,Container>& rhs);
+	template <class T, class Container>
+  	bool operator>  (const stack<T,Container>& lhs, const stack<T,Container>& rhs);
 
-	// template <class T, class Container>
-  	// bool operator>= (const stack<T,Container>& lhs, const stack<T,Container>& rhs);
+	template <class T, class Container>
+  	bool operator>= (const stack<T,Container>& lhs, const stack<T,Container>& rhs);
 	
 }
 
