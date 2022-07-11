@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 10:13:41 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/11 15:12:20 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/11 15:16:58 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ namespace ft
 		typedef	typename	ft::reverse_iterator<iterator>					reverse_iterator;
 		typedef	typename	ft::reverse_iterator<const_iterator>			const_reverse_iterator;
 		typedef	typename	iterator_traits<iterator>::difference_type		difference_type;
-		typedef size_t														size_type;
+		typedef 			size_t											size_type;
 
 		private:
 			pointer			_container;
