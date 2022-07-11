@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 10:13:41 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/08 18:06:41 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/11 11:00:36 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -397,7 +397,7 @@ namespace ft
 
 	template<typename T, class Alloc>
 	template<class InputIterator>
-	void					vector<T, Alloc>::insert(typename vector<T, Alloc>::iterator position, InputIterator first, InputIterator last)
+	void													vector<T, Alloc>::insert(typename vector<T, Alloc>::iterator position, InputIterator first, InputIterator last)
 	{
 		typename vector<T, Alloc>::size_type pos = distance(this->begin(), position);
 		typename vector<T, Alloc>::size_type dist = distance(first, last);
@@ -435,11 +435,29 @@ namespace ft
 		this->_size += dist;
 	}
 
-	// template<typename T, class Alloc>
-	// iterator				erase(iterator position);
+	template<typename T, class Alloc>
+	typename vector<T, Alloc>::iterator						vector<T, Alloc>::erase(typename vector<T, Alloc>::iterator position)
+	{
+		size_type pos = distance(this->begin(), position);
+		this->_alloc.destroy(this->_container + pos);
+		typename vector<T, Alloc>::iterator it = vector<T, Alloc>::iterator(this->_container + pos + 1);
+		for (size_t i = pos + 1; it != this->end(); i++, it++)
+			this->_container[pos - 1] = this->_container[pos];
+		return (vector<T, Alloc>::iterator(this->_container + pos));
+	}
 
-	// template<typename T, class Alloc>
-	// iterator				erase(iterator first, iterator last);
+	template<typename T, class Alloc>
+	typename vector<T, Alloc>::iterator						vector<T, Alloc>::erase(typename vector<T, Alloc>::iterator first, typename vector<T, Alloc>::iterator last)
+	{
+		size_type pos = distance(this->begin(), first);
+		size_type dist = distance(first, last);
+		for (size_t i = pos; first != last; first++, i++)
+			this->_alloc.destroy(this->_container + i);
+		vector<T, Alloc>::iterator it = vector<T, Alloc>::iterator(this->_container + pos + dist);
+		for (size_t i = pos + dist; it != this->end(); i++, it++)
+			this->_container[pos - i] = this->_container[pos];
+		return (vector<T, Alloc>::iterator(this->_container + pos));
+	}
 
 	// template<typename T, class Alloc>
 	// void					swap(vector &x);
