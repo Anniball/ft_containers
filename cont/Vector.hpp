@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 10:13:41 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/11 11:00:36 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/11 11:29:10 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ namespace ft
 			/*
 				OPERATOR OVERLOADS
 			*/
-			vector			&operator=(const vector& x);
+			vector			&operator=(const vector& x); //ok
 			reference		operator[](size_type n); //ok
 			const_reference	operator[](size_type n) const; //ok
 
@@ -97,9 +97,9 @@ namespace ft
 			iterator				insert(iterator position, const value_type &val); //ok
 			void					insert(iterator position, size_type n, const value_type &val); //ok
 			template<class InputIterator>
-			void					insert(iterator position, InputIterator first, InputIterator last);
-			iterator				erase(iterator position);
-			iterator				erase(iterator first, iterator last);
+			void					insert(iterator position, InputIterator first, InputIterator last); //ok
+			iterator				erase(iterator position); //ok
+			iterator				erase(iterator first, iterator last); //ok
 			void					swap(vector &x);
 			void					clear(void); //ok
 			/*Allocator*/
@@ -134,9 +134,14 @@ namespace ft
 		OPERATOR OVERLOADS
 	*/
 
-	//STILL TO DO
 	template<typename T, class Alloc>
-	vector<T, Alloc>							&vector<T, Alloc>::operator=(const vector& x){}
+	vector<T, Alloc>							&vector<T, Alloc>::operator=(const vector& x)
+	{
+		if (*this == x)
+			return ;
+		this->assign(x.begin(), x.end());
+		return *this;
+	}
 
 	template<typename T, class Alloc>
 	typename vector<T, Alloc>::reference		vector<T, Alloc>::operator[](size_type n)
@@ -459,10 +464,12 @@ namespace ft
 		return (vector<T, Alloc>::iterator(this->_container + pos));
 	}
 
-	// template<typename T, class Alloc>
-	// void					swap(vector &x);
+	template<typename T, class Alloc>
+	void													vector<T, Alloc>::swap(vector &x)
+	{
+		
+	}
 
-	//MAYBE OK
 	template<typename T, class Alloc>
 	void													vector<T, Alloc>::clear(void)
 	{
@@ -513,7 +520,10 @@ namespace ft
 	
 	/*swap*/
 	template <class T, class Alloc>
-	void	swap(vector<T, Alloc> &x, vector<T, Alloc> &y);
+	void	swap(vector<T, Alloc> &x, vector<T, Alloc> &y)
+	{
+		
+	}
 }
 
 #endif
