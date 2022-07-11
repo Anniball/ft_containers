@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 10:13:41 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/11 12:19:08 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/11 15:12:20 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <cmath>
 # include "../iter/IteratorsTraits.hpp"
 # include "../iter/ReverseIterator.hpp"
+# include "../util/TypeTraits.hpp"
 
 namespace ft
 {
@@ -43,7 +44,7 @@ namespace ft
 			size_type		_size;
 			size_type		_capacity;
 			allocator_type	_alloc;
-			
+
 		public:
 			/*
 				CONSTRUCTORS AND DESTRUCTORS
@@ -51,7 +52,7 @@ namespace ft
 			explicit vector (const allocator_type& alloc = allocator_type()); //ok
 			explicit vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type());
 			template <class InputIterator>
-			vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type());
+			vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type(), typename enable_if<!is_integral<InputIterator>::value>::type *dummy = NULL);
 			vector (const vector& x);
 			~vector(void);
 
@@ -90,14 +91,14 @@ namespace ft
 			const_reference			back(void) const; //ok
 			/*Modifiers*/
 			template<class InputIterator>
-			void 					assign(InputIterator first, InputIterator last); //ok
+			void 					assign(InputIterator first, InputIterator last, typename enable_if<!is_integral<InputIterator>::value>::type *dummy = NULL); //ok
 			void					assign(size_type n, const value_type &val); // ok
 			void					push_back(const value_type &val); //ok
 			void					pop_back(void); //ok
 			iterator				insert(iterator position, const value_type &val); //ok
 			void					insert(iterator position, size_type n, const value_type &val); //ok
 			template<class InputIterator>
-			void					insert(iterator position, InputIterator first, InputIterator last); //ok
+			void					insert(iterator position, InputIterator first, InputIterator last, typename enable_if<!is_integral<InputIterator>::value>::type *dummy = NULL); //ok
 			iterator				erase(iterator position); //ok
 			iterator				erase(iterator first, iterator last); //ok
 			void					swap(vector &x); //ok
@@ -125,7 +126,7 @@ namespace ft
 	
 	template <typename T, class Alloc>
 	template <class InputIterator>
-	vector<T, Alloc>::vector(InputIterator first, InputIterator last, const allocator_type& alloc) : _alloc(alloc)
+	vector<T, Alloc>::vector(InputIterator first, InputIterator last, const allocator_type& alloc, typename enable_if<!is_integral<InputIterator>::value>::type *dummy) : _alloc(alloc)
 	{
 		this->_size = distance(first, last);
 		this->_capacity = this->_size;
@@ -335,7 +336,7 @@ namespace ft
 	/*Modifiers*/
 	template<typename T, class Alloc>
 	template<class InputIterator>
-	void 													vector<T, Alloc>::assign(InputIterator first, InputIterator last)
+	void 													vector<T, Alloc>::assign(InputIterator first, InputIterator last, typename enable_if<!is_integral<InputIterator>::value>::type *dummy)
 	{
 		size_type size = distance(first, last);
 		this->clear();
@@ -428,7 +429,7 @@ namespace ft
 
 	template<typename T, class Alloc>
 	template<class InputIterator>
-	void													vector<T, Alloc>::insert(typename vector<T, Alloc>::iterator position, InputIterator first, InputIterator last)
+	void													vector<T, Alloc>::insert(typename vector<T, Alloc>::iterator position, InputIterator first, InputIterator last, typename enable_if<!is_integral<InputIterator>::value>::type *dummy)
 	{
 		typename vector<T, Alloc>::size_type pos = distance(this->begin(), position);
 		typename vector<T, Alloc>::size_type dist = distance(first, last);

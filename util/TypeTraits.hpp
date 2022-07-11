@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:18:21 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/11 14:43:17 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/11 14:49:57 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,15 @@ namespace ft
 
 	template<>
 	struct is_integral<unsigned long long> : true_type {};
+
+	template <bool, class T = void>
+	struct enable_if {};
+
+	template <class T>
+	struct enable_if<true, T>
+	{
+		typedef T type;
+	};
 }
 
 #endif
