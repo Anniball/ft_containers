@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lucas <lucas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 11:31:47 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/11 15:38:49 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/11 22:44:45 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include "cont/Stack.hpp"
 #include "util/Utilities.hpp"
 #include "util/TypeTraits.hpp"
+#include "util/Pair.hpp"
 
 // static int	iterator_tester()
 // {
