@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 10:13:41 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/11 15:16:58 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/11 15:56:15 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ namespace ft
 			/*
 				CONSTRUCTORS AND DESTRUCTORS
 			*/
-			explicit vector (const allocator_type& alloc = allocator_type()); //ok
+			explicit vector (const allocator_type& alloc = allocator_type());
 			explicit vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type());
 			template <class InputIterator>
 			vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type(), typename enable_if<!is_integral<InputIterator>::value>::type *dummy = NULL);
@@ -59,52 +59,52 @@ namespace ft
 			/*
 				OPERATOR OVERLOADS
 			*/
-			vector			&operator=(const vector& x); //ok
-			reference		operator[](size_type n); //ok
-			const_reference	operator[](size_type n) const; //ok
+			vector			&operator=(const vector& x);
+			reference		operator[](size_type n);
+			const_reference	operator[](size_type n) const;
 
 			/*
 				MEMBER FUNCTIONS
 			*/
 			/*Iterators*/
-			iterator				begin(void); //ok
-			const_iterator			begin(void) const; //ok
-			iterator				end(void); //ok
-			const_iterator			end(void) const; //ok
-			reverse_iterator		rbegin(void); //ok
-			const_reverse_iterator	rbegin(void) const; //ok
-			reverse_iterator		rend(void); //ok
-			const_reverse_iterator	rend(void) const; //ok
+			iterator				begin(void);
+			const_iterator			begin(void) const;
+			iterator				end(void);
+			const_iterator			end(void) const;
+			reverse_iterator		rbegin(void);
+			const_reverse_iterator	rbegin(void) const;
+			reverse_iterator		rend(void);
+			const_reverse_iterator	rend(void) const;
 			/*Capacity*/
-			size_type				size(void) const; //ok
-			size_type				max_size(void) const; //ok
-			void					resize(size_type n, value_type val = value_type()); //ok
-			size_type				capacity(void) const; //ok
-			bool					empty(void) const; //ok
-			void					reserve(size_type n); //ok
+			size_type				size(void) const;
+			size_type				max_size(void) const;
+			void					resize(size_type n, value_type val = value_type());
+			size_type				capacity(void) const;
+			bool					empty(void) const;
+			void					reserve(size_type n);
 			/*Element access*/
-			reference				at(size_type n); //ok
-			const_reference			at(size_type n) const; //ok
-			reference				front(void); //ok
-			const_reference			front(void) const; //ok
-			reference				back(void); //ok
-			const_reference			back(void) const; //ok
+			reference				at(size_type n);
+			const_reference			at(size_type n) const;
+			reference				front(void);
+			const_reference			front(void) const;
+			reference				back(void);
+			const_reference			back(void) const;
 			/*Modifiers*/
 			template<class InputIterator>
-			void 					assign(InputIterator first, InputIterator last, typename enable_if<!is_integral<InputIterator>::value>::type *dummy = NULL); //ok
-			void					assign(size_type n, const value_type &val); // ok
-			void					push_back(const value_type &val); //ok
-			void					pop_back(void); //ok
-			iterator				insert(iterator position, const value_type &val); //ok
-			void					insert(iterator position, size_type n, const value_type &val); //ok
+			void 					assign(InputIterator first, InputIterator last, typename enable_if<!is_integral<InputIterator>::value>::type *dummy = NULL);
+			void					assign(size_type n, const value_type &val);
+			void					push_back(const value_type &val);
+			void					pop_back(void);
+			iterator				insert(iterator position, const value_type &val);
+			void					insert(iterator position, size_type n, const value_type &val);
 			template<class InputIterator>
-			void					insert(iterator position, InputIterator first, InputIterator last, typename enable_if<!is_integral<InputIterator>::value>::type *dummy = NULL); //ok
-			iterator				erase(iterator position); //ok
-			iterator				erase(iterator first, iterator last); //ok
-			void					swap(vector &x); //ok
-			void					clear(void); //ok
+			void					insert(iterator position, InputIterator first, InputIterator last, typename enable_if<!is_integral<InputIterator>::value>::type *dummy = NULL);
+			iterator				erase(iterator position);
+			iterator				erase(iterator first, iterator last);
+			void					swap(vector &x);
+			void					clear(void);
 			/*Allocator*/
-			allocator_type			get_allocator(void) const; //ok
+			allocator_type			get_allocator(void) const;
 	};
 
 	/*
