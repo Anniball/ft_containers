@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 10:13:41 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/11 11:42:18 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/11 12:19:08 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ namespace ft
 			/*
 				CONSTRUCTORS AND DESTRUCTORS
 			*/
-			explicit vector (const allocator_type& alloc = allocator_type());
+			explicit vector (const allocator_type& alloc = allocator_type()); //ok
 			explicit vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type());
 			template <class InputIterator>
 			vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type());
@@ -103,7 +103,7 @@ namespace ft
 			void					swap(vector &x); //ok
 			void					clear(void); //ok
 			/*Allocator*/
-			allocator_type			get_allocator(void) const;
+			allocator_type			get_allocator(void) const; //ok
 	};
 
 	/*
@@ -111,24 +111,50 @@ namespace ft
 	*/
 
 	template<typename T, class Alloc>
-	vector<T, Alloc>::vector(const allocator_type& alloc) : _container(nullptr), _size(0), _capacity(0) {}
+	vector<T, Alloc>::vector(const allocator_type& alloc) : _container(nullptr), _size(0), _capacity(0), _alloc(alloc) {}
 
-	//STILL TO DO
 	template<typename T, class Alloc>
-	vector<T, Alloc>::vector(size_type n, const value_type& val, const allocator_type& alloc) {}
+	vector<T, Alloc>::vector(size_type n, const value_type& val, const allocator_type& alloc) : _size(n), _alloc(alloc), _capacity(n)
+	{
+		if (n < 0)
+			throw std::out_of_range("ft::vector");
+		this->_container = this->_alloc.allocate(n);
+		for (size_type i = 0; i < this->_size; i++)
+			this->_alloc.construct(this->_container + i, val);
+	}
 	
-	//STILL TO DO
 	template <typename T, class Alloc>
 	template <class InputIterator>
-	vector<T, Alloc>::vector(InputIterator first, InputIterator last, const allocator_type& alloc){}
+	vector<T, Alloc>::vector(InputIterator first, InputIterator last, const allocator_type& alloc) : _alloc(alloc)
+	{
+		this->_size = distance(first, last);
+		this->_capacity = this->_size;
+		this->_container = this->_alloc.allocate(this->_size);
+		for (size_type i = 0; first != last; first++, i++)
+			this->_alloc.construct(this->_container + i, *first);
+	}
 	
-	//STILL TO DO
 	template <typename T, class Alloc>
-	vector<T, Alloc>::vector(const vector& x){}
+	vector<T, Alloc>::vector(const vector& x)
+	{
+		this->_alloc = x._alloc;
+		vector<T, Alloc>::iterator first = x.begin();
+		vector<T, Alloc>::iterator last = x.end();
+		this->_size = x._size;
+		this->_capacity = this->_size;
+		this->_container = this->_alloc.allocate(this->_size);
+		for (size_type i = 0; first != last; first++, i++)
+			this->_alloc.construct(this->_container + i, *first);
+	}
 	
-	//STILL TO DO
 	template <typename T, class Alloc>
-	vector<T, Alloc>::~vector(void){}
+	vector<T, Alloc>::~vector(void)
+	{
+		vector<T, Alloc>::size_type n = 0;
+		for (vector<T, Alloc>::iterator it = this->begin(); it != this->end(); it++, n++)
+			this->_alloc.destroy(this->_container + n);
+		this->_alloc.deallocate(this->_container, this->_size);
+	}
 
 	/*
 		OPERATOR OVERLOADS
@@ -319,8 +345,8 @@ namespace ft
 			this->_container = this->_alloc.allocate(size);
 			this->_capacity = size;
 		}
-		for (size_type i = 0; i < size; i++)
-			this->_alloc.construct(this->_container + i, first++);
+		for (size_type i = 0; i < size; i++, first++)
+			this->_alloc.construct(this->_container + i, *first);
 	}
 
 	template<typename T, class Alloc>
@@ -419,8 +445,8 @@ namespace ft
 				this->_alloc.construct(tmp + i, this->_container[i]);
 				this->_alloc.destroy(this->_container + i);
 			}
-			for (size_type i = 0; i < dist; i++)
-				this->_alloc.construct(tmp + pos + i, first++);
+			for (size_type i = 0; i < dist; i++, first++)
+				this->_alloc.construct(tmp + pos + i, *first);
 			for (size_type i = pos; i < this->_size; i++)
 			{
 				this->_alloc.construct(tmp + i + dist, this->_container[i]);
@@ -484,6 +510,14 @@ namespace ft
 		for (int i = 0; i < this->_size; i++)
 			this->_alloc.destroy(this->_container + i);
 		this->_size = 0;
+	}
+
+	/*Allocator*/
+
+	template<typename T, class Alloc>
+	typename vector<T, Alloc>::allocator_type				vector<T, Alloc>::get_allocator(void) const
+	{
+		return this->_alloc;
 	}
 
 	
