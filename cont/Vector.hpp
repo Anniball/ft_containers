@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 10:13:41 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/11 11:29:10 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/11 11:42:18 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ namespace ft
 			void					insert(iterator position, InputIterator first, InputIterator last); //ok
 			iterator				erase(iterator position); //ok
 			iterator				erase(iterator first, iterator last); //ok
-			void					swap(vector &x);
+			void					swap(vector &x); //ok
 			void					clear(void); //ok
 			/*Allocator*/
 			allocator_type			get_allocator(void) const;
@@ -467,7 +467,15 @@ namespace ft
 	template<typename T, class Alloc>
 	void													vector<T, Alloc>::swap(vector &x)
 	{
-		
+		vector<T, Alloc>::pointer	tmp = this->_container;
+		vector<T, Alloc>::size_type	size = this->_size;
+		vector<T, Alloc>::size_type	capacity = this->_capacity;
+		this->_container = x._container;
+		this->_size = x._size;
+		this->_capacity = x._capacity;
+		x._container = tmp;
+		x._size = size;
+		x._capacity = capacity;
 	}
 
 	template<typename T, class Alloc>
@@ -522,7 +530,7 @@ namespace ft
 	template <class T, class Alloc>
 	void	swap(vector<T, Alloc> &x, vector<T, Alloc> &y)
 	{
-		
+		x.swap(y);
 	}
 }
 
