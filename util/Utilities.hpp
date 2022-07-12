@@ -6,14 +6,14 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/08 14:42:08 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/11 14:17:15 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/12 14:03:20 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef UTILITIES_HPP
 # define UTILITIES_HPP
 
-#include "../iter/IteratorsTraits.hpp"
+# include "../iter/IteratorsTraits.hpp"
 
 namespace ft
 {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucas <lucas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 11:31:47 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/11 22:44:45 by lucas            ###   ########.fr       */
+/*   Updated: 2022/07/12 13:57:40 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include "iter/ReverseIterator.hpp"
 #include "cont/Vector.hpp"
 #include "cont/Stack.hpp"
+#include "cont/Map.hpp"
 #include "util/Utilities.hpp"
 #include "util/TypeTraits.hpp"
 #include "util/Pair.hpp"
