@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 10:12:44 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/12 14:28:38 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/12 14:30:39 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -233,27 +233,27 @@ namespace ft
 	typename map<Key, T, Compare, Alloc>::allocator_type			map<Key, T, Compare, Alloc>::get_allocator() const {}
 
 	
-	// /*
-	// 	NON MEMBER OPERATOR OVERLOADS
-	// */
+	/*
+		NON MEMBER OPERATOR OVERLOADS
+	*/
 	
-	// template< class Key, class T, class Compare, class Alloc >
-	// bool	operator==( const std::map<Key,T,Compare,Alloc>& lhs, const std::map<Key,T,Compare,Alloc>& rhs );
+	template< class Key, class T, class Compare, class Alloc >
+	bool	operator==(const ft::map<Key,T,Compare,Alloc> &lhs, const ft::map<Key,T,Compare,Alloc> &rhs ) {}
 
-	// template< class Key, class T, class Compare, class Alloc >
-	// bool	operator!=( const std::map<Key,T,Compare,Alloc>& lhs, const std::map<Key,T,Compare,Alloc>& rhs );
+	template< class Key, class T, class Compare, class Alloc >
+	bool	operator!=(const ft::map<Key,T,Compare,Alloc> &lhs, const ft::map<Key,T,Compare,Alloc> &rhs ) {}
 
-	// template< class Key, class T, class Compare, class Alloc >
-	// bool	operator<( const std::map<Key,T,Compare,Alloc>& lhs, const std::map<Key,T,Compare,Alloc>& rhs );
+	template< class Key, class T, class Compare, class Alloc >
+	bool	operator<(const ft::map<Key,T,Compare,Alloc> &lhs, const ft::map<Key,T,Compare,Alloc> &rhs ) {}
 
-	// template< class Key, class T, class Compare, class Alloc >
-	// bool	operator<=( const std::map<Key,T,Compare,Alloc>& lhs, const std::map<Key,T,Compare,Alloc>& rhs );
+	template< class Key, class T, class Compare, class Alloc >
+	bool	operator<=(const ft::map<Key,T,Compare,Alloc> &lhs, const ft::map<Key,T,Compare,Alloc> &rhs ) {}
 
-	// template< class Key, class T, class Compare, class Alloc >
-	// bool	operator>( const std::map<Key,T,Compare,Alloc>& lhs, const std::map<Key,T,Compare,Alloc>& rhs );
+	template< class Key, class T, class Compare, class Alloc >
+	bool	operator>(const ft::map<Key,T,Compare,Alloc> &lhs, const ft::map<Key,T,Compare,Alloc> &rhs ) {}
 
-	// template< class Key, class T, class Compare, class Alloc >
-	// bool	operator>=( const std::map<Key,T,Compare,Alloc>& lhs, const std::map<Key,T,Compare,Alloc>& rhs );
+	template< class Key, class T, class Compare, class Alloc >
+	bool	operator>=(const ft::map<Key,T,Compare,Alloc> &lhs, const ft::map<Key,T,Compare,Alloc> &rhs ) {}
 }
 
 #endif
