@@ -6,17 +6,85 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 16:02:21 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/12 16:52:53 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/12 17:32:20 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef RED_BLACK_TREE_HPP
 # define RED_BLACK_TREE_HPP
 
+#include "Pair.hpp"
+#include "../iter/IteratorsTraits.hpp"
+
 namespace ft
 {
+	template <class Key, class T, class Compare = std::less<Key>, class Alloc = std::allocator<pair<const Key,T> > >
+	class red_black_node
+	{
+		typedef Key													key_type;
+		typedef T													mapped_type;
+		typedef pair<const Key, T>									value_type;
+		typedef red_black_node<Key, T, Compare, Alloc>				node_type;
+		typedef Compare												key_compare;
+		typedef Alloc												allocator_type;
+		typedef	typename allocator_type::reference					reference;
+		typedef typename allocator_type::const_reference			const_reference;
+		typedef typename allocator_type::pointer					pointer;
+		typedef typename allocator_type::const_pointer				const_pointer;
+		typedef ft::iterator_traits<value_type>						iterator;
+		typedef ft::iterator_traits<const value_type>				const_iterator;
+		typedef ft::reverse_iterator<iterator>						reverse_iterator;
+		typedef ft::reverse_iterator<const_iterator>				const_reverse_iterator;
+		typedef typename iterator_traits<iterator>::difference_type	difference_type;
+		typedef size_t												size_type;
+
+		public :
+			red_black_node(void);
+			red_black_node(const key_type &a, const mapped_type &b);
+			red_black_node(const value_type &src);
+			red_black_node(const node_type &src);
+			~red_black_node(void);
+
+			key_type		&get_key(void) const;
+			mapped_type		&get_value(void) const;
+			value_type		&get_pair(void) const;
+			pointer			get_left(void) const;
+			pointer			get_right(void) const;
+			pointer			get_parent(void) const;
+			pointer			get_grand_parent(void) const;
+			bool			is_red(void) const;
+			bool			is_black(void) const;
+
+		private :
+			value_type				&_content;
+			bool					_isRed;
+			pointer					_left;
+			pointer					_right;
+			pointer					_parent;
+	};
+
+	template <class Key, class T, class Compare = std::less<Key>, class Alloc = std::allocator<pair<const Key,T> > >
 	class red_black_tree
 	{
+		typedef Key													key_type;
+		typedef T													mapped_type;
+		typedef pair<const Key, T>									value_type;
+		typedef red_black_node<Key, T, Compare, Alloc>				node_type;
+		typedef Compare												key_compare;
+		typedef Alloc												allocator_type;
+		typedef	typename allocator_type::reference					reference;
+		typedef typename allocator_type::const_reference			const_reference;
+		typedef typename allocator_type::pointer					pointer;
+		typedef typename allocator_type::const_pointer				const_pointer;
+		typedef ft::iterator_traits<value_type>						iterator;
+		typedef ft::iterator_traits<const value_type>				const_iterator;
+		typedef ft::reverse_iterator<iterator>						reverse_iterator;
+		typedef ft::reverse_iterator<const_iterator>				const_reverse_iterator;
+		typedef typename iterator_traits<iterator>::difference_type	difference_type;
+		typedef size_t												size_type;
+
+		private :
+			
 		/*
 			---RULES---
 			balanced binary tree rules :
