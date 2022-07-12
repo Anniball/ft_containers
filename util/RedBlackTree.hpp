@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 16:02:21 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/12 17:53:04 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/12 18:00:19 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,15 +95,33 @@ namespace ft
 	/*
 		GETTERS
 	*/
-	// key_type			&get_key(void) const;
-	// mapped_type		&get_value(void) const;
-	// value_type		&get_pair(void) const;
-	// pointer			get_left(void) const;
-	// pointer			get_right(void) const;
-	// pointer			get_parent(void) const;
-	// pointer			get_grand_parent(void) const;
-	// bool				is_red(void) const;
-	// bool				is_black(void) const;
+	
+	template <class Key, class T, class Compare, class Alloc>
+	typename red_black_node<Key, T, Compare, Alloc>::key_type		&red_black_node<Key, T, Compare, Alloc>::get_key(void) const {return this->_content.first;}
+	
+	template <class Key, class T, class Compare, class Alloc>
+	typename red_black_node<Key, T, Compare, Alloc>::mapped_type	&red_black_node<Key, T, Compare, Alloc>::get_value(void) const {return this->_content.second;}
+	
+	template <class Key, class T, class Compare, class Alloc>
+	typename red_black_node<Key, T, Compare, Alloc>::value_type		&red_black_node<Key, T, Compare, Alloc>::get_pair(void) const {return this->_content;}
+	
+	template <class Key, class T, class Compare, class Alloc>
+	typename red_black_node<Key, T, Compare, Alloc>::pointer		red_black_node<Key, T, Compare, Alloc>::get_left(void) const {return this->_left;}
+	
+	template <class Key, class T, class Compare, class Alloc>
+	typename red_black_node<Key, T, Compare, Alloc>::pointer		red_black_node<Key, T, Compare, Alloc>::get_right(void) const {return this->_right;}
+	
+	template <class Key, class T, class Compare, class Alloc>
+	typename red_black_node<Key, T, Compare, Alloc>::pointer		red_black_node<Key, T, Compare, Alloc>::get_parent(void) const {return this->_parent;}
+	
+	template <class Key, class T, class Compare, class Alloc>
+	typename red_black_node<Key, T, Compare, Alloc>::pointer		red_black_node<Key, T, Compare, Alloc>::get_grand_parent(void) const {return this->_parent->_parent;}
+	
+	template <class Key, class T, class Compare, class Alloc>
+	bool															red_black_node<Key, T, Compare, Alloc>::is_red(void) const {return this->_isRed;}
+	
+	template <class Key, class T, class Compare, class Alloc>
+	bool															red_black_node<Key, T, Compare, Alloc>::is_black(void) const {return !this->_isRed;}
 	
 
 	/*
