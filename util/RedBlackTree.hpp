@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 16:02:21 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/12 17:32:20 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/12 17:53:04 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ namespace ft
 	{
 		typedef Key													key_type;
 		typedef T													mapped_type;
-		typedef pair<const Key, T>									value_type;
-		typedef red_black_node<Key, T, Compare, Alloc>				node_type;
+		typedef ft::pair<const Key, T>								value_type;
+		typedef ft::red_black_node<Key, T, Compare, Alloc>			node_type;
 		typedef Compare												key_compare;
 		typedef Alloc												allocator_type;
 		typedef	typename allocator_type::reference					reference;
@@ -39,12 +39,18 @@ namespace ft
 		typedef size_t												size_type;
 
 		public :
+			/*
+				CONSTRUCTORS AND DESTRUCTORS
+			*/
 			red_black_node(void);
-			red_black_node(const key_type &a, const mapped_type &b);
-			red_black_node(const value_type &src);
+			red_black_node(const value_type &val);
+			red_black_node(const value_type &val, const pointer left, const pointer right, const pointer parent);
 			red_black_node(const node_type &src);
 			~red_black_node(void);
 
+			/*
+				GETTERS AND SETTERS
+			*/
 			key_type		&get_key(void) const;
 			mapped_type		&get_value(void) const;
 			value_type		&get_pair(void) const;
@@ -63,13 +69,54 @@ namespace ft
 			pointer					_parent;
 	};
 
+	/*
+		CONSTRUCTORS AND DESTRUCTORS
+	*/
+	template <class Key, class T, class Compare, class Alloc>
+	red_black_node<Key, T, Compare, Alloc>::red_black_node(void) :
+	_content(value_type()), _isRed(true), _left(nullptr), _right(nullptr), _parent(nullptr) {}
+	
+	template <class Key, class T, class Compare, class Alloc>
+	red_black_node<Key, T, Compare, Alloc>::red_black_node(const value_type &val) :
+	_content(val), _isRed(true), _left(nullptr), _right(nullptr), _parent(nullptr) {}
+	
+	template <class Key, class T, class Compare, class Alloc>
+	red_black_node<Key, T, Compare, Alloc>::red_black_node(const value_type &val, const pointer left, const pointer right, const pointer parent) :
+	_content(val), _isRed(true), _left(left), _right(right), _parent(parent) {}
+	
+	template <class Key, class T, class Compare, class Alloc>
+	red_black_node<Key, T, Compare, Alloc>::red_black_node(const node_type &src) :
+	_content(src._content), _isRed(src._isRed), _left(src._left), _right(src._right), _parent(src._parent) {}
+	
+	template <class Key, class T, class Compare, class Alloc>
+	red_black_node<Key, T, Compare, Alloc>::~red_black_node(void) {}
+
+
+	/*
+		GETTERS
+	*/
+	// key_type			&get_key(void) const;
+	// mapped_type		&get_value(void) const;
+	// value_type		&get_pair(void) const;
+	// pointer			get_left(void) const;
+	// pointer			get_right(void) const;
+	// pointer			get_parent(void) const;
+	// pointer			get_grand_parent(void) const;
+	// bool				is_red(void) const;
+	// bool				is_black(void) const;
+	
+
+	/*
+		RELATIONAL OPERATORS
+	*/
+
 	template <class Key, class T, class Compare = std::less<Key>, class Alloc = std::allocator<pair<const Key,T> > >
 	class red_black_tree
 	{
 		typedef Key													key_type;
 		typedef T													mapped_type;
-		typedef pair<const Key, T>									value_type;
-		typedef red_black_node<Key, T, Compare, Alloc>				node_type;
+		typedef ft::pair<const Key, T>								value_type;
+		typedef ft::red_black_node<Key, T, Compare, Alloc>			node_type;
 		typedef Compare												key_compare;
 		typedef Alloc												allocator_type;
 		typedef	typename allocator_type::reference					reference;
