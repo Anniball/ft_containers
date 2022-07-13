@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 13:56:12 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/13 14:02:30 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/13 16:08:26 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ namespace ft
 		typedef Key													key_type;
 		typedef T													mapped_type;
 		typedef ft::pair<const Key, T>								value_type;
-		typedef ft::red_black_node<Key, T>			node_type;
+		typedef ft::red_black_node<Key, T>							node_type;
 		typedef node_type*											pointer;
 		typedef const node_type*									const_pointer;
 		typedef ft::iterator_traits<value_type>						iterator;
@@ -54,6 +54,7 @@ namespace ft
 			key_type		&get_key(void) const;
 			mapped_type		&get_value(void) const;
 			value_type		&get_pair(void) const;
+			value_type		*get_pointer(void) const;
 			pointer			get_left(void) const;
 			pointer			get_right(void) const;
 			pointer			get_parent(void) const;
@@ -68,7 +69,7 @@ namespace ft
 			void			set_parent(pointer node);
 
 		private :
-			value_type				&_content;
+			value_type				*_content; //A LOT OF CONSEQUENCES
 			bool					_color;
 			pointer					_left;
 			pointer					_right;
@@ -79,41 +80,61 @@ namespace ft
 		CONSTRUCTORS AND DESTRUCTORS
 	*/
 	template <class Key, class T>
-	red_black_node<Key, T>::red_black_node(void) :
-	_content(value_type()), _color(RBT_RED), _left(nullptr), _right(nullptr), _parent(nullptr) {}
+	red_black_node<Key, T>::red_black_node(void) : _color(RBT_RED), _left(nullptr), _right(nullptr), _parent(nullptr)
+	{
+		this->_content = new value_type();
+	}
 	
 	template <class Key, class T>
 	red_black_node<Key, T>::red_black_node(const value_type &val) :
-	_content(val), _color(RBT_RED), _left(nullptr), _right(nullptr), _parent(nullptr) {}
+	_color(RBT_RED), _left(nullptr), _right(nullptr), _parent(nullptr)
+	{
+		this->_content = new value_type(val); 
+	}
 
 	template <class Key, class T>
 	red_black_node<Key, T>::red_black_node(const pointer parent) :
-	_content(value_type()), _color(RBT_BLACK), _left(nullptr), _right(nullptr), _parent(parent) {}
+	_color(RBT_BLACK), _left(nullptr), _right(nullptr), _parent(parent)
+	{
+		this->_content = new value_type();
+	}
 	
 	template <class Key, class T>
 	red_black_node<Key, T>::red_black_node(const value_type &val, const pointer left, const pointer right, const pointer parent) :
-	_content(val), _color(RBT_RED), _left(left), _right(right), _parent(parent) {}
+	_color(RBT_RED), _left(left), _right(right), _parent(parent)
+	{
+		this->_content = new value_type(val);
+	}
 	
 	template <class Key, class T>
 	red_black_node<Key, T>::red_black_node(const node_type &src) :
-	_content(src._content), _color(src._color), _left(src._left), _right(src._right), _parent(src._parent) {}
+	_content(src->_content), _color(src._color), _left(src._left), _right(src._right), _parent(src._parent)
+	{
+		this->_content = new value_type(*(src->_content));
+	}
 	
 	template <class Key, class T>
-	red_black_node<Key, T>::~red_black_node(void) {}
+	red_black_node<Key, T>::~red_black_node(void)
+	{
+		delete this->_content;
+	}
 
 
 	/*
 		GETTERS
 	*/
 	template <class Key, class T>
-	typename red_black_node<Key, T>::key_type		&red_black_node<Key, T>::get_key(void) const {return this->_content.first;}
+	typename red_black_node<Key, T>::key_type		&red_black_node<Key, T>::get_key(void) const {return this->_content->first;}
 	
 	template <class Key, class T>
-	typename red_black_node<Key, T>::mapped_type	&red_black_node<Key, T>::get_value(void) const {return this->_content.second;}
+	typename red_black_node<Key, T>::mapped_type	&red_black_node<Key, T>::get_value(void) const {return this->_content->second;}
 	
 	template <class Key, class T>
-	typename red_black_node<Key, T>::value_type		&red_black_node<Key, T>::get_pair(void) const {return this->_content;}
-	
+	typename red_black_node<Key, T>::value_type		&red_black_node<Key, T>::get_pair(void) const {return *(this->_content);}
+		
+	template <class Key, class T>
+	typename red_black_node<Key, T>::value_type		*red_black_node<Key, T>::get_pointer(void) const {return this->_content;}
+
 	template <class Key, class T>
 	typename red_black_node<Key, T>::pointer		red_black_node<Key, T>::get_left(void) const {return this->_left;}
 	
@@ -149,7 +170,7 @@ namespace ft
 	bool															red_black_node<Key, T>::is_leaf(void) const {return this->_left == nullptr && this->right == nullptr;}
 
 	template <class Key, class T>
-	void															red_black_node<Key, T>::set_pair(value_type	const &val) {this->_content = val;}
+	void															red_black_node<Key, T>::set_pair(value_type	const &val) {*(this->_content) = val;}
 	
 	template <class Key, class T>
 	void															red_black_node<Key, T>::set_right(pointer node) {this->_right = node;}

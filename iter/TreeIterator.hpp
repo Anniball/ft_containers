@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 14:25:03 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/13 15:47:22 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/13 16:06:03 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,26 +62,32 @@ namespace ft
 		OPERATOR OVERLOADS
 	*/
 
-	// template <class T>
-	// typename tree_iterator<T>::iterator		&tree_iterator<T>::operator=(tree_iterator const &right);
+	template <class T>
+	typename tree_iterator<T>::iterator		&tree_iterator<T>::operator=(tree_iterator const &right);
 	
-	// template <class T>
-	// typename tree_iterator<T>::reference	tree_iterator<T>::operator*(void);
+	template <class T>
+	typename tree_iterator<T>::reference	tree_iterator<T>::operator*(void)
+	{
+		return _content->get_pair();
+	}
 	
-	// template <class T>
-	// typename tree_iterator<T>::pointer		tree_iterator<T>::operator->(void);
+	template <class T>
+	typename tree_iterator<T>::pointer		tree_iterator<T>::operator->(void)
+	{
+		return _content->get_pointer();
+	}
 	
-	// template <class T>
-	// typename tree_iterator<T>::iterator		&tree_iterator<T>::operator++(void);
+	template <class T>
+	typename tree_iterator<T>::iterator		&tree_iterator<T>::operator++(void);
 	
-	// template <class T>
-	// typename tree_iterator<T>::iterator		operator++(int);
+	template <class T>
+	typename tree_iterator<T>::iterator		operator++(int);
 	
-	// template <class T>
-	// typename tree_iterator<T>::iterator		&tree_iterator<T>::operator--(void);
+	template <class T>
+	typename tree_iterator<T>::iterator		&tree_iterator<T>::operator--(void);
 	
-	// template <class T>
-	// typename tree_iterator<T>::iterator		tree_iterator<T>::operator--(int);
+	template <class T>
+	typename tree_iterator<T>::iterator		tree_iterator<T>::operator--(int);
 }
 
 #endif
