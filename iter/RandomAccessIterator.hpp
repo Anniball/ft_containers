@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 13:42:10 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/08 14:42:51 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/13 16:48:53 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ namespace ft
 			random_access_iterator	&operator+=(difference_type right);
 			random_access_iterator	&operator-=(difference_type right);
 			reference				operator[](difference_type val);
-		
+
 		private:
 			pointer				_content;
 	};

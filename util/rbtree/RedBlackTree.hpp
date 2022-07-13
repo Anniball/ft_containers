@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 16:02:21 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/13 14:04:18 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/13 17:05:59 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,11 @@ namespace ft
 			node_type	*search(key_type &key);
 			node_type	*insert(value_type &val);
 			void		erase(key_type &val);
+			node_type	*iterate(node_type *k);
 
 		private :
 			node_type	*_root;
+			node_type	*_end;
 
 			/*
 				PRIVATE UTILS METHOD
@@ -74,13 +76,25 @@ namespace ft
 		CONSTRUCTORS AND DESTRUCTORS
 	*/
 	template <class Key, class T, class Compare, class Alloc>
-	red_black_tree<Key, T, Compare, Alloc>::red_black_tree() : _root() {}
+	red_black_tree<Key, T, Compare, Alloc>::red_black_tree()
+	{
+		this->_end = new node_type();
+		this->_root = new node_type();
+	}
 	
 	template <class Key, class T, class Compare, class Alloc>
-	red_black_tree<Key, T, Compare, Alloc>::red_black_tree(const value_type &val) : _root(val) {}
+	red_black_tree<Key, T, Compare, Alloc>::red_black_tree(const value_type &val)
+	{
+		this->_end = new node_type();
+		this->_root = new node_type(val);
+	}
 	
 	template <class Key, class T, class Compare, class Alloc>
-	red_black_tree<Key, T, Compare, Alloc>::red_black_tree(const node_type &node) : _root(node) {}
+	red_black_tree<Key, T, Compare, Alloc>::red_black_tree(const node_type &node) : _root(node)
+	{
+		this->_end = new node_type();
+		this->_root = new node_type(node);
+	}
 	
 	// template <class Key, class T, class Compare, class Alloc>
 	// red_black_tree(const &tree_type src) {} //LET'S GO BACK ON IT LATER
@@ -155,6 +169,21 @@ namespace ft
 		}
 	}
 
+	template <class Key, class T, class Compare, class Alloc>
+	typename red_black_tree<Key, T, Compare, Alloc>::node_type	*red_black_tree<Key, T, Compare, Alloc>::iterate(node_type *k)
+	{
+		node_type	*right = k->get_right;
+		node_type	*parent = k->get_parent();
+		if (!right->is_leaf())
+			return this->_get_smallest(right);
+		else if (parent->get_left() == k)
+			return parent;
+		else if (parent->get_right() == k)
+			return (this->iterate(parent));
+		return this->_end;
+	}
+
+
 	/*
 		PRIVATE UTILS METHOD
 	*/
@@ -192,7 +221,6 @@ namespace ft
 			subroot = subroot->get_left();
 		return subroot;
 	}
-
 }
 
 

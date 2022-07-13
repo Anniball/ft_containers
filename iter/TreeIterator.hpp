@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 14:25:03 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/13 16:06:03 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/13 17:01:27 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,31 +63,43 @@ namespace ft
 	*/
 
 	template <class T>
-	typename tree_iterator<T>::iterator		&tree_iterator<T>::operator=(tree_iterator const &right);
+	typename tree_iterator<T>::iterator		&tree_iterator<T>::operator=(tree_iterator const &right)
+	{
+		this->_content = right._content;
+	}
 	
 	template <class T>
 	typename tree_iterator<T>::reference	tree_iterator<T>::operator*(void)
 	{
-		return _content->get_pair();
+		return this->_content->get_pair();
 	}
 	
 	template <class T>
 	typename tree_iterator<T>::pointer		tree_iterator<T>::operator->(void)
 	{
-		return _content->get_pointer();
+		return this->_content->get_pointer();
 	}
 	
 	template <class T>
-	typename tree_iterator<T>::iterator		&tree_iterator<T>::operator++(void);
+	typename tree_iterator<T>::iterator		&tree_iterator<T>::operator++(void) 
+	{
+		++this->_content;
+		return *this;
+	}
 	
 	template <class T>
-	typename tree_iterator<T>::iterator		operator++(int);
+	typename tree_iterator<T>::iterator		operator++(int)
+	{
+		tree_iterator	tmp(*this);
+		++this->_content;
+		return tmp;
+	}
 	
 	template <class T>
-	typename tree_iterator<T>::iterator		&tree_iterator<T>::operator--(void);
+	typename tree_iterator<T>::iterator		&tree_iterator<T>::operator--(void) {}
 	
 	template <class T>
-	typename tree_iterator<T>::iterator		tree_iterator<T>::operator--(int);
+	typename tree_iterator<T>::iterator		tree_iterator<T>::operator--(int) {}
 }
 
 #endif
