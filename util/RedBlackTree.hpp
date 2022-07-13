@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 16:02:21 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/13 11:41:13 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/13 13:53:39 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,10 +62,14 @@ namespace ft
 			pointer			get_right(void) const;
 			pointer			get_parent(void) const;
 			pointer			get_grand_parent(void) const;
-			pointer			get_uncle(void) const;
 			bool			is_red(void) const;
 			bool			is_black(void) const;
 			bool			is_leaf(void) const;
+			pointer			get_uncle(void) const;
+			void			set_pair(value_type	const &val);
+			void			set_right(pointer node);
+			void			set_left(pointer node);
+			void			set_parent(pointer node);
 
 		private :
 			value_type				&_content;
@@ -88,7 +92,7 @@ namespace ft
 
 	template <class Key, class T, class Compare, class Alloc>
 	red_black_node<Key, T, Compare, Alloc>::red_black_node(const pointer parent) :
-	_content(value_type()), _color(RBT_RED), _left(nullptr), _right(nullptr), _parent(parent) {}
+	_content(value_type()), _color(RBT_BLACK), _left(nullptr), _right(nullptr), _parent(parent) {}
 	
 	template <class Key, class T, class Compare, class Alloc>
 	red_black_node<Key, T, Compare, Alloc>::red_black_node(const value_type &val, const pointer left, const pointer right, const pointer parent) :
@@ -148,6 +152,17 @@ namespace ft
 	template <class Key, class T, class Compare, class Alloc>
 	bool															red_black_node<Key, T, Compare, Alloc>::is_leaf(void) const {return this->_left == nullptr && this->right == nullptr;}
 
+	template <class Key, class T, class Compare, class Alloc>
+	void															red_black_node<Key, T, Compare, Alloc>::set_pair(value_type	const &val) {this->_content = val;}
+	
+	template <class Key, class T, class Compare, class Alloc>
+	void															red_black_node<Key, T, Compare, Alloc>::set_right(pointer node) {this->_right = node;}
+	
+	template <class Key, class T, class Compare, class Alloc>
+	void															red_black_node<Key, T, Compare, Alloc>::set_left(pointer node) {this->_left = node;}
+	
+	template <class Key, class T, class Compare, class Alloc>
+	void															red_black_node<Key, T, Compare, Alloc>::set_parent(pointer node) {this->_parent = node;}
 
 	/*
 		RELATIONAL OPERATORS
@@ -200,6 +215,9 @@ namespace ft
 				PRIVATE UTILS METHOD
 			*/
 			node_type	*_create_leaf(const node_type *parent);
+			void		_replace_node(node_type *parent, node_type *z, node_type *replacer);
+			node_type	*_get_biggest(node_type *subroot);
+			node_type	*_get_smallest(node_type *subroot);
 	};
 	
 	
@@ -260,10 +278,33 @@ namespace ft
 			z_key = z->get_key();
 		}
 		node_type *new_node = new node_type(value, z, this->_create_leaf(), z->parent);
-		z->parent = new_node;
+		z->set_parent(new_node);
 		return new_node;
 	}
 
+	template <class Key, class T, class Compare, class Alloc>
+	void														red_black_tree<Key, T, Compare, Alloc>::erase(key_type &key)
+	{
+		node_type	*z = this->search(key);
+		if (!z)
+			return ;
+		if ( (z->get_left().is_leaf && z->get_right().is_leaf) || (!z->get_left().is_leaf && z->get_right().is_leaf) )
+		{
+			delete z->get_right();
+			this->_replace_node(z->parent, z, z->get_left());
+		}
+		else if (z->get_left().is_leaf && !z->get_right().is_leaf)
+		{
+			delete z->get_left();
+			this->_replace_node(z->parent, z, z->get_right());
+		}
+		else
+		{
+			node_type	*smallest = this->_get_smallest(z->get_right());
+			z->set_pair(smallest->get_pair());
+			this->erase(smallest);
+		}
+	}
 
 	/*
 		PRIVATE UTILS METHOD
@@ -275,6 +316,33 @@ namespace ft
 		return node_type(parent);
 	}
 
+	template <class Key, class T, class Compare, class Alloc>
+	void														red_black_tree<Key, T, Compare, Alloc>::_replace_node(node_type *parent, node_type *z, node_type *replacer)
+	{
+		if (z == parent->get_left())
+			parent->set_left(replacer);
+		else if (z == parent->get_right())
+			parent->set_right(replacer);
+		else
+			return ;
+		delete z;
+	}
+
+	template <class Key, class T, class Compare, class Alloc>
+	typename red_black_tree<Key, T, Compare, Alloc>::node_type	*red_black_tree<Key, T, Compare, Alloc>::_get_biggest(node_type *subroot)
+	{
+		while (!subroot->get_right()->is_leaf())
+			subroot = subroot->get_right();
+		return subroot;
+	}
+	
+	template <class Key, class T, class Compare, class Alloc>
+	typename red_black_tree<Key, T, Compare, Alloc>::node_type	*red_black_tree<Key, T, Compare, Alloc>::_get_smallest(node_type *subroot)
+	{
+		while (!subroot->get_left()->is_leaf())
+			subroot = subroot->get_left();
+		return subroot;
+	}
 
 }
 
