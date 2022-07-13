@@ -6,15 +6,18 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 16:02:21 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/13 10:45:24 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/13 11:41:13 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef RED_BLACK_TREE_HPP
 # define RED_BLACK_TREE_HPP
 
-#include "Pair.hpp"
-#include "../iter/IteratorsTraits.hpp"
+# include "Pair.hpp"
+# include "../iter/IteratorsTraits.hpp"
+
+# define RBT_RED true
+# define RBT_BLACK false
 
 namespace ft
 {
@@ -44,6 +47,7 @@ namespace ft
 			*/
 			red_black_node(void);
 			red_black_node(const value_type &val);
+			red_black_node(const pointer parent);
 			red_black_node(const value_type &val, const pointer left, const pointer right, const pointer parent);
 			red_black_node(const node_type &src);
 			~red_black_node(void);
@@ -61,10 +65,11 @@ namespace ft
 			pointer			get_uncle(void) const;
 			bool			is_red(void) const;
 			bool			is_black(void) const;
+			bool			is_leaf(void) const;
 
 		private :
 			value_type				&_content;
-			bool					_isRed;
+			bool					_color;
 			pointer					_left;
 			pointer					_right;
 			pointer					_parent;
@@ -75,19 +80,23 @@ namespace ft
 	*/
 	template <class Key, class T, class Compare, class Alloc>
 	red_black_node<Key, T, Compare, Alloc>::red_black_node(void) :
-	_content(value_type()), _isRed(true), _left(nullptr), _right(nullptr), _parent(nullptr) {}
+	_content(value_type()), _color(RBT_RED), _left(nullptr), _right(nullptr), _parent(nullptr) {}
 	
 	template <class Key, class T, class Compare, class Alloc>
 	red_black_node<Key, T, Compare, Alloc>::red_black_node(const value_type &val) :
-	_content(val), _isRed(true), _left(nullptr), _right(nullptr), _parent(nullptr) {}
+	_content(val), _color(RBT_RED), _left(nullptr), _right(nullptr), _parent(nullptr) {}
+
+	template <class Key, class T, class Compare, class Alloc>
+	red_black_node<Key, T, Compare, Alloc>::red_black_node(const pointer parent) :
+	_content(value_type()), _color(RBT_RED), _left(nullptr), _right(nullptr), _parent(parent) {}
 	
 	template <class Key, class T, class Compare, class Alloc>
 	red_black_node<Key, T, Compare, Alloc>::red_black_node(const value_type &val, const pointer left, const pointer right, const pointer parent) :
-	_content(val), _isRed(true), _left(left), _right(right), _parent(parent) {}
+	_content(val), _color(RBT_RED), _left(left), _right(right), _parent(parent) {}
 	
 	template <class Key, class T, class Compare, class Alloc>
 	red_black_node<Key, T, Compare, Alloc>::red_black_node(const node_type &src) :
-	_content(src._content), _isRed(src._isRed), _left(src._left), _right(src._right), _parent(src._parent) {}
+	_content(src._content), _color(src._color), _left(src._left), _right(src._right), _parent(src._parent) {}
 	
 	template <class Key, class T, class Compare, class Alloc>
 	red_black_node<Key, T, Compare, Alloc>::~red_black_node(void) {}
@@ -131,11 +140,14 @@ namespace ft
 	}
 
 	template <class Key, class T, class Compare, class Alloc>
-	bool															red_black_node<Key, T, Compare, Alloc>::is_red(void) const {return this->_isRed;}
+	bool															red_black_node<Key, T, Compare, Alloc>::is_red(void) const {return this->_color == RBT_RED;}
 	
 	template <class Key, class T, class Compare, class Alloc>
-	bool															red_black_node<Key, T, Compare, Alloc>::is_black(void) const {return !this->_isRed;}
+	bool															red_black_node<Key, T, Compare, Alloc>::is_black(void) const {return this->_color == RBT_BLACK;}
 	
+	template <class Key, class T, class Compare, class Alloc>
+	bool															red_black_node<Key, T, Compare, Alloc>::is_leaf(void) const {return this->_left == nullptr && this->right == nullptr;}
+
 
 	/*
 		RELATIONAL OPERATORS
@@ -173,9 +185,21 @@ namespace ft
 			red_black_tree(const node_type &val);
 			red_black_tree(const tree_type &src);
 			~red_black_tree();
-		
+
+			/*
+				MEMBER METHODS
+			*/
+			node_type	*search(key_type &key);
+			node_type	*insert(value_type &val);
+			void		erase(key_type &val);
+
 		private :
-			node_type	_root;
+			node_type	*_root;
+
+			/*
+				PRIVATE UTILS METHOD
+			*/
+			node_type	*_create_leaf(const node_type *parent);
 	};
 	
 	
@@ -196,6 +220,62 @@ namespace ft
 	
 	// template <class Key, class T, class Compare, class Alloc>
 	// ~red_black_tree() {} //LET'S GO BACK ON IT LATER
+
+	/*
+		MEMBER METHODS
+	*/
+	
+	template <class Key, class T, class Compare, class Alloc>
+	typename red_black_tree<Key, T, Compare, Alloc>::node_type	*red_black_tree<Key, T, Compare, Alloc>::search(key_type &key)
+	{
+		node_type	*z = this->_root;
+		key_type	&z_key = z->get_key();
+		while (z_key != key)
+		{
+			if (z->is_leaf())
+				return nullptr;
+			else if (key > z_key)
+				z = z->get_right();
+			else
+				z = z->get_left();
+			z_key = z->get_key();
+		}
+		return z;
+	}
+
+	template <class Key, class T, class Compare, class Alloc>
+	typename red_black_tree<Key, T, Compare, Alloc>::node_type	*red_black_tree<Key, T, Compare, Alloc>::insert(value_type &value)
+	{
+		node_type	*z = this->_root;
+		key_type	&z_key = z->get_key();
+		key_type	&v_key = value.first;
+		while (!z->is_leaf())
+		{
+			if (z_key == v_key)
+				return z;
+			else if (v_key > z_key)
+				z = z->get_right();
+			else
+				z = z->get_left();
+			z_key = z->get_key();
+		}
+		node_type *new_node = new node_type(value, z, this->_create_leaf(), z->parent);
+		z->parent = new_node;
+		return new_node;
+	}
+
+
+	/*
+		PRIVATE UTILS METHOD
+	*/
+	
+	template <class Key, class T, class Compare, class Alloc>
+	typename red_black_tree<Key, T, Compare, Alloc>::node_type	*red_black_tree<Key, T, Compare, Alloc>::_create_leaf(const node_type *parent)
+	{
+		return node_type(parent);
+	}
+
+
 }
 
 
