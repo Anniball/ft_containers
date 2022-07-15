@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   TreeIterator.hpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lucas <lucas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 14:25:03 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/13 17:01:27 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/15 11:33:35 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ namespace ft
 			iterator		operator--(int);
 		private :
 			node_pointer	_content;
-	}
+	};
 
 	
 	/*
@@ -83,23 +83,32 @@ namespace ft
 	template <class T>
 	typename tree_iterator<T>::iterator		&tree_iterator<T>::operator++(void) 
 	{
-		++this->_content;
+		this->_content = this->content->iterate();
 		return *this;
 	}
 	
 	template <class T>
-	typename tree_iterator<T>::iterator		operator++(int)
+	typename tree_iterator<T>::iterator		tree_iterator<T>::operator++(int)
 	{
 		tree_iterator	tmp(*this);
-		++this->_content;
+		this->_content = this->content->iterate();
 		return tmp;
 	}
 	
 	template <class T>
-	typename tree_iterator<T>::iterator		&tree_iterator<T>::operator--(void) {}
+	typename tree_iterator<T>::iterator		&tree_iterator<T>::operator--(void)
+	{
+		this->_content = this->content->reverse_iterate();
+		return *this;
+	}
 	
 	template <class T>
-	typename tree_iterator<T>::iterator		tree_iterator<T>::operator--(int) {}
+	typename tree_iterator<T>::iterator		tree_iterator<T>::operator--(int)
+	{
+		tree_iterator	tmp(*this);
+		this->_content = this->content->reverse_iterate();
+		return tmp;
+	}
 }
 
 #endif

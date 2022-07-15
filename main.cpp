@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lucas <lucas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 11:31:47 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/13 13:58:04 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/15 11:32:36 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "iter/IteratorsTraits.hpp"
 #include "iter/RandomAccessIterator.hpp"
 #include "iter/ReverseIterator.hpp"
+#include "iter/TreeIterator.hpp"
 #include "cont/Vector.hpp"
 #include "cont/Stack.hpp"
 #include "cont/Map.hpp"

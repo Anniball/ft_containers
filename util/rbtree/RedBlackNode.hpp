@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   RedBlackNode.hpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lucas <lucas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 13:56:12 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/13 17:04:36 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/15 11:30:37 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,12 @@ namespace ft
 			void			set_right(pointer node);
 			void			set_left(pointer node);
 			void			set_parent(pointer node);
+			
+			/*
+				PUBLIC UTILS
+			*/
+			pointer			iterate(void);
+			pointer			reverse_iterate(void);
 
 		private :
 			value_type		*_content; //A LOT OF CONSEQUENCES
@@ -84,9 +90,10 @@ namespace ft
 			pointer			_parent;
 
 			/*
-				UTILS
+				PRIVATE UTILS
 			*/
-			node_type		*_iterate(void);
+			pointer			_get_smallest(void);
+			pointer			_get_biggest(void);
 	};
 
 	/*
@@ -137,26 +144,35 @@ namespace ft
 		OPERATORS OVERLOADS
 	*/
 	
-	template <class Key, class T>
-	typename red_black_node<Key, T>::node_type		&red_black_node<Key, T>::operator++(void)
-	{
-		this->_iterate();
-		return *this;
-	}
+	// template <class Key, class T>
+	// typename red_black_node<Key, T>::node_type		&red_black_node<Key, T>::operator++(void)
+	// {
+	// 	this->_iterate();
+	// 	return *this;
+	// }
 	
-	template <class Key, class T>
-	typename red_black_node<Key, T>::node_type		red_black_node<Key, T>::operator++(int)
-	{
-		node_type tmp(*this);
-		this->_iterate;
-		return tmp;
-	}
+	// template <class Key, class T>
+	// typename red_black_node<Key, T>::node_type		red_black_node<Key, T>::operator++(int)
+	// {
+	// 	node_type tmp(*this);
+	// 	this->_iterate;
+	// 	return tmp;
+	// }
 	
-	template <class Key, class T>
-	typename red_black_node<Key, T>::node_type		&red_black_node<Key, T>::operator--(void) {}
+	// template <class Key, class T>
+	// typename red_black_node<Key, T>::node_type		&red_black_node<Key, T>::operator--(void)
+	// {
+	// 	this->_reverse_iterate();
+	// 	return *this;
+	// }
 	
-	template <class Key, class T>
-	typename red_black_node<Key, T>::node_type		red_black_node<Key, T>::operator--(int) {}
+	// template <class Key, class T>
+	// typename red_black_node<Key, T>::node_type		red_black_node<Key, T>::operator--(int) 
+	// {
+	// 	node_type tmp(*this);
+	// 	this->_reverse_iterate;
+	// 	return tmp;
+	// }
 
 	/*
 		GETTERS
@@ -225,20 +241,52 @@ namespace ft
 	*/
 
 	template <class Key, class T>
-	typename red_black_node<Key, T>::node_type						*red_black_node<Key, T>::_iterate(void)
+	typename red_black_node<Key, T>::pointer						red_black_node<Key, T>::iterate(void)
 	{
-		node_type	*right = this->get_right;
-		node_type	*parent = this->get_parent();
+		pointer		right = this->get_right();
+		pointer		parent = this->get_parent();
 		if (!right->is_leaf())
 			return this->_get_smallest(right);
 		else if (*(parent->get_left()) == *this)
 			return parent;
 		else if (*(parent->get_right()) == *this)
-			return (parent->iterate());
+			return (parent->_iterate());
 		return this->_end;
 	}
 
+	template <class Key, class T>
+	typename red_black_node<Key, T>::pointer						red_black_node<Key, T>::reverse_iterate(void)
+	{
+		pointer		left = this->get_left();
+		pointer		parent = this->get_parent();
+		if (!left->is_leaf())
+			return this->_get_biggest(left);
+		else if (*(parent->get_right()) == *this)
+			return parent;
+		else if (*(parent->get_left()) == *this)
+			return (parent->_iterate());
+		return this->_end;
+	}
 
+	template <class Key, class T>
+	typename red_black_node<Key, T>::pointer						red_black_node<Key, T>::_get_smallest(void)
+	{
+		node_type	*tmp = this;
+		while (!tmp->is_leaf())
+			tmp = tmp->_left();
+		return tmp;
+	}
+	
+	template <class Key, class T>
+	typename red_black_node<Key, T>::node_type		*red_black_node<Key, T>::_get_biggest(void)
+	{
+		node_type	*tmp = this;
+		while (!tmp->is_leaf())
+			tmp = tmp->_right();
+		return tmp;
+	}
+
+	
 	/*
 		RELATIONAL OPERATORS
 	*/

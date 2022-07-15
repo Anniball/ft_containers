@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   RandomAccessIterator.hpp                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lucas <lucas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 13:42:10 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/13 16:48:53 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/15 11:25:57 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ITERATORS_TRAITS_HPP
-# define ITERATORS_TRAITS_HPP
+#ifndef RANDOM_ACCESS_ITERATOR_HPP
+# define RANDOM_ACCESS_ITERATOR_HPP
 
 #include "IteratorsTraits.hpp"
 

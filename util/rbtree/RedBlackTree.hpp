@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   RedBlackTree.hpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lucas <lucas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 16:02:21 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/13 17:05:59 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/15 11:29:49 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ namespace ft
 			node_type	*insert(value_type &val);
 			void		erase(key_type &val);
 			node_type	*iterate(node_type *k);
+			node_type	*reverse_iterate(node_type *k);
 
 		private :
 			node_type	*_root;
@@ -181,6 +182,21 @@ namespace ft
 		else if (parent->get_right() == k)
 			return (this->iterate(parent));
 		return this->_end;
+	}
+
+	template <class Key, class T, class Compare, class Alloc>
+	typename red_black_tree<Key, T, Compare, Alloc>::node_type	*red_black_tree<Key, T, Compare, Alloc>::reverse_iterate(node_type *k)
+	{
+		node_type	*left = k->get_left;
+		node_type	*parent = k->get_parent();
+		if (!left->is_leaf())
+			return this->_get_biggest(left);
+		else if (parent->get_right() == k)
+			return parent;
+		else if (parent->get_left() == k)
+			return (this->iterate(parent));
+		return this->_end; //probably not that since it's the first
+		//return this->_get_smallest(this->_root); //maybe this instead
 	}
 
 
