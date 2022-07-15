@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 16:02:21 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/15 17:03:50 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/15 17:16:52 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ namespace ft
 		typedef Key													key_type;
 		typedef T													mapped_type;
 		typedef ft::pair<const Key, T>								value_type;
-		typedef ft::red_black_node<Key, T>			node_type;
+		typedef ft::red_black_node<T>								node_type;
 		typedef ft::red_black_tree<Key, T, Compare, Alloc>			tree_type;
 		typedef Compare												key_compare;
 		typedef Alloc												allocator_type;
@@ -109,7 +109,7 @@ namespace ft
 	typename red_black_tree<Key, T, Compare, Alloc>::node_type	*red_black_tree<Key, T, Compare, Alloc>::search(key_type &key)
 	{
 		node_type	*z = this->_root;
-		key_type	&z_key = z->get_key();
+		key_type	&z_key = z->get_value()->first;
 		while (z_key != key)
 		{
 			if (z->is_leaf())
@@ -118,7 +118,7 @@ namespace ft
 				z = z->get_right();
 			else
 				z = z->get_left();
-			z_key = z->get_key();
+			z_key = z->get_value()->first;
 		}
 		return z;
 	}
@@ -127,7 +127,7 @@ namespace ft
 	typename red_black_tree<Key, T, Compare, Alloc>::node_type	*red_black_tree<Key, T, Compare, Alloc>::insert(value_type &value)
 	{
 		node_type	*z = this->_root;
-		key_type	&z_key = z->get_key();
+		key_type	&z_key = z->get_value()->first;
 		key_type	&v_key = value.first;
 		while (!z->is_leaf())
 		{
@@ -137,7 +137,7 @@ namespace ft
 				z = z->get_right();
 			else
 				z = z->get_left();
-			z_key = z->get_key();
+			z_key = z->get_value()->first;
 		}
 		node_type *new_node = new node_type(value, z, this->_create_leaf(), z->parent);
 		z->set_parent(new_node);
@@ -219,7 +219,7 @@ namespace ft
 			return ;
 		delete z;
 	}
-
+}
 
 /*
 	---RULES---
