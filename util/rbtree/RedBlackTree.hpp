@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 16:02:21 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/15 17:16:52 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/15 17:46:51 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,6 @@ namespace ft
 		typedef typename allocator_type::const_reference			const_reference;
 		typedef typename allocator_type::pointer					pointer;
 		typedef typename allocator_type::const_pointer				const_pointer;
-		typedef ft::iterator_traits<value_type>						iterator;
-		typedef ft::iterator_traits<const value_type>				const_iterator;
-		typedef ft::reverse_iterator<iterator>						reverse_iterator;
-		typedef ft::reverse_iterator<const_iterator>				const_reverse_iterator;
-		typedef typename iterator_traits<iterator>::difference_type	difference_type;
 		typedef size_t												size_type;
 
 		public :
@@ -51,13 +46,19 @@ namespace ft
 			~red_black_tree();
 
 			/*
+				GETTERS
+			*/
+			node_type	*get_root(void) const;
+			node_type	*get_end(void) const;
+
+			/*
 				MEMBER METHODS
 			*/
 			node_type	*search(key_type &key);
 			node_type	*insert(value_type &val);
 			void		erase(key_type &val);
-			node_type	*iterate(node_type *k);
-			node_type	*reverse_iterate(node_type *k);
+			node_type	*iterate(node_type *k); //may be useless 
+			node_type	*reverse_iterate(node_type *k); //may be useless
 
 		private :
 			node_type	*_root;
@@ -100,6 +101,24 @@ namespace ft
 	
 	// template <class Key, class T, class Compare, class Alloc>
 	// ~red_black_tree() {} //LET'S GO BACK ON IT LATER
+
+
+	/*
+		GETTERS
+	*/
+	
+	template <class Key, class T, class Compare, class Alloc>
+	typename red_black_tree<Key, T, Compare, Alloc>::node_type	*red_black_tree<Key, T, Compare, Alloc>::get_root(void) const
+	{
+		return this->_root;
+	}
+	
+	template <class Key, class T, class Compare, class Alloc>
+	typename red_black_tree<Key, T, Compare, Alloc>::node_type	*red_black_tree<Key, T, Compare, Alloc>::get_end(void) const
+	{
+		return this->_end;
+	}
+
 
 	/*
 		MEMBER METHODS

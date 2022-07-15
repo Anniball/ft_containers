@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 10:12:44 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/12 18:29:50 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/15 17:46:55 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include "../iter/IteratorsTraits.hpp"
 # include "../iter/ReverseIterator.hpp"
 # include "../util/Pair.hpp"
+# include "../util/rbtree/RedBlackTree.hpp"
 
 namespace ft
 {
@@ -32,8 +33,8 @@ namespace ft
 		typedef typename allocator_type::const_reference			const_reference;
 		typedef typename allocator_type::pointer					pointer;
 		typedef typename allocator_type::const_pointer				const_pointer;
-		typedef	ft::iterator_traits<value_type>						iterator;
-		typedef ft::iterator_traits<const value_type>				const_iterator;
+		typedef	ft::tree_iterator<value_type>						iterator;
+		typedef ft::tree_iterator<const value_type>					const_iterator;
 		typedef ft::reverse_iterator<iterator>						reverse_iterator;
 		typedef ft::reverse_iterator<const_iterator>				const_reverse_iterator;
 		typedef typename iterator_traits<iterator>::difference_type	difference_type;
@@ -97,6 +98,9 @@ namespace ft
 			pair<iterator,iterator>				equal_range (const key_type& k);
 			/*Allocator*/
 			allocator_type						get_allocator() const;
+
+		private :
+			red_black_tree<Key, T, Compare, Alloc>	_tree;
 	};
 
 	/*
@@ -104,7 +108,10 @@ namespace ft
 	*/
 
 	template <class Key, class T, class Compare, class Alloc>
-	map<Key, T, Compare, Alloc>::map(const typename map<Key, T, Compare, Alloc>::key_compare &comp, const typename map<Key, T, Compare, Alloc>::allocator_type &alloc) {}
+	map<Key, T, Compare, Alloc>::map(const typename map<Key, T, Compare, Alloc>::key_compare &comp, const typename map<Key, T, Compare, Alloc>::allocator_type &alloc)
+	{
+		// return this->_tree.
+	}
 	
 	template <class Key, class T, class Compare, class Alloc>
 	template <class InputIterator>
