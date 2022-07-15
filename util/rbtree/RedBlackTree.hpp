@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   RedBlackTree.hpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucas <lucas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 16:02:21 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/15 11:29:49 by lucas            ###   ########.fr       */
+/*   Updated: 2022/07/15 17:03:50 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,6 @@ namespace ft
 			*/
 			node_type	*_create_leaf(const node_type *parent);
 			void		_replace_node(node_type *parent, node_type *z, node_type *replacer);
-			node_type	*_get_biggest(node_type *subroot);
-			node_type	*_get_smallest(node_type *subroot);
 	};
 	
 	
@@ -164,7 +162,7 @@ namespace ft
 		}
 		else
 		{
-			node_type	*smallest = this->_get_smallest(z->get_right());
+			node_type	*smallest = z->get_right()->get_smallest;
 			z->set_pair(smallest->get_pair());
 			this->erase(smallest);
 		}
@@ -176,7 +174,7 @@ namespace ft
 		node_type	*right = k->get_right;
 		node_type	*parent = k->get_parent();
 		if (!right->is_leaf())
-			return this->_get_smallest(right);
+			return right->get_smallest();
 		else if (parent->get_left() == k)
 			return parent;
 		else if (parent->get_right() == k)
@@ -190,7 +188,7 @@ namespace ft
 		node_type	*left = k->get_left;
 		node_type	*parent = k->get_parent();
 		if (!left->is_leaf())
-			return this->_get_biggest(left);
+			return left->get_biggest();
 		else if (parent->get_right() == k)
 			return parent;
 		else if (parent->get_left() == k)
@@ -221,23 +219,6 @@ namespace ft
 			return ;
 		delete z;
 	}
-
-	template <class Key, class T, class Compare, class Alloc>
-	typename red_black_tree<Key, T, Compare, Alloc>::node_type	*red_black_tree<Key, T, Compare, Alloc>::_get_biggest(node_type *subroot)
-	{
-		while (!subroot->get_right()->is_leaf())
-			subroot = subroot->get_right();
-		return subroot;
-	}
-	
-	template <class Key, class T, class Compare, class Alloc>
-	typename red_black_tree<Key, T, Compare, Alloc>::node_type	*red_black_tree<Key, T, Compare, Alloc>::_get_smallest(node_type *subroot)
-	{
-		while (!subroot->get_left()->is_leaf())
-			subroot = subroot->get_left();
-		return subroot;
-	}
-}
 
 
 /*

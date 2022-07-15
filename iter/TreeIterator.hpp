@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   TreeIterator.hpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucas <lucas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 14:25:03 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/15 11:33:35 by lucas            ###   ########.fr       */
+/*   Updated: 2022/07/15 17:02:10 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,24 @@ namespace ft
 		tree_iterator	tmp(*this);
 		this->_content = this->content->reverse_iterate();
 		return tmp;
+	}
+
+	/*
+		COMPARISON OPERATOR OVERLOADS
+	*/
+
+
+	template <class T>
+	bool									operator==(tree_iterator<T> &left, tree_iterator<T> &right)
+	{
+		return left._content == right._content;
+	}
+
+
+	template <class T>
+	bool									operator!=(tree_iterator<T> &left, tree_iterator<T> &right)
+	{
+		return !(left._content == right._content);
 	}
 }
 
