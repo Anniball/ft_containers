@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 16:02:21 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/18 11:06:49 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/18 11:34:51 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,11 @@ namespace ft
 		typedef Key													key_type;
 		typedef T													mapped_type;
 		typedef ft::pair<const Key, T>								value_type;
-		typedef ft::red_black_node<T>								node_type;
+		typedef ft::red_black_node<value_type>						node_type;
 		typedef ft::red_black_tree<Key, T, Compare, Alloc>			tree_type;
 		typedef Compare												key_compare;
 		typedef Alloc												allocator_type;
+		typedef std::allocator<node_type>							node_allocator;
 		typedef	typename allocator_type::reference					reference;
 		typedef typename allocator_type::const_reference			const_reference;
 		typedef typename allocator_type::pointer					pointer;
@@ -61,8 +62,9 @@ namespace ft
 			node_type	*reverse_iterate(node_type *k); //may be useless
 
 		private :
-			node_type	*_root;
-			node_type	*_end;
+			node_type		*_root;
+			node_type		*_end;
+			node_allocator	_node_alloc;
 
 			/*
 				PRIVATE UTILS METHOD
@@ -76,31 +78,40 @@ namespace ft
 		CONSTRUCTORS AND DESTRUCTORS
 	*/
 	template <class Key, class T, class Compare, class Alloc>
-	red_black_tree<Key, T, Compare, Alloc>::red_black_tree()
+	red_black_tree<Key, T, Compare, Alloc>::red_black_tree() : _node_alloc(node_allocator())
 	{
-		this->_end = new node_type();
-		this->_root = new node_type();
+		this->_end = _node_alloc.allocate(1);
+		this->_root = _node_alloc.allocate(1);
+		_node_alloc.construct(this->_end, node_type());
+		_node_alloc.construct(this->_root, node_type());
 	}
 	
 	template <class Key, class T, class Compare, class Alloc>
 	red_black_tree<Key, T, Compare, Alloc>::red_black_tree(const value_type &val)
 	{
-		this->_end = new node_type();
-		this->_root = new node_type(val);
+		this->_end = _node_alloc.allocate(1);
+		this->_root = _node_alloc.allocate(1);
+		_node_alloc.construct(this->_end, node_type());
+		_node_alloc.construct(this->_root, node_type(val));
 	}
 	
 	template <class Key, class T, class Compare, class Alloc>
 	red_black_tree<Key, T, Compare, Alloc>::red_black_tree(const node_type &node) : _root(node)
 	{
-		this->_end = new node_type();
-		this->_root = new node_type(node);
+		this->_end = _node_alloc.allocate(1);
+		this->_root = _node_alloc.allocate(1);
+		_node_alloc.construct(this->_end, node_type());
+		_node_alloc.construct(this->_root, node_type(node));
 	}
 	
 	// template <class Key, class T, class Compare, class Alloc>
 	// red_black_tree(const &tree_type src) {} //LET'S GO BACK ON IT LATER
 	
 	// template <class Key, class T, class Compare, class Alloc>
-	// ~red_black_tree() {} //LET'S GO BACK ON IT LATER
+	// ~red_black_tree()
+	// {
+		
+	// }
 
 
 	/*
@@ -158,7 +169,8 @@ namespace ft
 				z = z->get_left();
 			z_key = z->get_value()->first;
 		}
-		node_type *new_node = new node_type(value, z, this->_create_leaf(), z->parent);
+		node_type *new_node = _node_alloc.allocate(1);
+		_node_alloc.construct(new_node, node_type(value, z, this->_create_leaf(), z->parent));
 		z->set_parent(new_node);
 		return new_node;
 	}
@@ -171,12 +183,12 @@ namespace ft
 			return ;
 		if ( (z->get_left().is_leaf && z->get_right().is_leaf) || (!z->get_left().is_leaf && z->get_right().is_leaf) )
 		{
-			delete z->get_right();
+			_node_alloc.deallocate(z->get_right());
 			this->_replace_node(z->parent, z, z->get_left());
 		}
 		else if (z->get_left().is_leaf && !z->get_right().is_leaf)
 		{
-			delete z->get_left();
+			_node_alloc.deallocate(z->get_left());
 			this->_replace_node(z->parent, z, z->get_right());
 		}
 		else
@@ -236,7 +248,7 @@ namespace ft
 			parent->set_right(replacer);
 		else
 			return ;
-		delete z;
+		_node_alloc.deallocate(z);
 	}
 }
 

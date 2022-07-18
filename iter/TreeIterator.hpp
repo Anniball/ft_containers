@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 14:25:03 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/15 17:41:18 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/18 11:10:52 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 
 namespace ft
 {
+	//PROBLEM RIGHT NOW : it is the iterate from tree that lead to map::end and not iterate from node!
 	template <class T>
 	class tree_iterator
 	{
