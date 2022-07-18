@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 16:02:21 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/18 11:34:51 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/18 12:00:45 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,14 @@
 
 namespace ft
 {
-	template <class Key, class T, class Compare = std::less<Key>, class Alloc = std::allocator<pair<const Key,T> > >
+	template <class Key, class T, class Alloc = std::allocator<pair<const Key,T> > >
 	class red_black_tree
 	{
 		typedef Key													key_type;
 		typedef T													mapped_type;
 		typedef ft::pair<const Key, T>								value_type;
 		typedef ft::red_black_node<value_type>						node_type;
-		typedef ft::red_black_tree<Key, T, Compare, Alloc>			tree_type;
-		typedef Compare												key_compare;
+		typedef ft::red_black_tree<Key, T, Alloc>					tree_type;
 		typedef Alloc												allocator_type;
 		typedef std::allocator<node_type>							node_allocator;
 		typedef	typename allocator_type::reference					reference;
@@ -77,8 +76,8 @@ namespace ft
 	/*
 		CONSTRUCTORS AND DESTRUCTORS
 	*/
-	template <class Key, class T, class Compare, class Alloc>
-	red_black_tree<Key, T, Compare, Alloc>::red_black_tree() : _node_alloc(node_allocator())
+	template <class Key, class T, class Alloc>
+	red_black_tree<Key, T, Alloc>::red_black_tree() : _node_alloc(node_allocator())
 	{
 		this->_end = _node_alloc.allocate(1);
 		this->_root = _node_alloc.allocate(1);
@@ -86,8 +85,8 @@ namespace ft
 		_node_alloc.construct(this->_root, node_type());
 	}
 	
-	template <class Key, class T, class Compare, class Alloc>
-	red_black_tree<Key, T, Compare, Alloc>::red_black_tree(const value_type &val)
+	template <class Key, class T, class Alloc>
+	red_black_tree<Key, T, Alloc>::red_black_tree(const value_type &val)
 	{
 		this->_end = _node_alloc.allocate(1);
 		this->_root = _node_alloc.allocate(1);
@@ -95,8 +94,8 @@ namespace ft
 		_node_alloc.construct(this->_root, node_type(val));
 	}
 	
-	template <class Key, class T, class Compare, class Alloc>
-	red_black_tree<Key, T, Compare, Alloc>::red_black_tree(const node_type &node) : _root(node)
+	template <class Key, class T, class Alloc>
+	red_black_tree<Key, T, Alloc>::red_black_tree(const node_type &node) : _root(node)
 	{
 		this->_end = _node_alloc.allocate(1);
 		this->_root = _node_alloc.allocate(1);
@@ -104,10 +103,10 @@ namespace ft
 		_node_alloc.construct(this->_root, node_type(node));
 	}
 	
-	// template <class Key, class T, class Compare, class Alloc>
+	// template <class Key, class T, class Alloc>
 	// red_black_tree(const &tree_type src) {} //LET'S GO BACK ON IT LATER
 	
-	// template <class Key, class T, class Compare, class Alloc>
+	// template <class Key, class T, class Alloc>
 	// ~red_black_tree()
 	// {
 		
@@ -118,14 +117,14 @@ namespace ft
 		GETTERS
 	*/
 	
-	template <class Key, class T, class Compare, class Alloc>
-	typename red_black_tree<Key, T, Compare, Alloc>::node_type	*red_black_tree<Key, T, Compare, Alloc>::get_root(void) const
+	template <class Key, class T, class Alloc>
+	typename red_black_tree<Key, T, Alloc>::node_type	*red_black_tree<Key, T, Alloc>::get_root(void) const
 	{
 		return this->_root;
 	}
 	
-	template <class Key, class T, class Compare, class Alloc>
-	typename red_black_tree<Key, T, Compare, Alloc>::node_type	*red_black_tree<Key, T, Compare, Alloc>::get_end(void) const
+	template <class Key, class T, class Alloc>
+	typename red_black_tree<Key, T, Alloc>::node_type	*red_black_tree<Key, T, Alloc>::get_end(void) const
 	{
 		return this->_end;
 	}
@@ -135,8 +134,8 @@ namespace ft
 		MEMBER METHODS
 	*/
 	
-	template <class Key, class T, class Compare, class Alloc>
-	typename red_black_tree<Key, T, Compare, Alloc>::node_type	*red_black_tree<Key, T, Compare, Alloc>::search(key_type &key)
+	template <class Key, class T, class Alloc>
+	typename red_black_tree<Key, T, Alloc>::node_type	*red_black_tree<Key, T, Alloc>::search(key_type &key)
 	{
 		node_type	*z = this->_root;
 		key_type	&z_key = z->get_value()->first;
@@ -153,8 +152,8 @@ namespace ft
 		return z;
 	}
 
-	template <class Key, class T, class Compare, class Alloc>
-	typename red_black_tree<Key, T, Compare, Alloc>::node_type	*red_black_tree<Key, T, Compare, Alloc>::insert(value_type &value)
+	template <class Key, class T, class Alloc>
+	typename red_black_tree<Key, T, Alloc>::node_type	*red_black_tree<Key, T, Alloc>::insert(value_type &value)
 	{
 		node_type	*z = this->_root;
 		key_type	&z_key = z->get_value()->first;
@@ -175,8 +174,8 @@ namespace ft
 		return new_node;
 	}
 
-	template <class Key, class T, class Compare, class Alloc>
-	void														red_black_tree<Key, T, Compare, Alloc>::erase(key_type &key)
+	template <class Key, class T, class Alloc>
+	void														red_black_tree<Key, T, Alloc>::erase(key_type &key)
 	{
 		node_type	*z = this->search(key);
 		if (!z)
@@ -199,8 +198,8 @@ namespace ft
 		}
 	}
 
-	template <class Key, class T, class Compare, class Alloc>
-	typename red_black_tree<Key, T, Compare, Alloc>::node_type	*red_black_tree<Key, T, Compare, Alloc>::iterate(node_type *k)
+	template <class Key, class T, class Alloc>
+	typename red_black_tree<Key, T, Alloc>::node_type	*red_black_tree<Key, T, Alloc>::iterate(node_type *k)
 	{
 		node_type	*right = k->get_right;
 		node_type	*parent = k->get_parent();
@@ -213,8 +212,8 @@ namespace ft
 		return this->_end;
 	}
 
-	template <class Key, class T, class Compare, class Alloc>
-	typename red_black_tree<Key, T, Compare, Alloc>::node_type	*red_black_tree<Key, T, Compare, Alloc>::reverse_iterate(node_type *k)
+	template <class Key, class T, class Alloc>
+	typename red_black_tree<Key, T, Alloc>::node_type	*red_black_tree<Key, T, Alloc>::reverse_iterate(node_type *k)
 	{
 		node_type	*left = k->get_left;
 		node_type	*parent = k->get_parent();
@@ -233,14 +232,14 @@ namespace ft
 		PRIVATE UTILS METHOD
 	*/
 	
-	template <class Key, class T, class Compare, class Alloc>
-	typename red_black_tree<Key, T, Compare, Alloc>::node_type	*red_black_tree<Key, T, Compare, Alloc>::_create_leaf(const node_type *parent)
+	template <class Key, class T, class Alloc>
+	typename red_black_tree<Key, T, Alloc>::node_type	*red_black_tree<Key, T, Alloc>::_create_leaf(const node_type *parent)
 	{
 		return node_type(parent);
 	}
 
-	template <class Key, class T, class Compare, class Alloc>
-	void														red_black_tree<Key, T, Compare, Alloc>::_replace_node(node_type *parent, node_type *z, node_type *replacer)
+	template <class Key, class T, class Alloc>
+	void														red_black_tree<Key, T, Alloc>::_replace_node(node_type *parent, node_type *z, node_type *replacer)
 	{
 		if (z == parent->get_left())
 			parent->set_left(replacer);

@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 13:56:12 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/18 11:03:21 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/18 12:00:05 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 
 namespace ft
 {
-	template <class T>
+	template <class T >
 	class red_black_node
 	{
 		typedef T													value_type;

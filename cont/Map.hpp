@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 10:12:44 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/18 10:55:57 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/18 11:59:49 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,7 @@ namespace ft
 			allocator_type						get_allocator() const;
 
 		private :
-			red_black_tree<Key, T, Compare, Alloc>	_tree;
+			red_black_tree<Key, T, Alloc>		_tree;
 	};
 
 	/*

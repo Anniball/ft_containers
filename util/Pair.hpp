@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 17:27:00 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/12 13:43:41 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/18 11:50:20 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ namespace ft
 	template <class T1, class T2>
 	bool	operator<(const pair<T1,T2>& lhs, const pair<T1,T2>& rhs)
 	{
-		return (lhs.first < rhs.first && lhs.second < rhs.second);
+		return (lhs.first < rhs.first || (!(rhs.first < lhs.first) && lhs.second < rhs.second));
 	}
 	
 	template <class T1, class T2>
