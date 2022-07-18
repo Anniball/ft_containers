@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 13:56:12 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/18 12:00:05 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/18 15:46:29 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ namespace ft
 				GETTERS AND SETTERS
 			*/
 			value_type		&get_value(void) const;
-			value_type		*get_pointer(void) const;
 			pointer			get_left(void) const;
 			pointer			get_right(void) const;
 			pointer			get_parent(void) const;
@@ -73,7 +72,7 @@ namespace ft
 			pointer			get_biggest(void);
 
 		private :
-			value_type		*_content;
+			value_type		_content;
 			bool			_color;
 			pointer			_left;
 			pointer			_right;
@@ -88,54 +87,33 @@ namespace ft
 		CONSTRUCTORS AND DESTRUCTORS
 	*/
 	template <class T>
-	red_black_node<T>::red_black_node(void) : _color(RBT_RED), _left(nullptr), _right(nullptr), _parent(nullptr)
-	{
-		this->_content = new value_type();
-	}
+	red_black_node<T>::red_black_node(void) : _color(RBT_RED), _left(nullptr), _right(nullptr), _parent(nullptr), _content() {}
 	
 	template <class T>
 	red_black_node<T>::red_black_node(const value_type &val) :
-	_color(RBT_RED), _left(nullptr), _right(nullptr), _parent(nullptr)
-	{
-		this->_content = new value_type(val); 
-	}
+	_color(RBT_RED), _left(nullptr), _right(nullptr), _parent(nullptr), _content(val) {}
 
 	template <class T>
 	red_black_node<T>::red_black_node(const pointer parent) :
-	_color(RBT_BLACK), _left(nullptr), _right(nullptr), _parent(parent)
-	{
-		this->_content = new value_type();
-	}
+	_color(RBT_BLACK), _left(nullptr), _right(nullptr), _parent(parent), _content() {}
 	
 	template <class T>
 	red_black_node<T>::red_black_node(const value_type &val, const pointer left, const pointer right, const pointer parent) :
-	_color(RBT_RED), _left(left), _right(right), _parent(parent)
-	{
-		this->_content = new value_type(val);
-	}
+	_color(RBT_RED), _left(left), _right(right), _parent(parent), _content(val) {}
 	
 	template <class T>
 	red_black_node<T>::red_black_node(const node_type &src) :
-	_content(src->_content), _color(src._color), _left(src._left), _right(src._right), _parent(src._parent)
-	{
-		this->_content = new value_type(*(src->_content));
-	}
+	_content(src->_content), _color(src._color), _left(src._left), _right(src._right), _parent(src._parent) {}
 	
 	template <class T>
-	red_black_node<T>::~red_black_node(void)
-	{
-		delete this->_content;
-	}
+	red_black_node<T>::~red_black_node(void) {}
 
 	/*
 		GETTERS
 	*/
 	
 	template <class T>
-	typename red_black_node<T>::value_type	&red_black_node<T>::get_value(void) const {return *(this->_content);}
-		
-	template <class T>
-	typename red_black_node<T>::value_type	*red_black_node<T>::get_pointer(void) const {return this->_content;}
+	typename red_black_node<T>::value_type	&red_black_node<T>::get_value(void) const {return this->_content;}
 
 	template <class T>
 	typename red_black_node<T>::pointer		red_black_node<T>::get_left(void) const {return this->_left;}
@@ -172,7 +150,7 @@ namespace ft
 	bool									red_black_node<T>::is_leaf(void) const {return this->_left == nullptr && this->right == nullptr;}
 
 	template <class T>
-	void									red_black_node<T>::set_pair(value_type	const &val) {*(this->_content) = val;}
+	void									red_black_node<T>::set_pair(value_type	const &val) {this->_content = val;}
 	
 	template <class T>
 	void									red_black_node<T>::set_right(pointer node) {this->_right = node;}
@@ -242,7 +220,7 @@ namespace ft
 	template <class T>
 	bool									operator==(red_black_node<T> const &left, red_black_node<T> const &right)
 	{
-		return *(left._content) == *(right._content);
+		return left._content == right._content;
 	}
 
 
@@ -255,7 +233,7 @@ namespace ft
 	template <class T>
 	bool									operator<(red_black_node<T> const &left, red_black_node<T> const &right)
 	{
-		return *(left._content) < *(right._content);
+		return left._content < right._content;
 	}
 
 
