@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 16:02:21 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/18 15:46:44 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/18 15:58:21 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,7 @@ namespace ft
 		typedef ft::pair<const Key, T>								value_type;
 		typedef ft::red_black_node<value_type>						node_type;
 		typedef ft::red_black_tree<Key, T, Alloc>					tree_type;
-		typedef Alloc												allocator_type;
-		typedef std::allocator<node_type>							node_allocator;
+		typedef typename Alloc::template rebind<node_type>::other	allocator_type;
 		typedef	typename allocator_type::reference					reference;
 		typedef typename allocator_type::const_reference			const_reference;
 		typedef typename allocator_type::pointer					pointer;
@@ -63,7 +62,7 @@ namespace ft
 		private :
 			node_type		*_root;
 			node_type		*_end;
-			node_allocator	_node_alloc;
+			allocator_type	_node_alloc;
 
 			/*
 				PRIVATE UTILS METHOD
@@ -77,7 +76,7 @@ namespace ft
 		CONSTRUCTORS AND DESTRUCTORS
 	*/
 	template <class Key, class T, class Alloc>
-	red_black_tree<Key, T, Alloc>::red_black_tree() : _node_alloc(node_allocator())
+	red_black_tree<Key, T, Alloc>::red_black_tree() : _node_alloc(allocator_type())
 	{
 		this->_end = _node_alloc.allocate(1);
 		this->_root = _node_alloc.allocate(1);
