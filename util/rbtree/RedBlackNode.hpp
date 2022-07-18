@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 13:56:12 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/15 17:37:03 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/18 10:51:53 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,25 +163,25 @@ namespace ft
 	}
 
 	template <class T>
-	bool															red_black_node<T>::is_red(void) const {return this->_color == RBT_RED;}
+	bool									red_black_node<T>::is_red(void) const {return this->_color == RBT_RED;}
 	
 	template <class T>
-	bool															red_black_node<T>::is_black(void) const {return this->_color == RBT_BLACK;}
+	bool									red_black_node<T>::is_black(void) const {return this->_color == RBT_BLACK;}
 	
 	template <class T>
-	bool															red_black_node<T>::is_leaf(void) const {return this->_left == nullptr && this->right == nullptr;}
+	bool									red_black_node<T>::is_leaf(void) const {return this->_left == nullptr && this->right == nullptr;}
 
 	template <class T>
-	void															red_black_node<T>::set_pair(value_type	const &val) {*(this->_content) = val;}
+	void									red_black_node<T>::set_pair(value_type	const &val) {*(this->_content) = val;}
 	
 	template <class T>
-	void															red_black_node<T>::set_right(pointer node) {this->_right = node;}
+	void									red_black_node<T>::set_right(pointer node) {this->_right = node;}
 	
 	template <class T>
-	void															red_black_node<T>::set_left(pointer node) {this->_left = node;}
+	void									red_black_node<T>::set_left(pointer node) {this->_left = node;}
 	
 	template <class T>
-	void															red_black_node<T>::set_parent(pointer node) {this->_parent = node;}
+	void									red_black_node<T>::set_parent(pointer node) {this->_parent = node;}
 
 
 	/*
@@ -189,7 +189,7 @@ namespace ft
 	*/
 
 	template <class T>
-	typename red_black_node<T>::pointer						red_black_node<T>::iterate(void)
+	typename red_black_node<T>::pointer		red_black_node<T>::iterate(void)
 	{
 		pointer		right = this->get_right();
 		pointer		parent = this->get_parent();
@@ -203,7 +203,7 @@ namespace ft
 	}
 
 	template <class T>
-	typename red_black_node<T>::pointer						red_black_node<T>::reverse_iterate(void)
+	typename red_black_node<T>::pointer		red_black_node<T>::reverse_iterate(void)
 	{
 		pointer		left = this->get_left();
 		pointer		parent = this->get_parent();
@@ -217,7 +217,7 @@ namespace ft
 	}
 
 	template <class T>
-	typename red_black_node<T>::pointer						red_black_node<T>::get_smallest(void)
+	typename red_black_node<T>::pointer		red_black_node<T>::get_smallest(void)
 	{
 		node_type	*tmp = this;
 		while (!tmp->is_leaf())
@@ -226,7 +226,7 @@ namespace ft
 	}
 	
 	template <class T>
-	typename red_black_node<T>::node_type						*red_black_node<T>::get_biggest(void)
+	typename red_black_node<T>::node_type	*red_black_node<T>::get_biggest(void)
 	{
 		node_type	*tmp = this;
 		while (!tmp->is_leaf())
@@ -240,14 +240,14 @@ namespace ft
 	*/
 
 	template <class T>
-	bool											operator==(typename red_black_node<T>::node_type &left, typename red_black_node<T>::node_type &right)
+	bool									operator==(typename red_black_node<T>::node_type &left, typename red_black_node<T>::node_type &right)
 	{
 		return *(left._content) == *(right._content);
 	}
 
 
 	template <class T>
-	bool											operator!=(typename red_black_node<T>::node_type &left, typename red_black_node<T>::node_type &right)
+	bool									operator!=(typename red_black_node<T>::node_type &left, typename red_black_node<T>::node_type &right)
 	{
 		return !(*(left._content) == *(right._content));
 	}

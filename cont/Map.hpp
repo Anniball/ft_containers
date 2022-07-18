@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 10:12:44 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/15 17:46:55 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/18 10:55:57 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,25 @@ namespace ft
 				OPERATOR OVERLOADS
 			*/
 			map &operator=(const map &x);
+
+
+			/*
+				CLASS
+			*/
+			class value_compare
+			{
+				typedef	bool		result_type;
+				typedef value_type	first_argument_type;
+				typedef value_type	second_argument_type;
+
+				protected :
+					key_compare		comp;
+
+					value_compare(key_compare c) : comp(c) {}
+
+				public :
+					bool	operator()(const value_type &lhs, const value_type &rhs) {return comp(lhs.first, rhs.first);}
+			};
 			
 			/*
 				MEMBER FUNCTIONS
@@ -110,7 +129,7 @@ namespace ft
 	template <class Key, class T, class Compare, class Alloc>
 	map<Key, T, Compare, Alloc>::map(const typename map<Key, T, Compare, Alloc>::key_compare &comp, const typename map<Key, T, Compare, Alloc>::allocator_type &alloc)
 	{
-		// return this->_tree.
+		return iterator(this->_tree->get_root()->get_value());
 	}
 	
 	template <class Key, class T, class Compare, class Alloc>
