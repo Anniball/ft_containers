@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 13:56:12 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/18 10:51:53 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/18 11:03:21 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -240,18 +240,43 @@ namespace ft
 	*/
 
 	template <class T>
-	bool									operator==(typename red_black_node<T>::node_type &left, typename red_black_node<T>::node_type &right)
+	bool									operator==(red_black_node<T> const &left, red_black_node<T> const &right)
 	{
 		return *(left._content) == *(right._content);
 	}
 
 
 	template <class T>
-	bool									operator!=(typename red_black_node<T>::node_type &left, typename red_black_node<T>::node_type &right)
+	bool									operator!=(red_black_node<T> const &left, red_black_node<T> const &right)
 	{
-		return !(*(left._content) == *(right._content));
+		return !(left == right);
 	}
 
+	template <class T>
+	bool									operator<(red_black_node<T> const &left, red_black_node<T> const &right)
+	{
+		return *(left._content) < *(right._content);
+	}
+
+
+	template <class T>
+	bool									operator<=(red_black_node<T> const &left, red_black_node<T> const &right)
+	{
+		return !(right < left);
+	}
+
+	template <class T>
+	bool									operator>(red_black_node<T> const &left, red_black_node<T> const &right)
+	{
+		return (right < left);
+	}
+
+
+	template <class T>
+	bool									operator>=(red_black_node<T> const &left, red_black_node<T> const &right)
+	{
+		return !(left < right);
+	}
 }
 
 #endif
