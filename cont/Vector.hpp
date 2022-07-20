@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 10:13:41 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/20 13:47:51 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/20 14:06:37 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,7 +169,7 @@ namespace ft
 	vector<T, Alloc>							&vector<T, Alloc>::operator=(const vector& x)
 	{
 		if (*this == x)
-			return ;
+			return *this;
 		this->assign(x.begin(), x.end());
 		return *this;
 	}
@@ -261,8 +261,9 @@ namespace ft
 		this->reserve(n);
 		for (size_type i = this->_size; i < n; i++)
 			this->_alloc.construct(this->_container + i, val);
-		for (size_type i = this->_size - 1; i >= n; i--)
-			this->_alloc.destroy(this->_container + i);
+		if (this->_size > 0)
+			for (size_type i = this->_size - 1; i >= n; i--)
+				this->_alloc.destroy(this->_container + i);
 		this->_size = n;
 	}
 

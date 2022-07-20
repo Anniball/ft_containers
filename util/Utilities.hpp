@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/08 14:42:08 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/20 11:24:50 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/20 13:53:11 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ namespace ft
 	template <class InputIterator1, class InputIterator2>
 	bool equal(InputIterator1 first1, InputIterator1 last1, InputIterator2 first2)
 	{
-		for (first1; first1 != last1; first1++, first2++)
+		for (; first1 != last1; first1++, first2++)
 			if (!(*first1 == *first2))
 				return false;
 		return true;
