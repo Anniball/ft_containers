@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 10:13:41 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/20 14:06:37 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/20 14:10:30 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,7 @@ namespace ft
 	vector<T, Alloc>::vector(InputIterator first, InputIterator last, const allocator_type& alloc, typename enable_if<!is_integral<InputIterator>::value>::type *dummy) : _alloc(alloc)
 	{
 		(void)dummy;
-		this->_size = distance(first, last);
+		this->_size = ft::distance(first, last);
 		this->_capacity = this->_size;
 		this->_container = this->_alloc.allocate(this->_size);
 		for (size_type i = 0; first != last; first++, i++)
@@ -392,13 +392,13 @@ namespace ft
 	typename vector<T, Alloc>::iterator						vector<T, Alloc>::insert(vector<T, Alloc>::iterator position, const vector<T, Alloc>::value_type &val)
 	{
 		insert(position, 1, val);
-		return this->begin() + (distance(this->begin(), position));
+		return this->begin() + (ft::distance(this->begin(), position));
 	}
 
 	template<typename T, class Alloc>
 	void													vector<T, Alloc>::insert(vector<T, Alloc>::iterator position, size_type n, const value_type &val)
 	{
-		size_type pos = distance(this->begin(), position);
+		size_type pos = ft::distance(this->begin(), position);
 		if (this->_size + n > this->_capacity)
 		{
 			if (!this->_capacity)
@@ -440,8 +440,8 @@ namespace ft
 	void													vector<T, Alloc>::insert(typename vector<T, Alloc>::iterator position, InputIterator first, InputIterator last, typename enable_if<!is_integral<InputIterator>::value>::type *dummy)
 	{
 		(void)dummy;
-		typename vector<T, Alloc>::size_type pos = distance(this->begin(), position);
-		typename vector<T, Alloc>::size_type dist = distance(first, last);
+		typename vector<T, Alloc>::size_type pos = ft::distance(this->begin(), position);
+		typename vector<T, Alloc>::size_type dist = ft::distance(first, last);
 		if (this->_size + dist > this->_capacity)
 		{
 			if (!this->_capacity)
@@ -481,7 +481,7 @@ namespace ft
 	template<typename T, class Alloc>
 	typename vector<T, Alloc>::iterator						vector<T, Alloc>::erase(typename vector<T, Alloc>::iterator position)
 	{
-		size_type pos = distance(this->begin(), position);
+		size_type pos = ft::distance(this->begin(), position);
 		this->_alloc.destroy(this->_container + pos);
 		typename vector<T, Alloc>::iterator it = vector<T, Alloc>::iterator(this->_container + pos + 1);
 		for (size_t i = pos + 1; it != this->end(); i++, it++)
@@ -492,8 +492,8 @@ namespace ft
 	template<typename T, class Alloc>
 	typename vector<T, Alloc>::iterator						vector<T, Alloc>::erase(typename vector<T, Alloc>::iterator first, typename vector<T, Alloc>::iterator last)
 	{
-		size_type pos = distance(this->begin(), first);
-		size_type dist = distance(first, last);
+		size_type pos = ft::distance(this->begin(), first);
+		size_type dist = ft::distance(first, last);
 		for (size_t i = pos; first != last; first++, i++)
 			this->_alloc.destroy(this->_container + i);
 		vector<T, Alloc>::iterator it = vector<T, Alloc>::iterator(this->_container + pos + dist);

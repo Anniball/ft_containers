@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/08 14:42:08 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/20 13:53:11 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/20 14:21:10 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,29 +17,30 @@
 
 namespace ft
 {
-	template<class InputIterator>
-	typename iterator_traits<InputIterator>::difference_type	_distance(InputIterator first, InputIterator last, random_access_iterator_tag)
+	template <class InputIterator>
+	typename iterator_traits<InputIterator>::difference_type 		__distance(InputIterator first, InputIterator last, input_iterator_tag)
+	{
+		typename iterator_traits<InputIterator>::difference_type n = 0;
+		while(first++ != last)
+			++n;
+		return n;
+	}
+
+	template <class RandomAccessIterator>
+	typename iterator_traits<RandomAccessIterator>::difference_type __distance(RandomAccessIterator first, RandomAccessIterator last, random_access_iterator_tag)
 	{
 		return last - first;
 	}
 
-	template<class InputIterator>
-	typename iterator_traits<InputIterator>::difference_type	_distance(InputIterator first, InputIterator last, input_iterator_tag)
+	template <typename InputIterator>
+	typename iterator_traits<InputIterator>::difference_type 		distance(InputIterator first, InputIterator last)
 	{
-		typename iterator_traits<InputIterator>::difference_type n = 0;
-		while (first++ != last)
-			n++;
-		return n;
+		return __distance(first, last, typename ft::iterator_traits<InputIterator>::iterator_category());
 	}
 
-	template<class InputIterator>
-	typename iterator_traits<InputIterator>::difference_type	distance(InputIterator first, InputIterator last)
-	{
-		return _distance(first, last, typename iterator_traits<InputIterator>::iterator_category());
-	}
 
 	template <class InputIterator1, class InputIterator2>
-	bool equal(InputIterator1 first1, InputIterator1 last1, InputIterator2 first2)
+	bool 															equal(InputIterator1 first1, InputIterator1 last1, InputIterator2 first2)
 	{
 		for (; first1 != last1; first1++, first2++)
 			if (!(*first1 == *first2))
