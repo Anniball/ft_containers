@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 10:12:44 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/18 11:59:49 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/18 16:10:48 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,14 +78,14 @@ namespace ft
 				MEMBER FUNCTIONS
 			*/
 			/*Iterators*/ 
-			iterator							begin();
-			const_iterator						begin() const;
-			iterator							end();
-			const_iterator						end() const;
-			reverse_iterator					rbegin();
-			const_reverse_iterator				rbegin() const;
-			reverse_iterator					rend();
-			const_reverse_iterator				rend() const;
+			iterator							begin(); //ok
+			const_iterator						begin() const; //ok
+			iterator							end(); //ok
+			const_iterator						end() const; //ok
+			reverse_iterator					rbegin(); //ok
+			const_reverse_iterator				rbegin() const; //ok
+			reverse_iterator					rend(); //ok
+			const_reverse_iterator				rend() const; //ok
 			/*Capacity*/
 			bool								empty() const;
 			size_type							size() const;
@@ -127,10 +127,7 @@ namespace ft
 	*/
 
 	template <class Key, class T, class Compare, class Alloc>
-	map<Key, T, Compare, Alloc>::map(const typename map<Key, T, Compare, Alloc>::key_compare &comp, const typename map<Key, T, Compare, Alloc>::allocator_type &alloc)
-	{
-		return iterator(this->_tree->get_root()->get_value());
-	}
+	map<Key, T, Compare, Alloc>::map(const typename map<Key, T, Compare, Alloc>::key_compare &comp, const typename map<Key, T, Compare, Alloc>::allocator_type &alloc) {}
 	
 	template <class Key, class T, class Compare, class Alloc>
 	template <class InputIterator>
@@ -156,28 +153,52 @@ namespace ft
 	*/
 	/*Iterators*/ 
 	template <class Key, class T, class Compare, class Alloc>
-	typename map<Key, T, Compare, Alloc>::iterator					map<Key, T, Compare, Alloc>::begin() {}
+	typename map<Key, T, Compare, Alloc>::iterator					map<Key, T, Compare, Alloc>::begin()
+	{
+		return iterator(this->_tree->_root->get_smallest());
+	}
 	
 	template <class Key, class T, class Compare, class Alloc>
-	typename map<Key, T, Compare, Alloc>::const_iterator			map<Key, T, Compare, Alloc>::begin() const {}
+	typename map<Key, T, Compare, Alloc>::const_iterator			map<Key, T, Compare, Alloc>::begin() const
+	{
+		return const_iterator(this->_tree->_root->get_smallest());
+	}
 	
 	template <class Key, class T, class Compare, class Alloc>
-	typename map<Key, T, Compare, Alloc>::iterator					map<Key, T, Compare, Alloc>::end() {}
+	typename map<Key, T, Compare, Alloc>::iterator					map<Key, T, Compare, Alloc>::end()
+	{
+		return iterator(this->_end);
+	}
 	
 	template <class Key, class T, class Compare, class Alloc>
-	typename map<Key, T, Compare, Alloc>::const_iterator			map<Key, T, Compare, Alloc>::end() const {}
+	typename map<Key, T, Compare, Alloc>::const_iterator			map<Key, T, Compare, Alloc>::end() const
+	{
+		return const_iterator(this->_end);
+	}
 	
 	template <class Key, class T, class Compare, class Alloc>
-	typename map<Key, T, Compare, Alloc>::reverse_iterator			map<Key, T, Compare, Alloc>::rbegin() {}
+	typename map<Key, T, Compare, Alloc>::reverse_iterator			map<Key, T, Compare, Alloc>::rbegin()
+	{
+		return reverse_iterator(this->_end);
+	}
 	
 	template <class Key, class T, class Compare, class Alloc>
-	typename map<Key, T, Compare, Alloc>::const_reverse_iterator	map<Key, T, Compare, Alloc>::rbegin() const {}
+	typename map<Key, T, Compare, Alloc>::const_reverse_iterator	map<Key, T, Compare, Alloc>::rbegin() const
+	{
+		return const_reverse_iterator(this->_end);
+	}
 	
 	template <class Key, class T, class Compare, class Alloc>
-	typename map<Key, T, Compare, Alloc>::reverse_iterator			map<Key, T, Compare, Alloc>::rend() {}
+	typename map<Key, T, Compare, Alloc>::reverse_iterator			map<Key, T, Compare, Alloc>::rend()
+	{
+		return reverse_iterator(this->_tree->_root->get_smallest());
+	}
 	
 	template <class Key, class T, class Compare, class Alloc>
-	typename map<Key, T, Compare, Alloc>::const_reverse_iterator	map<Key, T, Compare, Alloc>::rend() const {}
+	typename map<Key, T, Compare, Alloc>::const_reverse_iterator	map<Key, T, Compare, Alloc>::rend() const
+	{
+		return const_reverse_iterator(this->_tree->_root->get_smallest());
+	}
 
 	/*Capacity*/
 	template <class Key, class T, class Compare, class Alloc>

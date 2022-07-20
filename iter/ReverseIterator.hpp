@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/16 16:17:05 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/08 11:18:41 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/20 11:00:49 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,7 +185,7 @@ namespace ft
 	template <class Iterator>
 	reverse_iterator<Iterator>								operator+(typename reverse_iterator<Iterator>::difference_type n, const reverse_iterator<Iterator>& rev_it)
 	{
-		return (rev_it._base_iterator - n);
+		return rev_it + n;
 	}
 	
 	template <class Iterator>

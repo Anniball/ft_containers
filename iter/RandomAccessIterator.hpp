@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   RandomAccessIterator.hpp                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucas <lucas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 13:42:10 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/15 11:25:57 by lucas            ###   ########.fr       */
+/*   Updated: 2022/07/20 11:21:21 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ namespace ft
 
 			random_access_iterator(void);
 			random_access_iterator(random_access_iterator const &src);
+			random_access_iterator(pointer ptr);
 			~random_access_iterator(void);
 
 			random_access_iterator	&operator=(random_access_iterator const &right);
@@ -44,6 +45,8 @@ namespace ft
 			random_access_iterator	&operator-=(difference_type right);
 			reference				operator[](difference_type val);
 
+			pointer const			&base(void) const;
+
 		private:
 			pointer				_content;
 	};
@@ -58,6 +61,10 @@ namespace ft
 
 	template<typename T>
 	random_access_iterator<T>::random_access_iterator(random_access_iterator const &src) : _content(src._content) {return ;}
+
+
+	template<typename T>
+	random_access_iterator<T>::random_access_iterator(pointer ptr) : _content(ptr) {return ;}
 
 	template<typename T>
 	random_access_iterator<T>::~random_access_iterator(void){return ;}
@@ -143,11 +150,21 @@ namespace ft
 	}
 
 	template<typename T>
-	typename	random_access_iterator<T>::reference			random_access_iterator<T>::operator[](random_access_iterator<T>::difference_type val)
+	typename	random_access_iterator<T>::reference	random_access_iterator<T>::operator[](random_access_iterator<T>::difference_type val)
 	{
 		return (*(this->_content + val));
 	}
 
+
+	/*
+		PUBLIC METHOD
+	*/
+
+	template<typename T>
+	typename random_access_iterator<T>::pointer const	&random_access_iterator<T>::base(void) const
+	{
+		return this->_content;
+	}
 
 	/*
 		NON MEMBER OPERATOR OVERLOADS
@@ -156,38 +173,38 @@ namespace ft
 	template<class Iterator1, class Iterator2>
 	bool	operator==(random_access_iterator<Iterator1> const &left, random_access_iterator<Iterator2> const &right)
 	{
-		return (left._content == right._content);
+		return (left.base() == right.base());
 	}
 
 	template<class Iterator1, class Iterator2>
 	bool	operator!=(random_access_iterator<Iterator1> const &left, random_access_iterator<Iterator2> const &right)
 	{
-		return (left._content != right._content);
+		return (left.base() != right.base());
 	}
 	
 	template<class Iterator1, class Iterator2>
 	bool	operator<(random_access_iterator<Iterator1> const &left, random_access_iterator<Iterator2> const &right)
 	{
 
-		return (left._content < right._content);
+		return (left.base() < right.base());
 	}
 
 	template<class Iterator1, class Iterator2>
 	bool	operator>(random_access_iterator<Iterator1> const &left, random_access_iterator<Iterator2> const &right)
 	{
-		return (left._content > right._content);
+		return (left.base() > right.base());
 	}
 
 	template<class Iterator1, class Iterator2>
 	bool	operator<=(random_access_iterator<Iterator1> const &left, random_access_iterator<Iterator2> const &right)
 	{
-		return (left._content <= right._content);
+		return (left.base() <= right.base());
 	}
 
 	template<class Iterator1, class Iterator2>
 	bool	operator>=(random_access_iterator<Iterator1> const &left, random_access_iterator<Iterator2> const &right)
 	{
-		return (left._content >= right._content);
+		return (left.base() >= right.base());
 	}
 
 	template<class Iterator>
@@ -199,7 +216,7 @@ namespace ft
 	template<class Iterator1, class Iterator2>
 	typename	random_access_iterator<Iterator1>::difference_type	operator-(random_access_iterator<Iterator2> const &left, random_access_iterator<Iterator1> const &right)
 	{
-		return (left._content - right._content);
+		return (left.base() - right.base());
 	}
 }
 

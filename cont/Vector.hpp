@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 10:13:41 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/11 15:56:15 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/20 11:23:58 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,27 +17,30 @@
 # include <iostream>
 # include <stdexcept>
 # include <cmath>
+#include "../iter/RandomAccessIterator.hpp"
 # include "../iter/IteratorsTraits.hpp"
 # include "../iter/ReverseIterator.hpp"
 # include "../util/TypeTraits.hpp"
+#include "../util/Utilities.hpp"
 
 namespace ft
 {
 	template<typename T, class Alloc = std::allocator<T> >
 	class vector
 	{
-		typedef				T												value_type;
-		typedef				Alloc											allocator_type;
-		typedef				value_type&										reference;
-		typedef				const value_type&								const_reference;
-		typedef				value_type*										pointer;
-		typedef				const value_type*								const_pointer;
-		typedef	typename	ft::iterator_traits<value_type>					iterator;
-		typedef	typename	ft::iterator_traits<const value_type>			const_iterator;
-		typedef	typename	ft::reverse_iterator<iterator>					reverse_iterator;
-		typedef	typename	ft::reverse_iterator<const_iterator>			const_reverse_iterator;
-		typedef	typename	iterator_traits<iterator>::difference_type		difference_type;
-		typedef 			size_t											size_type;
+		public :
+			typedef				T												value_type;
+			typedef				Alloc											allocator_type;
+			typedef				value_type&										reference;
+			typedef				const value_type&								const_reference;
+			typedef				value_type*										pointer;
+			typedef				const value_type*								const_pointer;
+			typedef	typename	ft::random_access_iterator<value_type>			iterator;
+			typedef	typename	ft::random_access_iterator<const value_type>	const_iterator;
+			typedef	typename	ft::reverse_iterator<iterator>					reverse_iterator;
+			typedef	typename	ft::reverse_iterator<const_iterator>			const_reverse_iterator;
+			typedef	typename	ft::iterator_traits<iterator>::difference_type	difference_type;
+			typedef 			size_t											size_type;
 
 		private:
 			pointer			_container;
@@ -115,7 +118,7 @@ namespace ft
 	vector<T, Alloc>::vector(const allocator_type& alloc) : _container(nullptr), _size(0), _capacity(0), _alloc(alloc) {}
 
 	template<typename T, class Alloc>
-	vector<T, Alloc>::vector(size_type n, const value_type& val, const allocator_type& alloc) : _size(n), _alloc(alloc), _capacity(n)
+	vector<T, Alloc>::vector(size_type n, const value_type& val, const allocator_type& alloc) : _size(n), _capacity(n), _alloc(alloc)
 	{
 		if (n < 0)
 			throw std::out_of_range("ft::vector");
@@ -128,6 +131,7 @@ namespace ft
 	template <class InputIterator>
 	vector<T, Alloc>::vector(InputIterator first, InputIterator last, const allocator_type& alloc, typename enable_if<!is_integral<InputIterator>::value>::type *dummy) : _alloc(alloc)
 	{
+		(void)dummy;
 		this->_size = distance(first, last);
 		this->_capacity = this->_size;
 		this->_container = this->_alloc.allocate(this->_size);
@@ -338,7 +342,8 @@ namespace ft
 	template<class InputIterator>
 	void 													vector<T, Alloc>::assign(InputIterator first, InputIterator last, typename enable_if<!is_integral<InputIterator>::value>::type *dummy)
 	{
-		size_type size = distance(first, last);
+		(void)dummy;
+		size_type size = ft::distance(first, last);
 		this->clear();
 		if (size > this->_capacity)
 		{
@@ -431,6 +436,7 @@ namespace ft
 	template<class InputIterator>
 	void													vector<T, Alloc>::insert(typename vector<T, Alloc>::iterator position, InputIterator first, InputIterator last, typename enable_if<!is_integral<InputIterator>::value>::type *dummy)
 	{
+		(void)dummy;
 		typename vector<T, Alloc>::size_type pos = distance(this->begin(), position);
 		typename vector<T, Alloc>::size_type dist = distance(first, last);
 		if (this->_size + dist > this->_capacity)
@@ -508,7 +514,7 @@ namespace ft
 	template<typename T, class Alloc>
 	void													vector<T, Alloc>::clear(void)
 	{
-		for (int i = 0; i < this->_size; i++)
+		for (size_type i = 0; i < this->_size; i++)
 			this->_alloc.destroy(this->_container + i);
 		this->_size = 0;
 	}
