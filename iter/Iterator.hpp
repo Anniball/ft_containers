@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/18 14:27:02 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/20 11:07:04 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/20 12:58:13 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 
 namespace ft
 {
-	template<class Category, class T, class Distance, class Pointer, class Reference>
+	template<class Category, class T, class Distance = ptrdiff_t, class Pointer = T*, class Reference = T&>
 	class iterator
 	{
 		public :

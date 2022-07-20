@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 11:04:59 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/20 10:49:14 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/20 12:59:33 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 
 namespace ft
 {
-	template<class Category, class T, class Distance=ptrdiff_t, class Pointer=T*, class Reference=T&>
+	template<class Category, class T, class Distance, class Pointer, class Reference>
 	class iterator;
 	
 	struct input_iterator_tag {};

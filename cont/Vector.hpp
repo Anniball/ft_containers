@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 10:13:41 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/20 11:23:58 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/20 13:23:41 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,8 +143,8 @@ namespace ft
 	vector<T, Alloc>::vector(const vector& x)
 	{
 		this->_alloc = x._alloc;
-		vector<T, Alloc>::iterator first = x.begin();
-		vector<T, Alloc>::iterator last = x.end();
+		typename vector<const T, Alloc>::iterator first = x.begin();
+		typename vector<const T, Alloc>::iterator last = x.end();
 		this->_size = x._size;
 		this->_capacity = this->_size;
 		this->_container = this->_alloc.allocate(this->_size);
@@ -374,7 +374,7 @@ namespace ft
 	{
 		if (this->_size + 1 > this->_capacity)
 			this->reserve(!this->_capacity ? 1 : this->_capacity * 2);
-		this->_alloc.construct(this->_size, val);
+		this->_alloc.construct(this->_container + this->_size, val);
 		this->_size++;
 	}
 

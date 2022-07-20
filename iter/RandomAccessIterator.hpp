@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 13:42:10 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/20 11:21:21 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/20 13:26:22 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 namespace ft
 {
 	template<typename T>
-	class random_access_iterator
+	class random_access_iterator : ft::iterator<ft::random_access_iterator_tag, T>
 	{
 		public:
 			typedef typename	ft::iterator<random_access_iterator_tag, T>::difference_type	difference_type;
@@ -32,18 +32,20 @@ namespace ft
 			random_access_iterator(pointer ptr);
 			~random_access_iterator(void);
 
+			operator				random_access_iterator<const T>() const;
+
 			random_access_iterator	&operator=(random_access_iterator const &right);
-			reference				operator*(void);
-			pointer					operator->(void);
+			reference				operator*(void) const;
+			pointer					operator->(void) const;
 			random_access_iterator	&operator++(void); //prefix
 			random_access_iterator	operator++(int); //postfix
 			random_access_iterator	&operator--(void); //prefix
 			random_access_iterator	operator--(int); //postfix
-			random_access_iterator	operator+(difference_type right);
-			random_access_iterator	operator-(difference_type right);
+			random_access_iterator	operator+(difference_type right) const;
+			random_access_iterator	operator-(difference_type right) const;
 			random_access_iterator	&operator+=(difference_type right);
 			random_access_iterator	&operator-=(difference_type right);
-			reference				operator[](difference_type val);
+			reference				operator[](difference_type val) const;
 
 			pointer const			&base(void) const;
 
@@ -75,6 +77,12 @@ namespace ft
 	*/
 
 	template<typename T>
+	random_access_iterator<T>::operator				random_access_iterator<const T>() const
+	{
+		return this->_content;
+	}
+
+	template<typename T>
 	random_access_iterator<T>						&random_access_iterator<T>::operator=(random_access_iterator const &right)
 	{
 		this->_content = right._content;
@@ -82,13 +90,13 @@ namespace ft
 	}
 
 	template<typename T>
-	typename random_access_iterator<T>::reference	random_access_iterator<T>::operator*(void)
+	typename random_access_iterator<T>::reference	random_access_iterator<T>::operator*(void) const
 	{
 		return (*(this->_content));
 	}
 
 	template<typename T>
-	typename random_access_iterator<T>::pointer	random_access_iterator<T>::operator->(void)
+	typename random_access_iterator<T>::pointer	random_access_iterator<T>::operator->(void) const
 	{
 		return (this->content);
 	}
@@ -138,19 +146,19 @@ namespace ft
 	}
 
 	template<typename T>
-	random_access_iterator<T>						random_access_iterator<T>::operator+(difference_type right)
+	random_access_iterator<T>						random_access_iterator<T>::operator+(difference_type right) const
 	{
 		return (random_access_iterator<T>(this->_content +  right));
 	}
 
 	template<typename T>
-	random_access_iterator<T>						random_access_iterator<T>::operator-(difference_type right)
+	random_access_iterator<T>						random_access_iterator<T>::operator-(difference_type right) const
 	{
 		return (random_access_iterator<T>(this->_content - right));
 	}
 
 	template<typename T>
-	typename	random_access_iterator<T>::reference	random_access_iterator<T>::operator[](random_access_iterator<T>::difference_type val)
+	typename	random_access_iterator<T>::reference	random_access_iterator<T>::operator[](random_access_iterator<T>::difference_type val) const
 	{
 		return (*(this->_content + val));
 	}
