@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/16 16:17:05 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/20 11:00:49 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/20 14:28:59 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,13 @@ namespace ft
 	template <class Iterator>
 	class reverse_iterator
 	{
-		typedef Iterator												iterator_type;
-		typedef typename iterator_traits<Iterator>::iterator_category	iterator_category;
-		typedef typename iterator_traits<Iterator>::value_type			value_type;
-		typedef typename iterator_traits<Iterator>::difference_type		difference_type;
-		typedef	typename iterator_traits<Iterator>::pointer				pointer;
-		typedef typename iterator_traits<Iterator>::reference			reference;
+		public :
+			typedef Iterator												iterator_type;
+			typedef typename iterator_traits<Iterator>::iterator_category	iterator_category;
+			typedef typename iterator_traits<Iterator>::value_type			value_type;
+			typedef typename iterator_traits<Iterator>::difference_type		difference_type;
+			typedef	typename iterator_traits<Iterator>::pointer				pointer;
+			typedef typename iterator_traits<Iterator>::reference			reference;
 
 		public:
 			reverse_iterator(void);
@@ -33,6 +34,8 @@ namespace ft
 			template <class Iterator2>
 			reverse_iterator (const reverse_iterator<Iterator2> &rev_it);
 			~reverse_iterator(void);
+
+			operator			reverse_iterator<const Iterator>();
 
 			reference			operator*(void) const;
 			reverse_iterator	operator+(difference_type n) const;
@@ -74,6 +77,12 @@ namespace ft
 	/*
 		OPERATOR OVERLOADS
 	*/
+
+	template <class Iterator>
+	reverse_iterator<Iterator>::operator			reverse_iterator<const Iterator>()
+	{
+		return --this->_base_iterator;
+	}
 
 	template <class Iterator>
 	typename reverse_iterator<Iterator>::reference	reverse_iterator<Iterator>::operator*(void) const
