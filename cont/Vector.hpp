@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 10:13:41 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/20 13:23:41 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/20 13:47:51 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,7 +158,7 @@ namespace ft
 		vector<T, Alloc>::size_type n = 0;
 		for (vector<T, Alloc>::iterator it = this->begin(); it != this->end(); it++, n++)
 			this->_alloc.destroy(this->_container + n);
-		this->_alloc.deallocate(this->_container, this->_size);
+		this->_alloc.deallocate(this->_container, this->_capacity);
 	}
 
 	/*
@@ -261,7 +261,7 @@ namespace ft
 		this->reserve(n);
 		for (size_type i = this->_size; i < n; i++)
 			this->_alloc.construct(this->_container + i, val);
-		for (size_type i = this->size - 1; i >= n; i--)
+		for (size_type i = this->_size - 1; i >= n; i--)
 			this->_alloc.destroy(this->_container + i);
 		this->_size = n;
 	}
@@ -397,9 +397,11 @@ namespace ft
 	template<typename T, class Alloc>
 	void													vector<T, Alloc>::insert(vector<T, Alloc>::iterator position, size_type n, const value_type &val)
 	{
-		size_type pos = distance(this->_begin(), position);
+		size_type pos = distance(this->begin(), position);
 		if (this->_size + n > this->_capacity)
 		{
+			if (!this->_capacity)
+				this->_capacity = 1;
 			size_type size = 2;
 			while (this->_capacity * size < this->_size + n)
 				size *= 2;
@@ -418,7 +420,7 @@ namespace ft
 				this->_alloc.construct(tmp + i + n, this->_container[i]);
 				this->_alloc.destroy(this->_container + i);
 			}
-			this->_alloc.deallocate(this->_container);
+			this->_alloc.deallocate(this->_container, this->_capacity);
 			this->_container = tmp;
 			this->_capacity = this->_capacity * size;
 		}
@@ -427,7 +429,7 @@ namespace ft
 			for (size_type i = pos; i < this->_size; i++)
 				this->_container[i+n] = this->_container[i];
 			for (size_type i = pos; i < pos+n; i++)
-				this->_alloc(this->_container + i, val);
+				this->_alloc.construct(this->_container + i, val);
 		}
 		this->_size += n;
 	}
@@ -441,6 +443,8 @@ namespace ft
 		typename vector<T, Alloc>::size_type dist = distance(first, last);
 		if (this->_size + dist > this->_capacity)
 		{
+			if (!this->_capacity)
+				this->_capacity = 1;
 			size_type size = 2;
 			while (this->_capacity * size < this->_size + dist)
 				size *= 2;
@@ -459,7 +463,7 @@ namespace ft
 				this->_alloc.construct(tmp + i + dist, this->_container[i]);
 				this->_alloc.destroy(this->_container + i);
 			}
-			this->_alloc.deallocate(this->_container);
+			this->_alloc.deallocate(this->_container, this->_capacity);
 			this->_container = tmp;
 			this->_capacity = this->_capacity * size;
 		}
@@ -468,7 +472,7 @@ namespace ft
 			for (size_type i = pos; i < this->_size; i++)
 				this->_container[i + dist] = this->_container[i];
 			for (size_type i = pos; i < pos + dist; i++)
-				this->_alloc(this->_container + i, first);
+				this->_alloc.construct(this->_container + i, *first);
 		}
 		this->_size += dist;
 	}
