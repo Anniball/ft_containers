@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/16 16:17:05 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/21 11:46:51 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/21 11:50:57 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,7 +150,7 @@ namespace ft
 	template <class Iterator>
 	typename reverse_iterator<Iterator>::pointer				reverse_iterator<Iterator>::operator->(void) const
 	{
-		iterator_type tmp(this->_base_iterator);
+		pointer tmp = this->_base_iterator.base();
 		return --tmp;
 	}
 	

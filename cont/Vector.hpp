@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 10:13:41 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/20 14:10:30 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/21 11:52:46 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -552,7 +552,7 @@ namespace ft
 	template <class T, class Alloc>
   	bool	operator<(const vector<T, Alloc>& lhs, const vector<T, Alloc>& rhs)
 	{
-		  return lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin());
+		  return ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
 	}
 	template <class T, class Alloc>
 	bool	operator<=(const vector<T, Alloc>& lhs, const vector<T, Alloc>& rhs)
