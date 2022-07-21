@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 10:13:41 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/21 14:40:42 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/21 17:38:32 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -394,8 +394,11 @@ namespace ft
 	template<typename T, class Alloc>
 	typename vector<T, Alloc>::iterator						vector<T, Alloc>::insert(vector<T, Alloc>::iterator position, const vector<T, Alloc>::value_type &val)
 	{
+		size_type dist = 0;
+		if (this->_size)
+			dist = ft::distance(this->begin(), position);
 		insert(position, 1, val);
-		return this->begin() + (ft::distance(this->begin(), position));
+		return this->begin() + dist;
 	}
 
 	template<typename T, class Alloc>
@@ -430,7 +433,7 @@ namespace ft
 		}
 		else
 		{
-			for (size_type i = pos; i < this->_size; i++)
+			for (size_type i = this->_size - 1; i >= pos; i--)
 				this->_container[i+n] = this->_container[i];
 			for (size_type i = pos; i < pos+n; i++)
 				this->_alloc.construct(this->_container + i, val);
@@ -473,10 +476,10 @@ namespace ft
 		}
 		else
 		{
-			for (size_type i = pos; i < this->_size; i++)
+			for (size_type i = this->_size - 1; i >= pos; i--)
 				this->_container[i + dist] = this->_container[i];
 			for (size_type i = pos; i < pos + dist; i++)
-				this->_alloc.construct(this->_container + i, *first);
+				this->_alloc.construct(this->_container + i, *first++);
 		}
 		this->_size += dist;
 	}
