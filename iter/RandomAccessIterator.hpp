@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 13:42:10 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/20 14:24:53 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/21 13:45:59 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -218,7 +218,7 @@ namespace ft
 	template<class Iterator>
 	random_access_iterator<Iterator>	operator+(typename random_access_iterator<Iterator>::difference_type left, random_access_iterator<Iterator> const &right)
 	{
-		return (left + right);
+		return (right + left);
 	}
 
 	template<class Iterator1, class Iterator2>
