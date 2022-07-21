@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 10:13:41 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/21 13:43:32 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/21 14:40:42 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -250,7 +250,8 @@ namespace ft
 	template<typename T, class Alloc>
 	typename vector<T, Alloc>::size_type					vector<T, Alloc>::max_size(void) const
 	{
-		return (static_cast<size_type>((pow(2, 64) / static_cast<double>(sizeof(value_type))) - 1));
+		return this->_alloc.max_size();
+		// return (static_cast<size_type>((pow(2, 64) / static_cast<double>(sizeof(value_type))) - 1));
 	}
 
 	template<typename T, class Alloc>
@@ -262,7 +263,7 @@ namespace ft
 		for (size_type i = this->_size; i < n; i++)
 			this->_alloc.construct(this->_container + i, val);
 		if (this->_size > 0)
-			for (size_type i = this->_size - 1; i >= n; i--)
+			for (size_type i = n; i < this->_size; i++)
 				this->_alloc.destroy(this->_container + i);
 		this->_size = n;
 	}
@@ -354,6 +355,7 @@ namespace ft
 		}
 		for (size_type i = 0; i < size; i++, first++)
 			this->_alloc.construct(this->_container + i, *first);
+		this->_size = size;
 	}
 
 	template<typename T, class Alloc>
@@ -366,8 +368,9 @@ namespace ft
 			this->_container = this->_alloc.allocate(n);
 			this->_capacity = n;
 		}
-		while (--n > 0)
+		for (size_type i = 0; i < n; i++)
 			this->_alloc.construct(this->_container + n, val);
+		this->_size = n;
 	}
 
 	template<typename T, class Alloc>
