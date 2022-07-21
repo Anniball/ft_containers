@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 10:13:41 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/21 11:52:46 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/21 13:31:41 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -481,25 +481,26 @@ namespace ft
 	template<typename T, class Alloc>
 	typename vector<T, Alloc>::iterator						vector<T, Alloc>::erase(typename vector<T, Alloc>::iterator position)
 	{
-		size_type pos = ft::distance(this->begin(), position);
-		this->_alloc.destroy(this->_container + pos);
-		typename vector<T, Alloc>::iterator it = vector<T, Alloc>::iterator(this->_container + pos + 1);
-		for (size_t i = pos + 1; it != this->end(); i++, it++)
-			this->_container[pos - 1] = this->_container[pos];
-		return (vector<T, Alloc>::iterator(this->_container + pos));
+		this->_alloc.destroy(position.base());
+		typename vector<T, Alloc>::iterator it = position;
+		typename vector<T, Alloc>::iterator itp = vector<T, Alloc>::iterator(position + 1);
+		for (; itp != this->end(); it++, itp++)
+			*it = *itp;
+		this->_size -= 1;
+		return (position);
 	}
 
 	template<typename T, class Alloc>
 	typename vector<T, Alloc>::iterator						vector<T, Alloc>::erase(typename vector<T, Alloc>::iterator first, typename vector<T, Alloc>::iterator last)
 	{
-		size_type pos = ft::distance(this->begin(), first);
-		size_type dist = ft::distance(first, last);
-		for (size_t i = pos; first != last; first++, i++)
-			this->_alloc.destroy(this->_container + i);
-		vector<T, Alloc>::iterator it = vector<T, Alloc>::iterator(this->_container + pos + dist);
-		for (size_t i = pos + dist; it != this->end(); i++, it++)
-			this->_container[pos - i] = this->_container[pos];
-		return (vector<T, Alloc>::iterator(this->_container + pos));
+		for (vector<T, Alloc>::iterator it = first; it != last; it++)
+			this->_alloc.destroy(it.base());
+		typename vector<T, Alloc>::iterator it = first;
+		typename vector<T, Alloc>::iterator itp = last;
+		for (; itp != this->end(); it++, itp++)
+			*it = *itp;
+		this->_size -= ft::distance(first, last);
+		return (vector<T, Alloc>::iterator(this->_container + ft::distance(this->begin(), first)));
 	}
 
 	template<typename T, class Alloc>
