@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 13:56:12 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/18 15:46:29 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/22 11:41:51 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "../Pair.hpp"
 # include "../../iter/IteratorsTraits.hpp"
+# include "RedBlackTree.hpp"
 
 # define RBT_RED true
 # define RBT_BLACK false
@@ -77,6 +78,7 @@ namespace ft
 			pointer			_left;
 			pointer			_right;
 			pointer			_parent;
+			red_black_tree	&_tree;
 
 			/*
 				PRIVATE UTILS
@@ -169,29 +171,13 @@ namespace ft
 	template <class T>
 	typename red_black_node<T>::pointer		red_black_node<T>::iterate(void)
 	{
-		pointer		right = this->get_right();
-		pointer		parent = this->get_parent();
-		if (!right->is_leaf())
-			return this->get_smallest(right);
-		else if (*(parent->get_left()) == *this)
-			return parent;
-		else if (*(parent->get_right()) == *this)
-			return (parent->_iterate());
-		return this->_end;
+		return this->_tree.iterate(this);
 	}
 
 	template <class T>
 	typename red_black_node<T>::pointer		red_black_node<T>::reverse_iterate(void)
 	{
-		pointer		left = this->get_left();
-		pointer		parent = this->get_parent();
-		if (!left->is_leaf())
-			return this->get_biggest(left);
-		else if (*(parent->get_right()) == *this)
-			return parent;
-		else if (*(parent->get_left()) == *this)
-			return (parent->_iterate());
-		return this->_end;
+		return this->_tree.reverse_iterate(this);
 	}
 
 	template <class T>

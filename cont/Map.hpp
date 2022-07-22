@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 10:12:44 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/18 16:10:48 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/22 11:45:55 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,10 @@ namespace ft
 		typedef typename allocator_type::const_reference			const_reference;
 		typedef typename allocator_type::pointer					pointer;
 		typedef typename allocator_type::const_pointer				const_pointer;
-		typedef	ft::tree_iterator<value_type>						iterator;
-		typedef ft::tree_iterator<const value_type>					const_iterator;
-		typedef ft::reverse_iterator<iterator>						reverse_iterator;
-		typedef ft::reverse_iterator<const_iterator>				const_reverse_iterator;
+		typedef	tree_iterator<value_type>							iterator;
+		typedef tree_iterator<const value_type>						const_iterator;
+		typedef reverse_iterator<iterator>							reverse_iterator;
+		typedef reverse_iterator<const_iterator>					const_reverse_iterator;
 		typedef typename iterator_traits<iterator>::difference_type	difference_type;
 		typedef size_t												size_type;
 
@@ -78,18 +78,18 @@ namespace ft
 				MEMBER FUNCTIONS
 			*/
 			/*Iterators*/ 
-			iterator							begin(); //ok
-			const_iterator						begin() const; //ok
-			iterator							end(); //ok
-			const_iterator						end() const; //ok
-			reverse_iterator					rbegin(); //ok
-			const_reverse_iterator				rbegin() const; //ok
-			reverse_iterator					rend(); //ok
-			const_reverse_iterator				rend() const; //ok
+			iterator							begin(void); //ok
+			const_iterator						begin(void) const; //ok
+			iterator							end(void); //ok
+			const_iterator						end(void) const; //ok
+			reverse_iterator					rbegin(void); //ok
+			const_reverse_iterator				rbegin(void) const; //ok
+			reverse_iterator					rend(void); //ok
+			const_reverse_iterator				rend(void) const; //ok
 			/*Capacity*/
-			bool								empty() const;
-			size_type							size() const;
-			size_type							max_size() const;
+			bool								empty(void) const;
+			size_type							size(void) const;
+			size_type							max_size(void) const;
 			/*Element access*/
 			mapped_type							&operator[](const key_type& k);
 			/*Modifiers*/
@@ -101,10 +101,10 @@ namespace ft
 			size_type							erase(const key_type& k);
 			void								erase(iterator first, iterator last);
 			void								swap(map& x);
-			void								clear();
+			void								clear(void);
 			/*Observers*/
-			key_compare							key_comp() const;
-			value_compare						value_comp() const;
+			key_compare							key_comp(void) const;
+			value_compare						value_comp(void) const;
 			/*Operations*/
 			iterator							find(const key_type& k);
 			const_iterator						find(const key_type& k) const;
@@ -116,7 +116,7 @@ namespace ft
 			pair<const_iterator,const_iterator>	equal_range(const key_type& k) const;
 			pair<iterator,iterator>				equal_range (const key_type& k);
 			/*Allocator*/
-			allocator_type						get_allocator() const;
+			allocator_type						get_allocator(void) const;
 
 		private :
 			red_black_tree<Key, T, Alloc>		_tree;
@@ -153,62 +153,62 @@ namespace ft
 	*/
 	/*Iterators*/ 
 	template <class Key, class T, class Compare, class Alloc>
-	typename map<Key, T, Compare, Alloc>::iterator					map<Key, T, Compare, Alloc>::begin()
+	typename map<Key, T, Compare, Alloc>::iterator					map<Key, T, Compare, Alloc>::begin(void)
 	{
 		return iterator(this->_tree->_root->get_smallest());
 	}
 	
 	template <class Key, class T, class Compare, class Alloc>
-	typename map<Key, T, Compare, Alloc>::const_iterator			map<Key, T, Compare, Alloc>::begin() const
+	typename map<Key, T, Compare, Alloc>::const_iterator			map<Key, T, Compare, Alloc>::begin(void) const
 	{
 		return const_iterator(this->_tree->_root->get_smallest());
 	}
 	
 	template <class Key, class T, class Compare, class Alloc>
-	typename map<Key, T, Compare, Alloc>::iterator					map<Key, T, Compare, Alloc>::end()
+	typename map<Key, T, Compare, Alloc>::iterator					map<Key, T, Compare, Alloc>::end(void)
 	{
 		return iterator(this->_end);
 	}
 	
 	template <class Key, class T, class Compare, class Alloc>
-	typename map<Key, T, Compare, Alloc>::const_iterator			map<Key, T, Compare, Alloc>::end() const
+	typename map<Key, T, Compare, Alloc>::const_iterator			map<Key, T, Compare, Alloc>::end(void) const
 	{
 		return const_iterator(this->_end);
 	}
 	
 	template <class Key, class T, class Compare, class Alloc>
-	typename map<Key, T, Compare, Alloc>::reverse_iterator			map<Key, T, Compare, Alloc>::rbegin()
+	typename map<Key, T, Compare, Alloc>::reverse_iterator			map<Key, T, Compare, Alloc>::rbegin(void)
 	{
 		return reverse_iterator(this->_end);
 	}
 	
 	template <class Key, class T, class Compare, class Alloc>
-	typename map<Key, T, Compare, Alloc>::const_reverse_iterator	map<Key, T, Compare, Alloc>::rbegin() const
+	typename map<Key, T, Compare, Alloc>::const_reverse_iterator	map<Key, T, Compare, Alloc>::rbegin(void) const
 	{
 		return const_reverse_iterator(this->_end);
 	}
 	
 	template <class Key, class T, class Compare, class Alloc>
-	typename map<Key, T, Compare, Alloc>::reverse_iterator			map<Key, T, Compare, Alloc>::rend()
+	typename map<Key, T, Compare, Alloc>::reverse_iterator			map<Key, T, Compare, Alloc>::rend(void)
 	{
 		return reverse_iterator(this->_tree->_root->get_smallest());
 	}
 	
 	template <class Key, class T, class Compare, class Alloc>
-	typename map<Key, T, Compare, Alloc>::const_reverse_iterator	map<Key, T, Compare, Alloc>::rend() const
+	typename map<Key, T, Compare, Alloc>::const_reverse_iterator	map<Key, T, Compare, Alloc>::rend(void) const
 	{
 		return const_reverse_iterator(this->_tree->_root->get_smallest());
 	}
 
 	/*Capacity*/
 	template <class Key, class T, class Compare, class Alloc>
-	bool															map<Key, T, Compare, Alloc>::empty() const {}
+	bool															map<Key, T, Compare, Alloc>::empty(void) const {}
 	
 	template <class Key, class T, class Compare, class Alloc>
-	typename map<Key, T, Compare, Alloc>::size_type					map<Key, T, Compare, Alloc>::size() const {}
+	typename map<Key, T, Compare, Alloc>::size_type					map<Key, T, Compare, Alloc>::size(void) const {}
 	
 	template <class Key, class T, class Compare, class Alloc>
-	typename map<Key, T, Compare, Alloc>::size_type					map<Key, T, Compare, Alloc>::max_size() const {}
+	typename map<Key, T, Compare, Alloc>::size_type					map<Key, T, Compare, Alloc>::max_size(void) const {}
 
 	/*Element access*/
 	template <class Key, class T, class Compare, class Alloc>
