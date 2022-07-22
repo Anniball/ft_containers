@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 10:12:44 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/22 16:30:23 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/22 16:46:56 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -222,8 +222,8 @@ namespace ft
 	template <class Key, class T, class Compare, class Alloc>
 	typename map<Key, T, Compare, Alloc>::mapped_type				&map<Key, T, Compare, Alloc>::operator[](const key_type& k)
 	{
-		iterator	it = iterator(this->_tree->_root);
-		while (it->get_value().first != k)
+		iterator	it = iterator(this->_tree->get_root());
+		while (it->get_value().first != k) //crash assuré
 			it++;
 		return it->get_value().second;
 	}
@@ -241,7 +241,7 @@ namespace ft
 	typename map<Key, T, Compare, Alloc>::iterator					map<Key, T, Compare, Alloc>::insert(iterator position, const value_type& val)
 	{
 		if ((position - 1)->get_value() < val && position->get_value() > val)
-			return iterator(this->_tree.insert(val, position)->get_value());
+			return iterator(this->_tree.insert(val, position));
 		else
 			return iterator(this->_tree.insert(val));
 	}
@@ -255,13 +255,29 @@ namespace ft
 	}
 	
 	template <class Key, class T, class Compare, class Alloc>
-	void															map<Key, T, Compare, Alloc>::erase(iterator position) {}
+	void															map<Key, T, Compare, Alloc>::erase(iterator position) 
+	{
+		iterator it = iterator(this->_tree->get_root());
+		while (it != position)
+			it++;
+		this->_tree.erase(position);
+	}
 	
 	template <class Key, class T, class Compare, class Alloc>
-	typename map<Key, T, Compare, Alloc>::size_type					map<Key, T, Compare, Alloc>::erase(const key_type& k) {}
+	typename map<Key, T, Compare, Alloc>::size_type					map<Key, T, Compare, Alloc>::erase(const key_type& k)
+	{
+		iterator	it = iterator(this->_tree->get_root());
+		while (it->get_value().first != k) //crash assuré
+			it++;
+		this->_tree.erase(it);
+	}
 	
 	template <class Key, class T, class Compare, class Alloc>
-	void															map<Key, T, Compare, Alloc>::erase(iterator first, iterator last) {}
+	void															map<Key, T, Compare, Alloc>::erase(iterator first, iterator last)
+	{
+		while (first != last)
+			this->_tree.erase(first++);
+	}
 	
 	template <class Key, class T, class Compare, class Alloc>
 	void															map<Key, T, Compare, Alloc>::swap(map& x) {}
