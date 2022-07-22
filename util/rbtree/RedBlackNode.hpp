@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 13:56:12 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/22 15:58:26 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/22 17:24:59 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,25 +22,30 @@
 
 namespace ft
 {
+	template <class T, class Alloc = std::allocator<T> >
+	class red_black_tree;
+	
 	template <class T >
 	class red_black_node
 	{
-		typedef T													value_type;
-		typedef ft::red_black_node<T>								node_type;
-		typedef node_type*											pointer;
-		typedef const node_type*									const_pointer;
-		typedef ft::iterator_traits<value_type>						iterator;
-		typedef ft::iterator_traits<const value_type>				const_iterator;
-		typedef ft::reverse_iterator<iterator>						reverse_iterator;
-		typedef ft::reverse_iterator<const_iterator>				const_reverse_iterator;
-		typedef typename iterator_traits<iterator>::difference_type	difference_type;
-		typedef size_t												size_type;
+		public :
+			typedef T													value_type;
+			typedef ft::red_black_node<T>								node_type;
+			typedef ft::red_black_tree<T>								tree_type;
+			typedef node_type*											pointer;
+			typedef const node_type*									const_pointer;
+			typedef ft::iterator_traits<value_type>						iterator;
+			typedef ft::iterator_traits<const value_type>				const_iterator;
+			typedef ft::reverse_iterator<iterator>						reverse_iterator;
+			typedef ft::reverse_iterator<const_iterator>				const_reverse_iterator;
+			typedef typename iterator_traits<iterator>::difference_type	difference_type;
+			typedef size_t												size_type;
 
 		public :
 			/*
 				CONSTRUCTORS AND DESTRUCTORS
 			*/
-			red_black_node(void);
+			red_black_node(red_black_tree<T> &tree);
 			red_black_node(const value_type &val, red_black_tree<T> &tree);
 			red_black_node(const pointer parent, red_black_tree<T> &tree);
 			red_black_node(const value_type &val, const pointer left, const pointer right, const pointer parent, red_black_tree<T> &tree);
@@ -89,7 +94,7 @@ namespace ft
 		CONSTRUCTORS AND DESTRUCTORS
 	*/
 	template <class T>
-	red_black_node<T>::red_black_node(void) : _color(RBT_RED), _left(nullptr), _right(nullptr), _parent(nullptr), _content() {}
+	red_black_node<T>::red_black_node(red_black_tree<T> &tree) : _color(RBT_RED), _left(nullptr), _right(nullptr), _parent(nullptr), _content(), _tree(tree) {}
 	
 	template <class T>
 	red_black_node<T>::red_black_node(const value_type &val, red_black_tree<T> &tree) :

@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 16:02:21 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/22 16:32:10 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/22 17:25:53 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,18 +24,19 @@ namespace ft
 	template <class T >
 	class red_black_node;
 
-	template <class T, class Alloc = std::allocator<T> >
+	template <class T, class Alloc>
 	class red_black_tree
 	{
-		typedef T													value_type;
-		typedef red_black_node<T>									node_type;
-		typedef red_black_tree<T, Alloc>							tree_type;
-		typedef typename Alloc::template rebind<node_type>::other	allocator_type;
-		typedef	typename allocator_type::reference					reference;
-		typedef typename allocator_type::const_reference			const_reference;
-		typedef typename allocator_type::pointer					pointer;
-		typedef typename allocator_type::const_pointer				const_pointer;
-		typedef size_t												size_type;
+		public :
+			typedef T													value_type;
+			typedef red_black_node<T>									node_type;
+			typedef red_black_tree<T, Alloc>							tree_type;
+			typedef typename Alloc::template rebind<node_type>::other	allocator_type;
+			typedef	typename allocator_type::reference					reference;
+			typedef typename allocator_type::const_reference			const_reference;
+			typedef typename allocator_type::pointer					pointer;
+			typedef typename allocator_type::const_pointer				const_pointer;
+			typedef size_t												size_type;
 
 		public :
 			/*
@@ -85,8 +86,8 @@ namespace ft
 	{
 		this->_end = _node_alloc.allocate(1);
 		this->_root = _node_alloc.allocate(1);
-		_node_alloc.construct(this->_end, node_type());
-		_node_alloc.construct(this->_root, node_type());
+		_node_alloc.construct(this->_end, node_type(*this));
+		_node_alloc.construct(this->_root, node_type(*this));
 	}
 	
 	template <class T, class Alloc>
@@ -94,8 +95,8 @@ namespace ft
 	{
 		this->_end = _node_alloc.allocate(1);
 		this->_root = _node_alloc.allocate(1);
-		_node_alloc.construct(this->_end, node_type());
-		_node_alloc.construct(this->_root, node_type(val));
+		_node_alloc.construct(this->_end, node_type(*this));
+		_node_alloc.construct(this->_root, node_type(val, *this));
 	}
 	
 	template <class T, class Alloc>
@@ -103,8 +104,8 @@ namespace ft
 	{
 		this->_end = _node_alloc.allocate(1);
 		this->_root = _node_alloc.allocate(1);
-		_node_alloc.construct(this->_end, node_type());
-		_node_alloc.construct(this->_root, node_type(node));
+		_node_alloc.construct(this->_end, node_type(*this));
+		_node_alloc.construct(this->_root, node_type(node, *this));
 	}
 	
 	// template <class T, class Alloc>
@@ -181,6 +182,8 @@ namespace ft
 	template <class T, class Alloc>
 	typename red_black_tree<T, Alloc>::node_type	*red_black_tree<T, Alloc>::insert(value_type &val, node_type *hint)
 	{
+		(void)val;
+		return hint;
 		// //CASE 1 : PARENT : position - 1, LEFT CHILD : position
 		// node_type *parent = hint->get_parent();
 		// if(val > hint->get_value() && val ))

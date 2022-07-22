@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 14:25:03 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/22 16:44:44 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/22 16:59:50 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,16 @@ namespace ft
 	template <class T>
 	class tree_iterator
 	{
-		typedef T							value_type;
-		typedef T&							reference;
-		typedef T*							pointer;
-		typedef ptrdiff_t					difference_type;
-		typedef red_black_node<T>			node;
-		typedef red_black_node<T>			&node_reference;
-		typedef red_black_node<T>			*node_pointer;
-		typedef tree_iterator<T>			iterator;
-		typedef bidirectional_iterator_tag	iterator_category;
+		public :
+			typedef T							value_type;
+			typedef T&							reference;
+			typedef T*							pointer;
+			typedef ptrdiff_t					difference_type;
+			typedef red_black_node<T>			node;
+			typedef red_black_node<T>			&node_reference;
+			typedef red_black_node<T>			*node_pointer;
+			typedef tree_iterator<T>			iterator;
+			typedef bidirectional_iterator_tag	iterator_category;
 
 		public :
 			tree_iterator(void);
