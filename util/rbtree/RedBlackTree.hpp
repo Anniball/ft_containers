@@ -6,13 +6,14 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 16:02:21 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/18 15:58:21 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/22 11:50:40 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef RED_BLACK_TREE_HPP
 # define RED_BLACK_TREE_HPP
 
+# include <memory>
 # include "RedBlackNode.hpp"
 # include "../Pair.hpp"
 # include "../../iter/IteratorsTraits.hpp"

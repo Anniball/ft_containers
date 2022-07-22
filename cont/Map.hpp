@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 10:12:44 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/22 11:45:55 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/22 11:51:34 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,7 @@ namespace ft
 
 		private :
 			red_black_tree<Key, T, Alloc>		_tree;
+			size_type							_size;
 	};
 
 	/*
@@ -202,11 +203,18 @@ namespace ft
 
 	/*Capacity*/
 	template <class Key, class T, class Compare, class Alloc>
-	bool															map<Key, T, Compare, Alloc>::empty(void) const {}
+	bool															map<Key, T, Compare, Alloc>::empty(void) const
+	{
+		return !this->_size;
+	}
 	
 	template <class Key, class T, class Compare, class Alloc>
-	typename map<Key, T, Compare, Alloc>::size_type					map<Key, T, Compare, Alloc>::size(void) const {}
+	typename map<Key, T, Compare, Alloc>::size_type					map<Key, T, Compare, Alloc>::size(void) const
+	{
+		return this->_size;
+	}
 	
+	//TO DO
 	template <class Key, class T, class Compare, class Alloc>
 	typename map<Key, T, Compare, Alloc>::size_type					map<Key, T, Compare, Alloc>::max_size(void) const {}
 
