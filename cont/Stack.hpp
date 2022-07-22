@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 10:14:33 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/22 10:37:09 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/22 10:49:44 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,13 +82,13 @@ namespace ft
 	template <class T, class Container>
 	typename stack<T, Container>::reference				stack<T, Container>::top()
 	{
-		return *c.begin();
+		return c.back();
 	}
 	
 	template <class T, class Container>
 	typename stack<T, Container>::const_reference		stack<T, Container>::top() const
 	{
-		return *c.begin();
+		return c.back();
 	}
 	
 	template <class T, class Container>
