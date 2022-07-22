@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 13:56:12 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/22 11:41:51 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/22 11:56:53 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ namespace ft
 			bool			is_black(void) const;
 			bool			is_leaf(void) const;
 			pointer			get_uncle(void) const;
-			void			set_pair(value_type	const &val);
+			void			set_value(value_type	const &val);
 			void			set_right(pointer node);
 			void			set_left(pointer node);
 			void			set_parent(pointer node);
@@ -152,7 +152,7 @@ namespace ft
 	bool									red_black_node<T>::is_leaf(void) const {return this->_left == nullptr && this->right == nullptr;}
 
 	template <class T>
-	void									red_black_node<T>::set_pair(value_type	const &val) {this->_content = val;}
+	void									red_black_node<T>::set_value(value_type	const &val) {this->_content = val;}
 	
 	template <class T>
 	void									red_black_node<T>::set_right(pointer node) {this->_right = node;}

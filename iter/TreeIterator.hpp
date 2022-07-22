@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 14:25:03 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/22 11:45:35 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/22 11:59:09 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,19 +74,19 @@ namespace ft
 	template <class T>
 	typename tree_iterator<T>::reference	tree_iterator<T>::operator*(void)
 	{
-		return this->_content->get_pair();
+		return *this->_content;
 	}
 	
 	template <class T>
 	typename tree_iterator<T>::pointer		tree_iterator<T>::operator->(void)
 	{
-		return this->_content->get_pointer();
+		return this->_content;
 	}
 	
 	template <class T>
 	typename tree_iterator<T>::iterator		&tree_iterator<T>::operator++(void) 
 	{
-		this->_content = this->content->iterate();
+		this->_content = this->_content->iterate();
 		return *this;
 	}
 	
@@ -94,14 +94,14 @@ namespace ft
 	typename tree_iterator<T>::iterator		tree_iterator<T>::operator++(int)
 	{
 		tree_iterator	tmp(*this);
-		this->_content = this->content->iterate();
+		this->_content = this->_content->iterate();
 		return tmp;
 	}
 	
 	template <class T>
 	typename tree_iterator<T>::iterator		&tree_iterator<T>::operator--(void)
 	{
-		this->_content = this->content->reverse_iterate();
+		this->_content = this->_content->reverse_iterate();
 		return *this;
 	}
 	
@@ -109,7 +109,7 @@ namespace ft
 	typename tree_iterator<T>::iterator		tree_iterator<T>::operator--(int)
 	{
 		tree_iterator	tmp(*this);
-		this->_content = this->content->reverse_iterate();
+		this->_content = this->_content->reverse_iterate();
 		return tmp;
 	}
 

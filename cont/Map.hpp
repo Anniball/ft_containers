@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 10:12:44 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/22 11:51:34 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/22 11:57:50 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -220,7 +220,13 @@ namespace ft
 
 	/*Element access*/
 	template <class Key, class T, class Compare, class Alloc>
-	typename map<Key, T, Compare, Alloc>::mapped_type				&map<Key, T, Compare, Alloc>::operator[](const key_type& k) {}
+	typename map<Key, T, Compare, Alloc>::mapped_type				&map<Key, T, Compare, Alloc>::operator[](const key_type& k)
+	{
+		iterator	it = iterator(this->_tree->_root);
+		while (it->get_value().first != k)
+			it++;
+		return it->get_value().second;
+	}
 	
 	/*Modifiers*/
 	
