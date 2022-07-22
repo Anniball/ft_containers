@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 13:56:12 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/22 11:56:53 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/22 13:43:18 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,44 +41,44 @@ namespace ft
 				CONSTRUCTORS AND DESTRUCTORS
 			*/
 			red_black_node(void);
-			red_black_node(const value_type &val);
-			red_black_node(const pointer parent);
-			red_black_node(const value_type &val, const pointer left, const pointer right, const pointer parent);
+			red_black_node(const value_type &val, red_black_tree<T> &tree);
+			red_black_node(const pointer parent, red_black_tree<T> &tree);
+			red_black_node(const value_type &val, const pointer left, const pointer right, const pointer parent, red_black_tree<T> &tree);
 			red_black_node(const node_type &src);
 			~red_black_node(void);
 			
 			/*
 				GETTERS AND SETTERS
 			*/
-			value_type		&get_value(void) const;
-			pointer			get_left(void) const;
-			pointer			get_right(void) const;
-			pointer			get_parent(void) const;
-			pointer			get_grand_parent(void) const;
-			bool			is_red(void) const;
-			bool			is_black(void) const;
-			bool			is_leaf(void) const;
-			pointer			get_uncle(void) const;
-			void			set_value(value_type	const &val);
-			void			set_right(pointer node);
-			void			set_left(pointer node);
-			void			set_parent(pointer node);
+			value_type			&get_value(void) const;
+			pointer				get_left(void) const;
+			pointer				get_right(void) const;
+			pointer				get_parent(void) const;
+			pointer				get_grand_parent(void) const;
+			bool				is_red(void) const;
+			bool				is_black(void) const;
+			bool				is_leaf(void) const;
+			pointer				get_uncle(void) const;
+			void				set_value(value_type	const &val);
+			void				set_right(pointer node);
+			void				set_left(pointer node);
+			void				set_parent(pointer node);
 			
 			/*
 				PUBLIC UTILS
 			*/
-			pointer			iterate(void);
-			pointer			reverse_iterate(void);
-			pointer			get_smallest(void);
-			pointer			get_biggest(void);
+			pointer				iterate(void);
+			pointer				reverse_iterate(void);
+			pointer				get_smallest(void);
+			pointer				get_biggest(void);
 
 		private :
-			value_type		_content;
-			bool			_color;
-			pointer			_left;
-			pointer			_right;
-			pointer			_parent;
-			red_black_tree	&_tree;
+			value_type			_content;
+			bool				_color;
+			pointer				_left;
+			pointer				_right;
+			pointer				_parent;
+			red_black_tree<T>	&_tree;
 
 			/*
 				PRIVATE UTILS
@@ -92,20 +92,20 @@ namespace ft
 	red_black_node<T>::red_black_node(void) : _color(RBT_RED), _left(nullptr), _right(nullptr), _parent(nullptr), _content() {}
 	
 	template <class T>
-	red_black_node<T>::red_black_node(const value_type &val) :
-	_color(RBT_RED), _left(nullptr), _right(nullptr), _parent(nullptr), _content(val) {}
+	red_black_node<T>::red_black_node(const value_type &val, red_black_tree<T> &tree) :
+	_color(RBT_RED), _left(nullptr), _right(nullptr), _parent(nullptr), _content(val), _tree(tree) {}
 
 	template <class T>
-	red_black_node<T>::red_black_node(const pointer parent) :
-	_color(RBT_BLACK), _left(nullptr), _right(nullptr), _parent(parent), _content() {}
+	red_black_node<T>::red_black_node(const pointer parent, red_black_tree<T> &tree) :
+	_color(RBT_BLACK), _left(nullptr), _right(nullptr), _parent(parent), _content(), _tree(tree) {}
 	
 	template <class T>
-	red_black_node<T>::red_black_node(const value_type &val, const pointer left, const pointer right, const pointer parent) :
-	_color(RBT_RED), _left(left), _right(right), _parent(parent), _content(val) {}
+	red_black_node<T>::red_black_node(const value_type &val, const pointer left, const pointer right, const pointer parent, red_black_tree<T> &tree) :
+	_color(RBT_RED), _left(left), _right(right), _parent(parent), _content(val), _tree(tree) {}
 	
 	template <class T>
 	red_black_node<T>::red_black_node(const node_type &src) :
-	_content(src->_content), _color(src._color), _left(src._left), _right(src._right), _parent(src._parent) {}
+	_content(src->_content), _color(src._color), _left(src._left), _right(src._right), _parent(src._parent), _tree(src._tree) {}
 	
 	template <class T>
 	red_black_node<T>::~red_black_node(void) {}

@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 10:12:44 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/22 11:57:50 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/22 14:05:10 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,10 @@ namespace ft
 		typedef typename allocator_type::const_reference			const_reference;
 		typedef typename allocator_type::pointer					pointer;
 		typedef typename allocator_type::const_pointer				const_pointer;
-		typedef	tree_iterator<value_type>							iterator;
-		typedef tree_iterator<const value_type>						const_iterator;
-		typedef reverse_iterator<iterator>							reverse_iterator;
-		typedef reverse_iterator<const_iterator>					const_reverse_iterator;
+		typedef	typename ft::tree_iterator<value_type>				iterator;
+		typedef typename ft::tree_iterator<const value_type>		const_iterator;
+		typedef typename ft::reverse_iterator<iterator>				reverse_iterator;
+		typedef typename ft::reverse_iterator<const_iterator>		const_reverse_iterator;
 		typedef typename iterator_traits<iterator>::difference_type	difference_type;
 		typedef size_t												size_type;
 
@@ -119,7 +119,7 @@ namespace ft
 			allocator_type						get_allocator(void) const;
 
 		private :
-			red_black_tree<Key, T, Alloc>		_tree;
+			red_black_tree<value_type, Alloc>	_tree;
 			size_type							_size;
 	};
 
@@ -231,14 +231,40 @@ namespace ft
 	/*Modifiers*/
 	
 	template <class Key, class T, class Compare, class Alloc>
-	pair<typename map<Key, T, Compare, Alloc>::iterator,bool>		map<Key, T, Compare, Alloc>::insert(const value_type& val) {}
+	pair<typename map<Key, T, Compare, Alloc>::iterator,bool>		map<Key, T, Compare, Alloc>::insert(const value_type& val)
+	{
+		this->_tree.insert(val);
+		return ;
+	}
 	
 	template <class Key, class T, class Compare, class Alloc>
-	typename map<Key, T, Compare, Alloc>::iterator					map<Key, T, Compare, Alloc>::insert(iterator position, const value_type& val) {}
+	typename map<Key, T, Compare, Alloc>::iterator					map<Key, T, Compare, Alloc>::insert(iterator position, const value_type& val)
+	{
+		//using iterator you can just check pos - 1 and pos to see if hint works
+		if ((position - 1)->get_value() < val && position->get_value() > val)
+		{
+			//CASE 1 : PARENT : position - 1, LEFT CHILD : position
+			if (*position.get_parent()->get_value() == *(position - 1)->get_value())
+			{
+				
+			}
+			//CASE 2 : RIGHT CHILD : position -  1, PARENT : position
+			else
+			{
+				
+			}
+		}
+		else
+			this->_tree.insert(val);
+	}
 	
 	template <class Key, class T, class Compare, class Alloc>
 	template <class InputIterator>
-	void 															map<Key, T, Compare, Alloc>::insert(InputIterator first, InputIterator last) {}
+	void 															map<Key, T, Compare, Alloc>::insert(InputIterator first, InputIterator last)
+	{
+		while (first != last)
+			this->_tree.insert(*first++);
+	}
 	
 	template <class Key, class T, class Compare, class Alloc>
 	void															map<Key, T, Compare, Alloc>::erase(iterator position) {}
