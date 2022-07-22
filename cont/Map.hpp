@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 10:12:44 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/22 14:05:10 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/22 16:30:23 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -234,28 +234,16 @@ namespace ft
 	pair<typename map<Key, T, Compare, Alloc>::iterator,bool>		map<Key, T, Compare, Alloc>::insert(const value_type& val)
 	{
 		this->_tree.insert(val);
-		return ;
+		return val ;
 	}
 	
 	template <class Key, class T, class Compare, class Alloc>
 	typename map<Key, T, Compare, Alloc>::iterator					map<Key, T, Compare, Alloc>::insert(iterator position, const value_type& val)
 	{
-		//using iterator you can just check pos - 1 and pos to see if hint works
 		if ((position - 1)->get_value() < val && position->get_value() > val)
-		{
-			//CASE 1 : PARENT : position - 1, LEFT CHILD : position
-			if (*position.get_parent()->get_value() == *(position - 1)->get_value())
-			{
-				
-			}
-			//CASE 2 : RIGHT CHILD : position -  1, PARENT : position
-			else
-			{
-				
-			}
-		}
+			return iterator(this->_tree.insert(val, position)->get_value());
 		else
-			this->_tree.insert(val);
+			return iterator(this->_tree.insert(val));
 	}
 	
 	template <class Key, class T, class Compare, class Alloc>

@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 14:25:03 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/22 11:59:09 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/22 16:25:37 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,9 +74,10 @@ namespace ft
 	template <class T>
 	typename tree_iterator<T>::reference	tree_iterator<T>::operator*(void)
 	{
-		return *this->_content;
+		return this->_content->get_value;
 	}
 	
+	//WE GOT A PROBLEM HERE
 	template <class T>
 	typename tree_iterator<T>::pointer		tree_iterator<T>::operator->(void)
 	{

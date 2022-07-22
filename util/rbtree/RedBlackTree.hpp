@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 16:02:21 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/22 14:03:01 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/22 16:32:10 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ namespace ft
 			*/
 			node_type	*search(value_type &key);
 			node_type	*insert(value_type &val);
+			node_type	*insert(value_type &val, node_type *hint);
 			void		erase(value_type &val);
 			node_type	*create_node(node_type *parent, node_type *left, node_type *right, value_type &content);
 			node_type	*iterate(node_type *k);
@@ -176,6 +177,29 @@ namespace ft
 		return new_node;
 	}
 
+	//FUUUUUH
+	template <class T, class Alloc>
+	typename red_black_tree<T, Alloc>::node_type	*red_black_tree<T, Alloc>::insert(value_type &val, node_type *hint)
+	{
+		// //CASE 1 : PARENT : position - 1, LEFT CHILD : position
+		// node_type *parent = hint->get_parent();
+		// if(val > hint->get_value() && val ))
+		// {
+		// 	node_type *new_node = this->_tree.create_node(parent, parent->get_left(), nullptr, val);
+		// 	pos.set_parent(new_node);
+		// 	previous.set_left(new_node);
+		// 	return new_node;
+		// }
+		// //CASE 2 : RIGHT CHILD : position -  1, PARENT : position
+		// else if (parent.get_right()->get_value() == hint)
+		// {
+		// 	node_type *new_node = this->_tree.create_node(parent, nullptr, position, val);
+		// 	pos.set_parent(new_node);
+		// 	previous.set_right(new_node);
+		// 	return new_node;
+		// }
+		// return nullptr;
+	}
 
 	template <class T, class Alloc>
 	void														red_black_tree<T, Alloc>::erase(value_type &key)

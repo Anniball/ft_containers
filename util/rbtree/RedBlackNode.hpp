@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 13:56:12 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/22 13:43:18 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/22 15:58:26 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -209,7 +209,6 @@ namespace ft
 		return left._content == right._content;
 	}
 
-
 	template <class T>
 	bool									operator!=(red_black_node<T> const &left, red_black_node<T> const &right)
 	{
@@ -222,7 +221,6 @@ namespace ft
 		return left._content < right._content;
 	}
 
-
 	template <class T>
 	bool									operator<=(red_black_node<T> const &left, red_black_node<T> const &right)
 	{
@@ -234,7 +232,6 @@ namespace ft
 	{
 		return (right < left);
 	}
-
 
 	template <class T>
 	bool									operator>=(red_black_node<T> const &left, red_black_node<T> const &right)
