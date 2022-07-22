@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 10:13:41 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/21 17:38:32 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/22 09:34:48 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -369,7 +369,7 @@ namespace ft
 			this->_capacity = n;
 		}
 		for (size_type i = 0; i < n; i++)
-			this->_alloc.construct(this->_container + n, val);
+			this->_alloc.construct(this->_container + i, val);
 		this->_size = n;
 	}
 

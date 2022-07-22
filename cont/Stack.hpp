@@ -6,23 +6,26 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 10:14:33 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/11 16:01:01 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/22 10:11:37 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef STACK_HPP
 # define STACK_HPP
 
+# include "Vector.hpp"
+
 namespace ft
 {
 	template <class T, class Container = vector<T> >
 	class stack
 	{
-		typedef T				value_type;
-		typedef Container		container_type;
-		typedef size_t			size_type;
-		typedef T&				reference;
-		typedef const T&		const_reference;
+		public :
+			typedef T				value_type;
+			typedef Container		container_type;
+			typedef size_t			size_type;
+			typedef T&				reference;
+			typedef const T&		const_reference;
 
 		protected :
 			Container 			c;
