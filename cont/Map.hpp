@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 10:12:44 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/22 17:28:40 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/27 13:43:14 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,7 +161,7 @@ namespace ft
 	*/
 	
 	template <class Key, class T, class Compare, class Alloc>
-	map<Key, T, Compare, Alloc>										&map<Key, T, Compare, Alloc>::operator=(const map &x) =
+	map<Key, T, Compare, Alloc>										&map<Key, T, Compare, Alloc>::operator=(const map &x)
 	{
 		(void)x;
 	}

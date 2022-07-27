@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 13:56:12 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/22 17:24:59 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/27 13:59:04 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "../Pair.hpp"
 # include "../../iter/IteratorsTraits.hpp"
+# include "../../iter/TreeIterator.hpp"
 # include "RedBlackTree.hpp"
 
 # define RBT_RED true
@@ -24,6 +25,9 @@ namespace ft
 {
 	template <class T, class Alloc = std::allocator<T> >
 	class red_black_tree;
+
+	template <class T>
+	class tree_iterator;
 	
 	template <class T >
 	class red_black_node
@@ -34,8 +38,8 @@ namespace ft
 			typedef ft::red_black_tree<T>								tree_type;
 			typedef node_type*											pointer;
 			typedef const node_type*									const_pointer;
-			typedef ft::iterator_traits<value_type>						iterator;
-			typedef ft::iterator_traits<const value_type>				const_iterator;
+			typedef ft::tree_iterator<value_type>						iterator;
+			typedef ft::tree_iterator<const value_type>					const_iterator;
 			typedef ft::reverse_iterator<iterator>						reverse_iterator;
 			typedef ft::reverse_iterator<const_iterator>				const_reverse_iterator;
 			typedef typename iterator_traits<iterator>::difference_type	difference_type;
@@ -110,7 +114,7 @@ namespace ft
 	
 	template <class T>
 	red_black_node<T>::red_black_node(const node_type &src) :
-	_content(src->_content), _color(src._color), _left(src._left), _right(src._right), _parent(src._parent), _tree(src._tree) {}
+	_content(src._content), _color(src._color), _left(src._left), _right(src._right), _parent(src._parent), _tree(src._tree) {}
 	
 	template <class T>
 	red_black_node<T>::~red_black_node(void) {}

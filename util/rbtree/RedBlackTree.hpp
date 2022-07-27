@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 16:02:21 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/22 17:25:53 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/27 14:00:35 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,11 +111,11 @@ namespace ft
 	// template <class T, class Alloc>
 	// red_black_tree(const &tree_type src) {} //LET'S GO BACK ON IT LATER
 	
-	// template <class T, class Alloc>
-	// ~red_black_tree()
-	// {
-		
-	// }
+	template <class T, class Alloc>
+	red_black_tree<T, Alloc>::~red_black_tree()
+	{
+		//gotta put some things here	
+	}
 
 
 	/*
