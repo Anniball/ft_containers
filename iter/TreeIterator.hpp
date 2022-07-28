@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 14:25:03 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/22 16:59:50 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/28 11:25:04 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define TREE_ITERATOR_HPP
 
 # include "../util/rbtree/RedBlackNode.hpp"
+# include "../util/Pair.hpp"
 
 namespace ft
 {
@@ -34,7 +35,11 @@ namespace ft
 		public :
 			tree_iterator(void);
 			tree_iterator(tree_iterator const &src);
+			tree_iterator(node_pointer ptr);
 			~tree_iterator(void);
+
+			// pointer const	&base(void) const;
+			operator		tree_iterator<const T>() const;
 
 			iterator		&operator=(tree_iterator const &right);
 			reference		operator*(void);
@@ -57,6 +62,9 @@ namespace ft
 	
 	template <class T>
 	tree_iterator<T>::tree_iterator(tree_iterator const &src) : _content(src._content) {}
+
+	template <class T>
+	tree_iterator<T>::tree_iterator(node_pointer ptr) : _content(ptr) {}
 	
 	template <class T>
 	tree_iterator<T>::~tree_iterator(void) {}
@@ -67,6 +75,12 @@ namespace ft
 	*/
 
 	template <class T>
+	tree_iterator<T>::operator				tree_iterator<const T>() const
+	{
+		return this->_content;
+	}
+
+	template <class T>
 	typename tree_iterator<T>::iterator		&tree_iterator<T>::operator=(tree_iterator const &right)
 	{
 		this->_content = right._content;
@@ -75,14 +89,14 @@ namespace ft
 	template <class T>
 	typename tree_iterator<T>::reference	tree_iterator<T>::operator*(void)
 	{
-		return this->_content->get_value;
+		return this->_content->get_value();
 	}
 	
 	//WE GOT A PROBLEM HERE
 	template <class T>
 	typename tree_iterator<T>::pointer		tree_iterator<T>::operator->(void)
 	{
-		return this->_content;
+		return &this->_content->get_value();
 	}
 	
 	template <class T>
@@ -116,6 +130,15 @@ namespace ft
 	}
 
 	/*
+		UTILS
+	*/
+	// template <class T>
+	// typename tree_iterator<T>::pointer const	&tree_iterator<T>::base(void) const
+	// {
+	// 	return &this->_content->get_value();
+	// }
+
+	/*
 		COMPARISON OPERATOR OVERLOADS
 	*/
 
@@ -123,14 +146,14 @@ namespace ft
 	template <class T>
 	bool									operator==(tree_iterator<T> &left, tree_iterator<T> &right)
 	{
-		return left._content == right._content;
+		return *left == *right;
 	}
 
 
 	template <class T>
 	bool									operator!=(tree_iterator<T> &left, tree_iterator<T> &right)
 	{
-		return !(left._content == right._content);
+		return !(left == right);
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 16:02:21 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/27 14:00:35 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/28 12:10:11 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -210,21 +210,21 @@ namespace ft
 		node_type	*z = this->search(key);
 		if (!z)
 			return ;
-		if ( (z->get_left().is_leaf && z->get_right().is_leaf) || (!z->get_left().is_leaf && z->get_right().is_leaf) )
+		if ( (z->get_left()->is_leaf() && z->get_right()->is_leaf()) || (!z->get_left()->is_leaf() && z->get_right()->is_leaf()) )
 		{
-			_node_alloc.deallocate(z->get_right());
-			this->_replace_node(z->parent, z, z->get_left());
+			_node_alloc.deallocate(z->get_right(), 1);
+			this->_replace_node(z->get_parent(), z, z->get_left());
 		}
-		else if (z->get_left().is_leaf && !z->get_right().is_leaf)
+		else if (z->get_left()->is_leaf() && !z->get_right()->is_leaf())
 		{
-			_node_alloc.deallocate(z->get_left());
-			this->_replace_node(z->parent, z, z->get_right());
+			_node_alloc.deallocate(z->get_left(), 1);
+			this->_replace_node(z->get_parent(), z, z->get_right());
 		}
 		else
 		{
-			node_type	*smallest = z->get_right()->get_smallest;
-			z->set_pair(smallest->get_pair());
-			this->erase(smallest);
+			node_type	*smallest = z->get_right()->get_smallest();
+			z->set_value(smallest->get_value());
+			this->erase(smallest->get_value().first);
 		}
 	}
 
@@ -240,7 +240,7 @@ namespace ft
 	template <class T, class Alloc>
 	typename red_black_tree<T, Alloc>::node_type			*red_black_tree<T, Alloc>::iterate(node_type *k)
 	{
-		node_type	*right = k->get_right;
+		node_type	*right = k->get_right();
 		node_type	*parent = k->get_parent();
 		if (!right->is_leaf())
 			return right->get_smallest();
@@ -254,7 +254,7 @@ namespace ft
 	template <class T, class Alloc>
 	typename red_black_tree<T, Alloc>::node_type	*red_black_tree<T, Alloc>::reverse_iterate(node_type *k)
 	{
-		node_type	*left = k->get_left;
+		node_type	*left = k->get_left();
 		node_type	*parent = k->get_parent();
 		if (!left->is_leaf())
 			return left->get_biggest();
@@ -286,7 +286,7 @@ namespace ft
 			parent->set_right(replacer);
 		else
 			return ;
-		_node_alloc.deallocate(z);
+		_node_alloc.deallocate(z, 1);
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 13:56:12 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/27 13:59:04 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/28 16:58:45 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ namespace ft
 	template <class T>
 	class tree_iterator;
 	
-	template <class T >
+	template <class T>
 	class red_black_node
 	{
 		public :
@@ -81,6 +81,11 @@ namespace ft
 			pointer				get_smallest(void);
 			pointer				get_biggest(void);
 
+			/*
+				OPERATORS
+			*/
+			operator			red_black_node<const T>() const;
+
 		private :
 			value_type			_content;
 			bool				_color;
@@ -98,7 +103,7 @@ namespace ft
 		CONSTRUCTORS AND DESTRUCTORS
 	*/
 	template <class T>
-	red_black_node<T>::red_black_node(red_black_tree<T> &tree) : _color(RBT_RED), _left(nullptr), _right(nullptr), _parent(nullptr), _content(), _tree(tree) {}
+	red_black_node<T>::red_black_node(red_black_tree<T> &tree) : _content(), _color(RBT_RED), _left(nullptr), _right(nullptr), _parent(nullptr), _tree(tree) {}
 	
 	template <class T>
 	red_black_node<T>::red_black_node(const value_type &val, red_black_tree<T> &tree) :
@@ -158,7 +163,7 @@ namespace ft
 	bool									red_black_node<T>::is_black(void) const {return this->_color == RBT_BLACK;}
 	
 	template <class T>
-	bool									red_black_node<T>::is_leaf(void) const {return this->_left == nullptr && this->right == nullptr;}
+	bool									red_black_node<T>::is_leaf(void) const {return this->_left == nullptr && this->_right == nullptr;}
 
 	template <class T>
 	void									red_black_node<T>::set_value(value_type	const &val) {this->_content = val;}
@@ -190,23 +195,31 @@ namespace ft
 	}
 
 	template <class T>
-	typename red_black_node<T>::pointer		red_black_node<T>::get_smallest(void)
+	typename red_black_node<T>::pointer		red_black_node<T>::get_smallest(void) 
 	{
 		node_type	*tmp = this;
 		while (!tmp->is_leaf())
-			tmp = tmp->_left();
+			tmp = tmp->_left;
 		return tmp;
 	}
 	
 	template <class T>
-	typename red_black_node<T>::node_type	*red_black_node<T>::get_biggest(void)
+	typename red_black_node<T>::pointer		red_black_node<T>::get_biggest(void)
 	{
 		node_type	*tmp = this;
 		while (!tmp->is_leaf())
-			tmp = tmp->_right();
+			tmp = tmp->_right;
 		return tmp;
 	}
 
+	/*
+		OPERATORS
+	*/
+	template <class T>
+	red_black_node<T>::operator				red_black_node<const T>() const
+	{
+		return red_black_node<const T>(*this);
+	}
 	
 	/*
 		RELATIONAL OPERATORS
@@ -215,7 +228,7 @@ namespace ft
 	template <class T>
 	bool									operator==(red_black_node<T> const &left, red_black_node<T> const &right)
 	{
-		return left._content == right._content;
+		return left.get_value() == right.get_value();
 	}
 
 	template <class T>
@@ -227,7 +240,7 @@ namespace ft
 	template <class T>
 	bool									operator<(red_black_node<T> const &left, red_black_node<T> const &right)
 	{
-		return left._content < right._content;
+		return left.get_value() < right.get_value();
 	}
 
 	template <class T>

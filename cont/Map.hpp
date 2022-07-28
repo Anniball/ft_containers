@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 10:12:44 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/27 13:43:14 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/28 19:35:17 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,9 @@
 
 namespace ft
 {
+	template <class T>
+	class red_black_node;
+
 	template <class Key, class T, class Compare = std::less<Key>, class Alloc = std::allocator<pair<const Key,T> > >
 	class map
 	{
@@ -174,49 +177,52 @@ namespace ft
 	template <class Key, class T, class Compare, class Alloc>
 	typename map<Key, T, Compare, Alloc>::iterator					map<Key, T, Compare, Alloc>::begin(void)
 	{
-		return iterator(this->_tree->_root->get_smallest());
+
+		return iterator(this->_tree.get_root()->get_smallest());
 	}
 	
 	template <class Key, class T, class Compare, class Alloc>
 	typename map<Key, T, Compare, Alloc>::const_iterator			map<Key, T, Compare, Alloc>::begin(void) const
 	{
-		return const_iterator(this->_tree->_root->get_smallest());
+		iterator it = iterator(this->_tree.get_root()->get_smallest());
+		return const_iterator(it);
 	}
 	
 	template <class Key, class T, class Compare, class Alloc>
 	typename map<Key, T, Compare, Alloc>::iterator					map<Key, T, Compare, Alloc>::end(void)
 	{
-		return iterator(this->_end);
+		return iterator(this->_tree.get_end());
 	}
 	
 	template <class Key, class T, class Compare, class Alloc>
 	typename map<Key, T, Compare, Alloc>::const_iterator			map<Key, T, Compare, Alloc>::end(void) const
 	{
-		return const_iterator(this->_end);
+		iterator it(this->_tree.get_end());
+		return const_iterator(it);
 	}
 	
 	template <class Key, class T, class Compare, class Alloc>
 	typename map<Key, T, Compare, Alloc>::reverse_iterator			map<Key, T, Compare, Alloc>::rbegin(void)
 	{
-		return reverse_iterator(this->_end);
+		return reverse_iterator(this->_tree.get_end());
 	}
 	
 	template <class Key, class T, class Compare, class Alloc>
 	typename map<Key, T, Compare, Alloc>::const_reverse_iterator	map<Key, T, Compare, Alloc>::rbegin(void) const
 	{
-		return const_reverse_iterator(this->_end);
+		return const_reverse_iterator(this->_tree.get_end());
 	}
 	
 	template <class Key, class T, class Compare, class Alloc>
 	typename map<Key, T, Compare, Alloc>::reverse_iterator			map<Key, T, Compare, Alloc>::rend(void)
 	{
-		return reverse_iterator(this->_tree->_root->get_smallest());
+		return reverse_iterator(this->_tree.get_root()->get_smallest());
 	}
 	
 	template <class Key, class T, class Compare, class Alloc>
 	typename map<Key, T, Compare, Alloc>::const_reverse_iterator	map<Key, T, Compare, Alloc>::rend(void) const
 	{
-		return const_reverse_iterator(this->_tree->_root->get_smallest());
+		return const_reverse_iterator(this->_tree.get_root()->get_smallest());
 	}
 
 	/*Capacity*/
@@ -234,16 +240,19 @@ namespace ft
 	
 	//TO DO
 	template <class Key, class T, class Compare, class Alloc>
-	typename map<Key, T, Compare, Alloc>::size_type					map<Key, T, Compare, Alloc>::max_size(void) const {}
+	typename map<Key, T, Compare, Alloc>::size_type					map<Key, T, Compare, Alloc>::max_size(void) const
+	{
+		return 0;
+	}
 
 	/*Element access*/
 	template <class Key, class T, class Compare, class Alloc>
 	typename map<Key, T, Compare, Alloc>::mapped_type				&map<Key, T, Compare, Alloc>::operator[](const key_type& k)
 	{
-		iterator	it = iterator(this->_tree->get_root());
+		iterator	it = iterator(this->_tree.get_root());
 		while (it->get_value().first != k) //crash assuré
 			it++;
-		return it->get_value().second;
+		return (*it).second;
 	}
 	
 	/*Modifiers*/
@@ -275,7 +284,7 @@ namespace ft
 	template <class Key, class T, class Compare, class Alloc>
 	void															map<Key, T, Compare, Alloc>::erase(iterator position) 
 	{
-		iterator it = iterator(this->_tree->get_root());
+		iterator it(this->_tree.get_root());
 		while (it != position)
 			it++;
 		this->_tree.erase(position);
@@ -284,7 +293,7 @@ namespace ft
 	template <class Key, class T, class Compare, class Alloc>
 	typename map<Key, T, Compare, Alloc>::size_type					map<Key, T, Compare, Alloc>::erase(const key_type& k)
 	{
-		iterator	it = iterator(this->_tree->get_root());
+		iterator	it = iterator(this->_tree.get_root());
 		while (it->get_value().first != k) //crash assuré
 			it++;
 		this->_tree.erase(it);
