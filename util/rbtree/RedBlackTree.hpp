@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 16:02:21 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/29 11:59:47 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/29 14:30:38 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,9 @@
 # include "RedBlackNode.hpp"
 # include "../Pair.hpp"
 # include "../../iter/IteratorsTraits.hpp"
+
+// # define LEFT true
+// # define RIGHT false
 
 namespace ft
 {
@@ -210,26 +213,36 @@ namespace ft
 			return ;
 		if ( (z->get_left()->is_leaf() && z->get_right()->is_leaf()) || (!z->get_left()->is_leaf() && z->get_right()->is_leaf()) )
 		{
-			_node_alloc.deallocate(z->get_right(), 1);
+			this->_node_alloc.destroy(z->get_right());
+			this->_node_alloc.deallocate(z->get_right(), 1);
 			this->_replace_node(z->get_parent(), z, z->get_left());
 		}
 		else if (z->get_left()->is_leaf() && !z->get_right()->is_leaf())
 		{
-			_node_alloc.deallocate(z->get_left(), 1);
+			this->_node_alloc.destroy(z->get_left());
+			this->_node_alloc.deallocate(z->get_left(), 1);
 			this->_replace_node(z->get_parent(), z, z->get_right());
 		}
 		else
 		{
 			node_type	*smallest = z->get_right()->get_smallest();
-			z->set_value(smallest->get_value());
+			this->_node_alloc.destroy(z);
+			this->_node_alloc.construct(z, node_type(z->get_value(), z->get_parent(), z->get_left(), z->get_right(), *this));
 			this->erase(smallest->get_value());
 		}
 	}
 
+	// void													red_black_tree<T, Alloc>::move_position(node *z, node *parent, node *child)
+	// {
+	// 	if (child == parent->get_left())
+			
+	// 	else if (child == parent->get_right())
+	// }
+
 	template <class T, class Alloc>
 	typename red_black_tree<T, Alloc>::node_type			*red_black_tree<T, Alloc>::create_node(node_type *parent, node_type *left, node_type *right, value_type &content)
 	{
-		node_type *new_node = _node_alloc.allocate(1);
+		node_type *new_node = this->_node_alloc.allocate(1);
 		_node_alloc.construct(new_node, node_type(content, left, right, parent, *this));
 		return new_node;
 	}
@@ -284,7 +297,8 @@ namespace ft
 			parent->set_right(replacer);
 		else
 			return ;
-		_node_alloc.deallocate(z, 1);
+		this->_node_alloc.destroy(z);
+		this->_node_alloc.deallocate(z, 1);
 	}
 }
 

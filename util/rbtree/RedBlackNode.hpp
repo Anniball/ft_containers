@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 13:56:12 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/28 16:58:45 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/29 14:32:11 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ namespace ft
 	
 	template <class T>
 	red_black_node<T>::red_black_node(const value_type &val, const pointer left, const pointer right, const pointer parent, red_black_tree<T> &tree) :
-	_color(RBT_RED), _left(left), _right(right), _parent(parent), _content(val), _tree(tree) {}
+	_content(val), _color(RBT_RED), _left(left), _right(right), _parent(parent), _tree(tree) {}
 	
 	template <class T>
 	red_black_node<T>::red_black_node(const node_type &src) :
