@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 14:25:03 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/29 11:24:16 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/29 14:52:49 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,11 +77,11 @@ namespace ft
 		red_black_node<const ft::pair<const int, std::__1::basic_string<char> > > *
 	*/
 
-	// template <class T>
-	// tree_iterator<T>::operator				tree_iterator<const T>() const
-	// {
-	// 	return this->_content;
-	// }
+	template <class T>
+	tree_iterator<T>::operator				tree_iterator<const T>() const
+	{
+		return this->_content;
+	}
 
 	template <class T>
 	tree_iterator<T>::operator				node_pointer() const

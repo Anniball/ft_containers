@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 13:56:12 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/29 14:32:11 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/29 14:44:01 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ namespace ft
 			/*
 				GETTERS AND SETTERS
 			*/
-			value_type			&get_value(void) const;
+			value_type			&get_value(void);
 			pointer				get_left(void) const;
 			pointer				get_right(void) const;
 			pointer				get_parent(void) const;
@@ -129,7 +129,7 @@ namespace ft
 	*/
 	
 	template <class T>
-	typename red_black_node<T>::value_type	&red_black_node<T>::get_value(void) const {return this->_content;}
+	typename red_black_node<T>::value_type	&red_black_node<T>::get_value(void) {return this->_content;}
 
 	template <class T>
 	typename red_black_node<T>::pointer		red_black_node<T>::get_left(void) const {return this->_left;}

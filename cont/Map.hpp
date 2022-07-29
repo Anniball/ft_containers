@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 10:12:44 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/29 11:26:40 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/29 14:51:00 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,9 @@ namespace ft
 {
 	template <class T>
 	class red_black_node;
+
+	template <class T>
+	class tree_iterator;
 
 	template <class Key, class T, class Compare = std::less<Key>, class Alloc = std::allocator<pair<const Key,T> > >
 	class map
@@ -306,7 +309,10 @@ namespace ft
 	void															map<Key, T, Compare, Alloc>::erase(iterator first, iterator last)
 	{
 		while (first != last)
-			this->_tree.erase(first++);
+		{
+			this->_tree.erase(*first);
+			first++;
+		}
 	}
 	
 	template <class Key, class T, class Compare, class Alloc>
