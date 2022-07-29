@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 10:12:44 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/28 19:35:17 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/29 11:26:40 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -250,9 +250,9 @@ namespace ft
 	typename map<Key, T, Compare, Alloc>::mapped_type				&map<Key, T, Compare, Alloc>::operator[](const key_type& k)
 	{
 		iterator	it = iterator(this->_tree.get_root());
-		while (it->get_value().first != k) //crash assuré
+		while (it->first != k) //crash assuré
 			it++;
-		return (*it).second;
+		return it->second;
 	}
 	
 	/*Modifiers*/
@@ -287,9 +287,12 @@ namespace ft
 		iterator it(this->_tree.get_root());
 		while (it != position)
 			it++;
-		this->_tree.erase(position);
+		this->_tree.erase(*position);
 	}
 	
+//ft::pair<const int, std::__1::basic_string<char> >
+//tree_iterator<pair<const int, std::__1::basic_string<char> > >
+
 	template <class Key, class T, class Compare, class Alloc>
 	typename map<Key, T, Compare, Alloc>::size_type					map<Key, T, Compare, Alloc>::erase(const key_type& k)
 	{

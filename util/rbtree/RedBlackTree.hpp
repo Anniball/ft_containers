@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 16:02:21 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/28 12:10:11 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/29 11:59:47 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ namespace ft
 			node_type	*search(value_type &key);
 			node_type	*insert(value_type &val);
 			node_type	*insert(value_type &val, node_type *hint);
-			void		erase(value_type &val);
+			void		erase(value_type &key);
 			node_type	*create_node(node_type *parent, node_type *left, node_type *right, value_type &content);
 			node_type	*iterate(node_type *k);
 			node_type	*reverse_iterate(node_type *k);
@@ -143,16 +143,15 @@ namespace ft
 	typename red_black_tree<T, Alloc>::node_type	*red_black_tree<T, Alloc>::search(value_type &key)
 	{
 		node_type	*z = this->_root;
-		value_type	&z_key = z->get_value();
-		while (z_key != key)
+		while (z->get_value() != key)
 		{
+			value_type	&z_val = z->get_value();
 			if (z->is_leaf())
 				return nullptr;
-			else if (key > z_key)
+			else if (key > z_val)
 				z = z->get_right();
 			else
 				z = z->get_left();
-			z_key = z->get_value();
 		}
 		return z;
 	}
@@ -161,16 +160,15 @@ namespace ft
 	typename red_black_tree<T, Alloc>::node_type	*red_black_tree<T, Alloc>::insert(value_type &value)
 	{
 		node_type	*z = this->_root;
-		value_type	&z_key = z->get_value();
 		while (!z->is_leaf())
 		{
-			if (z_key == value)
+			value_type	&z_val = z->get_value();
+			if (z_val == value)
 				return z;
-			else if (value > z_key)
+			else if (value > z_val)
 				z = z->get_right();
 			else
 				z = z->get_left();
-			z_key = z->get_value();
 		}
 		node_type *new_node = _node_alloc.allocate(1);
 		_node_alloc.construct(new_node, node_type(value, z, this->_create_leaf(), z->parent));
@@ -224,7 +222,7 @@ namespace ft
 		{
 			node_type	*smallest = z->get_right()->get_smallest();
 			z->set_value(smallest->get_value());
-			this->erase(smallest->get_value().first);
+			this->erase(smallest->get_value());
 		}
 	}
 

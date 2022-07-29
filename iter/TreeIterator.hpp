@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 14:25:03 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/28 11:25:04 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/07/29 11:24:16 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,11 @@ namespace ft
 
 			// pointer const	&base(void) const;
 			operator		tree_iterator<const T>() const;
+			operator		node_pointer() const;
 
 			iterator		&operator=(tree_iterator const &right);
-			reference		operator*(void);
-			pointer			operator->(void);
+			reference		operator*(void) const;
+			pointer			operator->(void) const;
 			iterator		&operator++(void);
 			iterator		operator++(int);
 			iterator		&operator--(void);
@@ -61,7 +62,7 @@ namespace ft
 	tree_iterator<T>::tree_iterator(void) {}
 	
 	template <class T>
-	tree_iterator<T>::tree_iterator(tree_iterator const &src) : _content(src._content) {}
+	tree_iterator<T>::tree_iterator(iterator const &src) : _content(src._content) {}
 
 	template <class T>
 	tree_iterator<T>::tree_iterator(node_pointer ptr) : _content(ptr) {}
@@ -72,10 +73,18 @@ namespace ft
 
 	/*
 		OPERATOR OVERLOADS
+		red_black_node<ft::pair<const int, std::__1::basic_string<char> > > *const
+		red_black_node<const ft::pair<const int, std::__1::basic_string<char> > > *
 	*/
 
+	// template <class T>
+	// tree_iterator<T>::operator				tree_iterator<const T>() const
+	// {
+	// 	return this->_content;
+	// }
+
 	template <class T>
-	tree_iterator<T>::operator				tree_iterator<const T>() const
+	tree_iterator<T>::operator				node_pointer() const
 	{
 		return this->_content;
 	}
@@ -87,14 +96,14 @@ namespace ft
 	}
 	
 	template <class T>
-	typename tree_iterator<T>::reference	tree_iterator<T>::operator*(void)
+	typename tree_iterator<T>::reference	tree_iterator<T>::operator*(void) const
 	{
 		return this->_content->get_value();
 	}
 	
 	//WE GOT A PROBLEM HERE
 	template <class T>
-	typename tree_iterator<T>::pointer		tree_iterator<T>::operator->(void)
+	typename tree_iterator<T>::pointer		tree_iterator<T>::operator->(void) const
 	{
 		return &this->_content->get_value();
 	}
