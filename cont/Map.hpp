@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 10:12:44 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/01 16:20:52 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/01 16:46:49 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,7 +150,10 @@ namespace ft
 		(void)comp;
 		(void)alloc;
 		for (InputIterator it = first; it != last; it++)
+		{
 			this->_tree.insert(*it);
+			this->_size++;
+		}
 		// (void)first;
 		// (void)last;
 		// (void)alloc;
