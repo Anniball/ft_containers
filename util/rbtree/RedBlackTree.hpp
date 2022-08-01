@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 16:02:21 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/29 14:49:06 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/01 16:43:21 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ namespace ft
 			/*
 				PRIVATE UTILS METHOD
 			*/
-			node_type	*_create_leaf(const node_type *parent);
+			node_type	*_create_leaf( node_type *parent);
 			void		_replace_node(node_type *parent, node_type *z, node_type *replacer);
 	};
 	
@@ -174,7 +174,7 @@ namespace ft
 				z = z->get_left();
 		}
 		node_type *new_node = _node_alloc.allocate(1);
-		_node_alloc.construct(new_node, node_type(value, z, this->_create_leaf(), z->parent));
+		_node_alloc.construct(new_node, node_type(value, z, this->_create_leaf(new_node), z->get_parent(), *this));
 		z->set_parent(new_node);
 		return new_node;
 	}
@@ -183,8 +183,9 @@ namespace ft
 	template <class T, class Alloc>
 	typename red_black_tree<T, Alloc>::node_type	*red_black_tree<T, Alloc>::insert(value_type &val, node_type *hint)
 	{
-		(void)val;
-		return hint;
+		// TEMPORARY SOLUTION
+		(void)hint;
+		return this->insert(val);
 		// //CASE 1 : PARENT : position - 1, LEFT CHILD : position
 		// node_type *parent = hint->get_parent();
 		// if(val > hint->get_value() && val ))
@@ -283,9 +284,11 @@ namespace ft
 	*/
 	
 	template <class T, class Alloc>
-	typename red_black_tree<T, Alloc>::node_type	*red_black_tree<T, Alloc>::_create_leaf(const node_type *parent)
+	typename red_black_tree<T, Alloc>::node_type	*red_black_tree<T, Alloc>::_create_leaf(node_type *parent)
 	{
-		return node_type(parent);
+		node_type *new_node = _node_alloc.allocate(1);
+		_node_alloc.construct(new_node, node_type(parent, *this));
+		return new_node;
 	}
 
 	template <class T, class Alloc>

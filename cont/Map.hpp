@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 10:12:44 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/29 14:51:00 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/01 16:20:52 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,11 +145,15 @@ namespace ft
 	template <class Key, class T, class Compare, class Alloc>
 	template <class InputIterator>
 	map<Key, T, Compare, Alloc>::map(InputIterator first, InputIterator last, const map<Key, T, Compare, Alloc>::key_compare &comp, const map<Key, T, Compare, Alloc>::allocator_type &alloc)
+	: _tree(), _size(0)
 	{
-		(void)first;
-		(void)last;
 		(void)comp;
 		(void)alloc;
+		for (InputIterator it = first; it != last; it++)
+			this->_tree.insert(*it);
+		// (void)first;
+		// (void)last;
+		// (void)alloc;
 	}
 	
 	template <class Key, class T, class Compare, class Alloc>
