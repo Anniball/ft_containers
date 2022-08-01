@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 14:25:03 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/29 14:52:49 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/01 15:40:53 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,14 +73,12 @@ namespace ft
 
 	/*
 		OPERATOR OVERLOADS
-		red_black_node<ft::pair<const int, std::__1::basic_string<char> > > *const
-		red_black_node<const ft::pair<const int, std::__1::basic_string<char> > > *
 	*/
 
 	template <class T>
 	tree_iterator<T>::operator				tree_iterator<const T>() const
 	{
-		return this->_content;
+		return reinterpret_cast<red_black_node<const T>* >(this->_content); //finding another solution would be awesome
 	}
 
 	template <class T>
@@ -101,7 +99,6 @@ namespace ft
 		return this->_content->get_value();
 	}
 	
-	//WE GOT A PROBLEM HERE
 	template <class T>
 	typename tree_iterator<T>::pointer		tree_iterator<T>::operator->(void) const
 	{
