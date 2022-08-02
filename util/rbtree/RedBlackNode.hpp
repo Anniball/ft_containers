@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 13:56:12 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/01 16:45:08 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/02 14:37:57 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -198,7 +198,7 @@ namespace ft
 	typename red_black_node<T>::pointer		red_black_node<T>::get_smallest(void) 
 	{
 		node_type	*tmp = this;
-		while (!tmp->is_leaf())
+		while (!tmp->is_leaf() && !tmp->_left->is_leaf())
 			tmp = tmp->_left;
 		return tmp;
 	}
@@ -207,7 +207,7 @@ namespace ft
 	typename red_black_node<T>::pointer		red_black_node<T>::get_biggest(void)
 	{
 		node_type	*tmp = this;
-		while (!tmp->is_leaf())
+		while (!tmp->is_leaf() && !tmp->_right->is_leaf())
 			tmp = tmp->_right;
 		return tmp;
 	}

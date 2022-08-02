@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 16:02:21 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/01 16:43:21 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/02 16:16:31 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ namespace ft
 			*/
 			node_type	*_create_leaf( node_type *parent);
 			void		_replace_node(node_type *parent, node_type *z, node_type *replacer);
+			void		_print_tree(void);
 	};
 	
 	
@@ -159,6 +160,21 @@ namespace ft
 		return z;
 	}
 
+	//DELETE ME
+	template <class T, class Alloc>
+	void	red_black_tree<T, Alloc>::_print_tree(void)
+	{
+		std:: cout << "Starting printing tree :" << std::endl;
+		node_type *z = this->_root;
+		while (z != this->_end)
+		{
+			std::cout << z->get_value().second << " - "  << z->get_value().first << std::endl;
+			z = z->iterate();
+		}
+		std:: cout << "Ending printing tree" << std::endl << std::endl;
+	}
+	//DELETE ME
+
 	template <class T, class Alloc>
 	typename red_black_tree<T, Alloc>::node_type	*red_black_tree<T, Alloc>::insert(value_type &value)
 	{
@@ -173,9 +189,17 @@ namespace ft
 			else
 				z = z->get_left();
 		}
+		node_type *parent = z->get_parent();
 		node_type *new_node = _node_alloc.allocate(1);
-		_node_alloc.construct(new_node, node_type(value, z, this->_create_leaf(new_node), z->get_parent(), *this));
+		_node_alloc.construct(new_node, node_type(value, z, this->_create_leaf(new_node), parent, *this));
 		z->set_parent(new_node);
+		if (z == this->_root)
+			this->_root = new_node;
+		if (parent && parent->get_left() == z)
+			parent->set_left(new_node);
+		else if (parent)
+			parent->set_right(new_node);
+		this->_print_tree();
 		return new_node;
 	}
 
@@ -254,12 +278,16 @@ namespace ft
 	{
 		node_type	*right = k->get_right();
 		node_type	*parent = k->get_parent();
+		
 		if (!right->is_leaf())
 			return right->get_smallest();
-		else if (parent->get_left() == k)
+		while (parent && parent->get_right() == k)
+		{
+			k = parent;
+			parent = k->get_parent();
+		}
+		if (parent)
 			return parent;
-		else if (parent->get_right() == k)
-			return (this->iterate(parent));
 		return this->_end;
 	}
 
@@ -268,12 +296,16 @@ namespace ft
 	{
 		node_type	*left = k->get_left();
 		node_type	*parent = k->get_parent();
+		
 		if (!left->is_leaf())
 			return left->get_biggest();
-		else if (parent->get_right() == k)
+		while (parent && parent->get_left() == k)
+		{
+			k = parent;
+			parent = k->get_parent();
+		}
+		if (parent)
 			return parent;
-		else if (parent->get_left() == k)
-			return (this->iterate(parent));
 		return this->_end; //probably not that since it's the first
 		//return this->_get_smallest(this->_root); //maybe this instead
 	}

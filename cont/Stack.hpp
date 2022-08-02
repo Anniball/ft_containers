@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 10:14:33 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/22 10:49:44 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/02 14:44:21 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ namespace ft
 			typedef const T&		const_reference;
 
 		protected :
-			Container 			c;
+			Container 				c;
 			
 		public :
 			/*
