@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 14:25:03 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/01 15:40:53 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/02 18:15:20 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ namespace ft
 	typename tree_iterator<T>::iterator		&tree_iterator<T>::operator=(tree_iterator const &right)
 	{
 		this->_content = right._content;
+		return *this;
 	}
 	
 	template <class T>
