@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 16:02:21 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/02 17:21:14 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/02 17:42:06 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -242,6 +242,8 @@ namespace ft
 		{
 			this->_node_alloc.destroy(right);
 			this->_node_alloc.deallocate(right, 1);
+			if (z == this->_root)
+				this->_root = left;
 			this->_replace_node(z->get_parent(), z, left);
 		}
 		else if (left->is_leaf() && !right->is_leaf())
@@ -249,6 +251,8 @@ namespace ft
 			this->_node_alloc.destroy(left);
 			this->_node_alloc.deallocate(left, 1);
 			this->_replace_node(z->get_parent(), z, right);
+			if (z == this->_root)
+				this->_root = right;
 		}
 		else
 		{
@@ -328,12 +332,15 @@ namespace ft
 	template <class T, class Alloc>
 	void														red_black_tree<T, Alloc>::_replace_node(node_type *parent, node_type *z, node_type *replacer)
 	{
-		if (z == parent->get_left())
-			parent->set_left(replacer);
-		else if (z == parent->get_right())
-			parent->set_right(replacer);
-		else
-			return ;
+		if (parent)
+		{
+			if (z == parent->get_left())
+				parent->set_left(replacer);
+			else if (z == parent->get_right())
+				parent->set_right(replacer);
+			else
+				return ;
+		}
 		replacer->set_parent(parent);
 		this->_node_alloc.destroy(z);
 		this->_node_alloc.deallocate(z, 1);

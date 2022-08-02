@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 10:12:44 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/01 16:46:49 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/02 17:38:50 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -271,6 +271,7 @@ namespace ft
 	pair<typename map<Key, T, Compare, Alloc>::iterator,bool>		map<Key, T, Compare, Alloc>::insert(const value_type& val)
 	{
 		this->_tree.insert(val);
+		this->_size++;
 		return val ;
 	}
 	
@@ -281,6 +282,7 @@ namespace ft
 			return iterator(this->_tree.insert(val, position));
 		else
 			return iterator(this->_tree.insert(val));
+		this->_size++;
 	}
 	
 	template <class Key, class T, class Compare, class Alloc>
@@ -288,7 +290,10 @@ namespace ft
 	void 															map<Key, T, Compare, Alloc>::insert(InputIterator first, InputIterator last)
 	{
 		while (first != last)
+		{
 			this->_tree.insert(*first++);
+			this->_size++;
+		}
 	}
 	
 	template <class Key, class T, class Compare, class Alloc>
@@ -298,6 +303,7 @@ namespace ft
 		while (it != position)
 			it++;
 		this->_tree.erase(*position);
+		this->_size--;
 	}
 	
 //ft::pair<const int, std::__1::basic_string<char> >
@@ -310,6 +316,7 @@ namespace ft
 		while (it->get_value().first != k) //crash assuré
 			it++;
 		this->_tree.erase(it);
+		this->_size--;
 	}
 	
 	template <class Key, class T, class Compare, class Alloc>
@@ -319,6 +326,7 @@ namespace ft
 		{
 			this->_tree.erase(*first);
 			first++;
+			this->_size--;
 		}
 	}
 	
