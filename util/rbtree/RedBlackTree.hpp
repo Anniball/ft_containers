@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 16:02:21 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/02 16:16:31 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/02 16:57:43 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,7 +199,7 @@ namespace ft
 			parent->set_left(new_node);
 		else if (parent)
 			parent->set_right(new_node);
-		this->_print_tree();
+		// this->_print_tree();
 		return new_node;
 	}
 
@@ -234,25 +234,27 @@ namespace ft
 	void														red_black_tree<T, Alloc>::erase(value_type &key)
 	{
 		node_type	*z = this->search(key);
+		node_type	*left = z->get_left();
+		node_type	*right = z->get_right();
 		if (!z)
 			return ;
-		if ( (z->get_left()->is_leaf() && z->get_right()->is_leaf()) || (!z->get_left()->is_leaf() && z->get_right()->is_leaf()) )
+		if ( (left->is_leaf() && right->is_leaf()) || (!left->is_leaf() && right->is_leaf()) )
 		{
-			this->_node_alloc.destroy(z->get_right());
-			this->_node_alloc.deallocate(z->get_right(), 1);
-			this->_replace_node(z->get_parent(), z, z->get_left());
+			this->_node_alloc.destroy(right);
+			this->_node_alloc.deallocate(right, 1);
+			this->_replace_node(z->get_parent(), z, left);
 		}
-		else if (z->get_left()->is_leaf() && !z->get_right()->is_leaf())
+		else if (left->is_leaf() && !right->is_leaf())
 		{
-			this->_node_alloc.destroy(z->get_left());
-			this->_node_alloc.deallocate(z->get_left(), 1);
-			this->_replace_node(z->get_parent(), z, z->get_right());
+			this->_node_alloc.destroy(left);
+			this->_node_alloc.deallocate(left, 1);
+			this->_replace_node(z->get_parent(), z, right);
 		}
 		else
 		{
-			node_type	*smallest = z->get_right()->get_smallest();
+			node_type	*smallest = right->get_smallest();
 			this->_node_alloc.destroy(z);
-			this->_node_alloc.construct(z, node_type(z->get_value(), z->get_parent(), z->get_left(), z->get_right(), *this));
+			this->_node_alloc.construct(z, node_type(smallest->get_value(), left, right, z->get_parent(), *this));
 			this->erase(smallest->get_value());
 		}
 	}
