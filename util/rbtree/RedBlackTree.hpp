@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 16:02:21 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/02 17:42:06 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/02 17:47:34 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -300,6 +300,9 @@ namespace ft
 	template <class T, class Alloc>
 	typename red_black_tree<T, Alloc>::node_type	*red_black_tree<T, Alloc>::reverse_iterate(node_type *k)
 	{
+		if (k == this->_end)
+			return this->_root->get_biggest();
+		
 		node_type	*left = k->get_left();
 		node_type	*parent = k->get_parent();
 		
