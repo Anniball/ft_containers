@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 16:02:21 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/02 16:57:43 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/02 17:21:14 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -334,6 +334,7 @@ namespace ft
 			parent->set_right(replacer);
 		else
 			return ;
+		replacer->set_parent(parent);
 		this->_node_alloc.destroy(z);
 		this->_node_alloc.deallocate(z, 1);
 	}
