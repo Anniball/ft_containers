@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 16:02:21 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/03 17:00:01 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/03 17:03:22 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -254,17 +254,10 @@ namespace ft
 			node_type	*smallest = right->get_smallest();
 			this->_node_alloc.destroy(z);
 			this->_node_alloc.construct(z, node_type(smallest->get_value(), left, right, z->get_parent(), *this));
-			this->erase(smallest->get_value());
+			this->erase(smallest->get_value()); //not optimal, could create a erase(node_type &val)
 		}
 		return true;
 	}
-
-	// void													red_black_tree<T, Alloc, Compare>::move_position(node *z, node *parent, node *child)
-	// {
-	// 	if (child == parent->get_left())
-			
-	// 	else if (child == parent->get_right())
-	// }
 
 	template <class T, class Alloc, class Compare>
 	typename red_black_tree<T, Alloc, Compare>::node_type			*red_black_tree<T, Alloc, Compare>::create_node(node_type *parent, node_type *left, node_type *right, value_type &content)

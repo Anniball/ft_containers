@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 10:12:44 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/03 15:26:21 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/03 17:34:24 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -257,16 +257,12 @@ namespace ft
 	template <class Key, class T, class Compare, class Alloc>
 	typename map<Key, T, Compare, Alloc>::mapped_type				&map<Key, T, Compare, Alloc>::operator[](const key_type& k)
 	{
-		iterator	it = iterator(this->_tree.get_root());
-		iterator	ite = iterator(this->_tree.get_end());
-		while (it->first != k && it != ite) //behaviour like a list, very bad idea
-			it++;
-		if (it == ite)
-		{
-			value_type v = value_type(k, mapped_type());
-			it = iterator(this->_tree.insert(v));
-		}
-		return it->second;
+		value_type v = value_type(k, mapped_type());
+		red_black_node<value_type, value_compare> *tmp = this->_tree.search(v);
+		if (tmp)
+			return tmp->get_value().second;
+		this->_size++;
+		return this->_tree.insert(v)->get_value().second;
 	}
 	
 	/*Modifiers*/
