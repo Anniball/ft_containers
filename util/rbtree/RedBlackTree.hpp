@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 16:02:21 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/03 16:23:58 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/03 16:46:42 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,10 +58,10 @@ namespace ft
 			/*
 				MEMBER METHODS
 			*/
-			node_type			*search(value_type &key);
+			node_type			*search(value_type &val);
 			node_type			*insert(value_type &val);
 			node_type			*insert(value_type &val, node_type *hint);
-			bool				erase(value_type &key);
+			bool				erase(value_type &val);
 			node_type			*create_node(node_type *parent, node_type *left, node_type *right, value_type &content);
 			node_type			*iterate(node_type *k);
 			node_type			*reverse_iterate(node_type *k);
@@ -140,15 +140,15 @@ namespace ft
 	*/
 
 	template <class T, class Alloc, class Compare>
-	typename red_black_tree<T, Alloc, Compare>::node_type			*red_black_tree<T, Alloc, Compare>::search(value_type &key)
+	typename red_black_tree<T, Alloc, Compare>::node_type			*red_black_tree<T, Alloc, Compare>::search(value_type &val)
 	{
 		node_type	*z = this->_root;
-		while (z->get_value() != key)
+		while (z->get_value() != val)
 		{
 			value_type	&z_val = z->get_value();
 			if (z->is_leaf())
 				return nullptr;
-			else if (key > z_val)
+			else if (val > z_val)
 				z = z->get_right();
 			else
 				z = z->get_left();
@@ -175,12 +175,12 @@ namespace ft
 	typename red_black_tree<T, Alloc, Compare>::node_type	*red_black_tree<T, Alloc, Compare>::insert(value_type &value)
 	{
 		node_type	*z = this->_root;
+		node_type	tmp(value, *this);
 		while (!z->is_leaf())
 		{
-			value_type	&z_val = z->get_value();
-			if (z_val == value)
+			if (*z == tmp)
 				return z;
-			else if (value > z_val)
+			else if (tmp > *z)
 				z = z->get_right();
 			else
 				z = z->get_left();
@@ -226,9 +226,9 @@ namespace ft
 	}
 
 	template <class T, class Alloc, class Compare>
-	bool									red_black_tree<T, Alloc, Compare>::erase(value_type &key)
+	bool									red_black_tree<T, Alloc, Compare>::erase(value_type &val)
 	{
-		node_type	*z = this->search(key);
+		node_type	*z = this->search(val);
 		node_type	*left = z->get_left();
 		node_type	*right = z->get_right();
 		if (!z)

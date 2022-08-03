@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 13:56:12 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/03 16:26:47 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/03 16:54:58 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,14 @@
 
 # define RBT_RED true
 # define RBT_BLACK false
+
+/*
+'const ft::red_black_node<ft::pair<const int, std::__1::basic_string<char> >, ft::map<int, std::__1::basic_string<char>, ft::less<int>, std::__1::allocator<ft::pair<const int, std::__1::basic_string<char> > > >::value_compare>::node_type'
+aka
+'const red_black_node<ft::pair<const int, std::__1::basic_string<char> >, ft::map<int, std::__1::basic_string<char>, ft::less<int>, std::__1::allocator<ft::pair<const int, std::__1::basic_string<char> > > >::value_compare>')
+and
+'ft::red_black_node<ft::pair<const int, std::__1::basic_string<char> >, ft::map<int, std::__1::basic_string<char>, ft::less<int>, std::__1::allocator<ft::pair<const int, std::__1::basic_string<char> > > >::value_compare>'
+*/
 
 namespace ft
 {
@@ -87,12 +95,12 @@ namespace ft
 				OPERATORS
 			*/
 			operator			red_black_node<const T, Compare>() const;
-			bool				operator==(node_type const &right);
-			bool				operator!=(node_type const &right);
-			bool				operator<(node_type const &right);
-			bool				operator>(node_type const &right);
-			bool				operator<=(node_type const &right);
-			bool				operator>=(node_type const &right);
+			bool				operator==(node_type const &right) const;
+			bool				operator!=(node_type const &right) const;
+			bool				operator<(node_type const &right) const;
+			bool				operator>(node_type const &right) const;
+			bool				operator<=(node_type const &right) const;
+			bool				operator>=(node_type const &right) const;
 
 		private :
 			value_type			_content;
@@ -117,7 +125,7 @@ namespace ft
 	
 	template <class T, class Compare>
 	red_black_node<T, Compare>::red_black_node(const value_type &val, tree_type &tree) :
-	_color(RBT_RED), _left(nullptr), _right(nullptr), _parent(nullptr), _content(val), _tree(tree), _comp(tree.get_comp()) {}
+	 _content(val), _color(RBT_RED), _left(nullptr), _right(nullptr), _parent(nullptr), _tree(tree), _comp(tree.get_comp()) {}
 
 	template <class T, class Compare>
 	red_black_node<T, Compare>::red_black_node(const pointer parent, tree_type &tree) :
@@ -237,37 +245,37 @@ namespace ft
 	*/
 
 	template <class T, class Compare>
-	bool												red_black_node<T, Compare>::operator==(node_type const &right)
+	bool												red_black_node<T, Compare>::operator==(node_type const &right) const
 	{
 		return !this->_comp(this->_content, right._content) && !this->_comp(right._content, this->_content);
 	}
 
 	template <class T, class Compare>
-	bool												red_black_node<T, Compare>::operator!=(node_type const &right)
+	bool												red_black_node<T, Compare>::operator!=(node_type const &right) const
 	{
 		return !(*this == right);
 	}
 
 	template <class T, class Compare>
-	bool												red_black_node<T, Compare>::operator<(node_type const &right)
+	bool												red_black_node<T, Compare>::operator<(node_type const &right) const
 	{
 		return this->_comp(this->_content, right._content);
 	}
 
 	template <class T, class Compare>
-	bool												red_black_node<T, Compare>::operator<=(node_type const &right)
+	bool												red_black_node<T, Compare>::operator<=(node_type const &right) const
 	{
 		return !(right < *this);
 	}
 
 	template <class T, class Compare>
-	bool												red_black_node<T, Compare>::operator>(node_type const &right)
+	bool												red_black_node<T, Compare>::operator>(node_type const &right) const
 	{
 		return (right < *this);
 	}
 
 	template <class T, class Compare>
-	bool												red_black_node<T, Compare>::operator>=(node_type const &right)
+	bool												red_black_node<T, Compare>::operator>=(node_type const &right) const
 	{
 		return !(*this < right);
 	}
