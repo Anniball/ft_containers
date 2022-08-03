@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 14:25:03 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/03 13:10:42 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/03 14:12:54 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,14 +74,11 @@ namespace ft
 		OPERATOR OVERLOADS
 	*/
 
-	//!IMPORTANT!
-	//NEED TO TRY WITHOUT THE REINTERPRET CAST NOW THAT THERE IS SO MUCH CHANGE!!!
 	template <class T, class Node>
 	tree_iterator<T, Node>::operator				tree_iterator<const T>() const
 	{
-		return reinterpret_cast<red_black_node<const T>* >(this->_content); //finding another solution would be awesome
+		return this->_content;
 	}
-	//!IMPORTANT!
 
 	template <class T, class Node>
 	tree_iterator<T, Node>::operator				node_pointer() const
