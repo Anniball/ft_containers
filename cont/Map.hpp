@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 10:12:44 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/03 17:34:24 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/03 17:45:19 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -278,11 +278,11 @@ namespace ft
 	template <class Key, class T, class Compare, class Alloc>
 	typename map<Key, T, Compare, Alloc>::iterator					map<Key, T, Compare, Alloc>::insert(iterator position, const value_type& val)
 	{
-		if ((position - 1)->get_value() < val && position->get_value() > val)
+		this->_size++;
+		if (this->_comp(*(position - 1), val) && this->_comp(val, *position))
 			return iterator(this->_tree.insert(val, position));
 		else
 			return iterator(this->_tree.insert(val));
-		this->_size++;
 	}
 	
 	template <class Key, class T, class Compare, class Alloc>
@@ -299,9 +299,6 @@ namespace ft
 	template <class Key, class T, class Compare, class Alloc>
 	void															map<Key, T, Compare, Alloc>::erase(iterator position) 
 	{
-		iterator it(this->_tree.get_root());
-		while (it != position)
-			it++;
 		if (this->_tree.erase(*position))
 			this->_size--;
 	}
@@ -312,10 +309,7 @@ namespace ft
 	template <class Key, class T, class Compare, class Alloc>
 	typename map<Key, T, Compare, Alloc>::size_type					map<Key, T, Compare, Alloc>::erase(const key_type& k)
 	{
-		iterator	it = iterator(this->_tree.get_root());
-		while (it->get_value().first != k) //crash assuré
-			it++;
-		if (this->_tree.erase(it))
+		if (this->_tree.erase(value_type(k, mapped_type())))
 			this->_size--;
 	}
 	
@@ -326,7 +320,7 @@ namespace ft
 		{
 			if (this->_tree.erase(*first))
 				this->_size--;
-			first++;
+			first++; //maybe use ft::distance instead
 		}
 	}
 	
