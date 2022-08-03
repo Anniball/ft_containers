@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 16:02:21 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/03 16:46:42 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/03 17:00:01 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,12 +143,12 @@ namespace ft
 	typename red_black_tree<T, Alloc, Compare>::node_type			*red_black_tree<T, Alloc, Compare>::search(value_type &val)
 	{
 		node_type	*z = this->_root;
-		while (z->get_value() != val)
+		node_type	tmp(val, *this);
+		while (*z != tmp)
 		{
-			value_type	&z_val = z->get_value();
 			if (z->is_leaf())
 				return nullptr;
-			else if (val > z_val)
+			else if (tmp > *z)
 				z = z->get_right();
 			else
 				z = z->get_left();
@@ -186,8 +186,8 @@ namespace ft
 				z = z->get_left();
 		}
 		node_type *parent = z->get_parent();
-		node_type *new_node = _node_alloc.allocate(1);
-		_node_alloc.construct(new_node, node_type(value, z, this->_create_leaf(new_node), parent, *this));
+		node_type *new_node = this->_node_alloc.allocate(1);
+		this->_node_alloc.construct(new_node, node_type(value, z, this->_create_leaf(new_node), parent, *this));
 		z->set_parent(new_node);
 		if (z == this->_root)
 			this->_root = new_node;
