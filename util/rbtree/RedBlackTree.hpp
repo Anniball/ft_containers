@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 16:02:21 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/02 17:47:34 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/03 11:30:46 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ namespace ft
 			node_type	*search(value_type &key);
 			node_type	*insert(value_type &val);
 			node_type	*insert(value_type &val, node_type *hint);
-			void		erase(value_type &key);
+			bool		erase(value_type &key);
 			node_type	*create_node(node_type *parent, node_type *left, node_type *right, value_type &content);
 			node_type	*iterate(node_type *k);
 			node_type	*reverse_iterate(node_type *k);
@@ -199,7 +199,6 @@ namespace ft
 			parent->set_left(new_node);
 		else if (parent)
 			parent->set_right(new_node);
-		// this->_print_tree();
 		return new_node;
 	}
 
@@ -231,13 +230,13 @@ namespace ft
 	}
 
 	template <class T, class Alloc>
-	void														red_black_tree<T, Alloc>::erase(value_type &key)
+	bool									red_black_tree<T, Alloc>::erase(value_type &key)
 	{
 		node_type	*z = this->search(key);
 		node_type	*left = z->get_left();
 		node_type	*right = z->get_right();
 		if (!z)
-			return ;
+			return false;
 		if ( (left->is_leaf() && right->is_leaf()) || (!left->is_leaf() && right->is_leaf()) )
 		{
 			this->_node_alloc.destroy(right);
@@ -261,6 +260,7 @@ namespace ft
 			this->_node_alloc.construct(z, node_type(smallest->get_value(), left, right, z->get_parent(), *this));
 			this->erase(smallest->get_value());
 		}
+		return true;
 	}
 
 	// void													red_black_tree<T, Alloc>::move_position(node *z, node *parent, node *child)

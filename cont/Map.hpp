@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 10:12:44 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/02 18:00:57 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/03 11:49:58 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include "../iter/TreeIterator.hpp"
 # include "../util/Pair.hpp"
 # include "../util/rbtree/RedBlackTree.hpp"
+# include "../util/Utilities.hpp"
 
 namespace ft
 {
@@ -28,7 +29,7 @@ namespace ft
 	template <class T>
 	class tree_iterator;
 
-	template <class Key, class T, class Compare = std::less<Key>, class Alloc = std::allocator<pair<const Key,T> > >
+	template <class Key, class T, class Compare = ft::less<Key>, class Alloc = std::allocator<pair<const Key,T> > >
 	class map
 	{
 		public :
@@ -48,7 +49,20 @@ namespace ft
 			typedef typename iterator_traits<iterator>::difference_type	difference_type;
 			typedef size_t												size_type;
 
-		public :
+			/*
+				CLASSES
+			*/
+			class value_compare : public ft::binary_function<value_type, value_type, bool>
+			{
+				friend class map<Key, T, Compare, Alloc>;
+				protected:
+					Compare _comp;
+					value_compare(key_compare c) : _comp(c) {}
+		
+				public:
+					bool operator()(const value_type& x, const value_type& y) const { return _comp(x.first, y.first); }
+			};
+
 			/*
 				CONSTRUCTORS AND DESTRUCTORS
 			*/
@@ -63,24 +77,6 @@ namespace ft
 			*/
 			map &operator=(const map &x);
 
-
-			/*
-				CLASS
-			*/
-			class value_compare
-			{
-				typedef	bool		result_type;
-				typedef value_type	first_argument_type;
-				typedef value_type	second_argument_type;
-
-				protected :
-					key_compare		comp;
-
-					value_compare(key_compare c) : comp(c) {}
-
-				public :
-					bool	operator()(const value_type &lhs, const value_type &rhs) {return comp(lhs.first, rhs.first);}
-			};
 			
 			/*
 				MEMBER FUNCTIONS
@@ -308,8 +304,8 @@ namespace ft
 		iterator it(this->_tree.get_root());
 		while (it != position)
 			it++;
-		this->_tree.erase(*position);
-		this->_size--;
+		if (this->_tree.erase(*position))
+			this->_size--;
 	}
 	
 //ft::pair<const int, std::__1::basic_string<char> >
@@ -321,8 +317,8 @@ namespace ft
 		iterator	it = iterator(this->_tree.get_root());
 		while (it->get_value().first != k) //crash assuré
 			it++;
-		this->_tree.erase(it);
-		this->_size--;
+		if (this->_tree.erase(it))
+			this->_size--;
 	}
 	
 	template <class Key, class T, class Compare, class Alloc>
@@ -330,9 +326,9 @@ namespace ft
 	{
 		while (first != last)
 		{
-			this->_tree.erase(*first);
+			if (this->_tree.erase(*first))
+				this->_size--;
 			first++;
-			this->_size--;
 		}
 	}
 	
