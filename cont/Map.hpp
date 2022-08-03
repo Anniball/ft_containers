@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 10:12:44 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/03 13:23:05 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/03 15:26:21 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,7 @@ namespace ft
 		private :
 			red_black_tree<value_type, Alloc, value_compare>	_tree;
 			size_type											_size;
+			value_compare										_comp;
 	};
 
 	/*
@@ -142,7 +143,7 @@ namespace ft
 	template <class Key, class T, class Compare, class Alloc>
 	template <class InputIterator>
 	map<Key, T, Compare, Alloc>::map(InputIterator first, InputIterator last, const map<Key, T, Compare, Alloc>::key_compare &comp, const map<Key, T, Compare, Alloc>::allocator_type &alloc)
-	: _tree(), _size(0)
+	: _tree(_comp), _size(0), _comp(key_compare())
 	{
 		(void)comp;
 		(void)alloc;

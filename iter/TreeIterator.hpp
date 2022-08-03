@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 14:25:03 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/03 14:12:54 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/03 15:09:40 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ namespace ft
 			tree_iterator(node_pointer ptr);
 			~tree_iterator(void);
 
-			// pointer const	&base(void) const;
 			operator		tree_iterator<const T>() const;
 			operator		node_pointer() const;
 
@@ -136,25 +135,14 @@ namespace ft
 	}
 
 	/*
-		UTILS
-	*/
-	// template <class T, class Node>
-	// typename tree_iterator<T, Node>::pointer const	&tree_iterator<T, Node>::base(void) const
-	// {
-	// 	return &this->_content->get_value();
-	// }
-
-	/*
 		COMPARISON OPERATOR OVERLOADS
 	*/
-
 
 	template <class T, class Node>
 	bool									operator==(tree_iterator<T, Node> &left, tree_iterator<T, Node> &right)
 	{
 		return *left == *right;
 	}
-
 
 	template <class T, class Node>
 	bool									operator!=(tree_iterator<T, Node> &left, tree_iterator<T, Node> &right)

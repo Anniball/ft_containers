@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 13:56:12 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/03 14:09:18 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/03 16:26:47 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,13 @@ namespace ft
 			/*
 				OPERATORS
 			*/
-			operator			red_black_node<const T>() const;
+			operator			red_black_node<const T, Compare>() const;
+			bool				operator==(node_type const &right);
+			bool				operator!=(node_type const &right);
+			bool				operator<(node_type const &right);
+			bool				operator>(node_type const &right);
+			bool				operator<=(node_type const &right);
+			bool				operator>=(node_type const &right);
 
 		private :
 			value_type			_content;
@@ -95,6 +101,7 @@ namespace ft
 			pointer				_right;
 			pointer				_parent;
 			tree_type			&_tree;
+			const value_compare &_comp;	
 
 			/*
 				PRIVATE UTILS
@@ -105,23 +112,24 @@ namespace ft
 		CONSTRUCTORS AND DESTRUCTORS
 	*/
 	template <class T, class Compare>
-	red_black_node<T, Compare>::red_black_node(tree_type &tree) : _content(), _color(RBT_RED), _left(nullptr), _right(nullptr), _parent(nullptr), _tree(tree) {}
+	red_black_node<T, Compare>::red_black_node(tree_type &tree) :
+	_content(), _color(RBT_RED), _left(nullptr), _right(nullptr), _parent(nullptr), _tree(tree), _comp(tree.get_comp()) {}
 	
 	template <class T, class Compare>
 	red_black_node<T, Compare>::red_black_node(const value_type &val, tree_type &tree) :
-	_color(RBT_RED), _left(nullptr), _right(nullptr), _parent(nullptr), _content(val), _tree(tree) {}
+	_color(RBT_RED), _left(nullptr), _right(nullptr), _parent(nullptr), _content(val), _tree(tree), _comp(tree.get_comp()) {}
 
 	template <class T, class Compare>
 	red_black_node<T, Compare>::red_black_node(const pointer parent, tree_type &tree) :
-	_content(), _color(RBT_BLACK), _left(nullptr), _right(nullptr), _parent(parent), _tree(tree) {}
+	_content(), _color(RBT_BLACK), _left(nullptr), _right(nullptr), _parent(parent), _tree(tree), _comp(tree.get_comp()) {}
 	
 	template <class T, class Compare>
 	red_black_node<T, Compare>::red_black_node(const value_type &val, const pointer left, const pointer right, const pointer parent, tree_type &tree) :
-	_content(val), _color(RBT_RED), _left(left), _right(right), _parent(parent), _tree(tree) {}
+	_content(val), _color(RBT_RED), _left(left), _right(right), _parent(parent), _tree(tree), _comp(tree.get_comp()) {}
 	
 	template <class T, class Compare>
 	red_black_node<T, Compare>::red_black_node(const node_type &src) :
-	_content(src._content), _color(src._color), _left(src._left), _right(src._right), _parent(src._parent), _tree(src._tree) {}
+	_content(src._content), _color(src._color), _left(src._left), _right(src._right), _parent(src._parent), _tree(src._tree), _comp(src._comp) {}
 	
 	template <class T, class Compare>
 	red_black_node<T, Compare>::~red_black_node(void) {}
@@ -217,8 +225,9 @@ namespace ft
 	/*
 		OPERATORS
 	*/
+
 	template <class T, class Compare>
-	red_black_node<T, Compare>::operator				red_black_node<const T>() const
+	red_black_node<T, Compare>::operator				red_black_node<const T, Compare>() const
 	{
 		return red_black_node<const T>(*this);
 	}
@@ -228,39 +237,39 @@ namespace ft
 	*/
 
 	template <class T, class Compare>
-	bool									operator==(red_black_node<T, Compare> const &left, red_black_node<T, Compare> const &right)
+	bool												red_black_node<T, Compare>::operator==(node_type const &right)
 	{
-		return left.get_value() == right.get_value();
+		return !this->_comp(this->_content, right._content) && !this->_comp(right._content, this->_content);
 	}
 
 	template <class T, class Compare>
-	bool									operator!=(red_black_node<T, Compare> const &left, red_black_node<T, Compare> const &right)
+	bool												red_black_node<T, Compare>::operator!=(node_type const &right)
 	{
-		return !(left == right);
+		return !(*this == right);
 	}
 
 	template <class T, class Compare>
-	bool									operator<(red_black_node<T, Compare> const &left, red_black_node<T, Compare> const &right)
+	bool												red_black_node<T, Compare>::operator<(node_type const &right)
 	{
-		return left.get_value() < right.get_value();
+		return this->_comp(this->_content, right._content);
 	}
 
 	template <class T, class Compare>
-	bool									operator<=(red_black_node<T, Compare> const &left, red_black_node<T, Compare> const &right)
+	bool												red_black_node<T, Compare>::operator<=(node_type const &right)
 	{
-		return !(right < left);
+		return !(right < *this);
 	}
 
 	template <class T, class Compare>
-	bool									operator>(red_black_node<T, Compare> const &left, red_black_node<T, Compare> const &right)
+	bool												red_black_node<T, Compare>::operator>(node_type const &right)
 	{
-		return (right < left);
+		return (right < *this);
 	}
 
 	template <class T, class Compare>
-	bool									operator>=(red_black_node<T, Compare> const &left, red_black_node<T, Compare> const &right)
+	bool												red_black_node<T, Compare>::operator>=(node_type const &right)
 	{
-		return !(left < right);
+		return !(*this < right);
 	}
 }
 
