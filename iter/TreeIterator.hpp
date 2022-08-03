@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 14:25:03 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/02 18:15:20 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/03 13:10:42 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 
 namespace ft
 {
-	template <class T>
+	template <class T, class Node = red_black_node<T> >
 	class tree_iterator
 	{
 		public :
@@ -26,10 +26,9 @@ namespace ft
 			typedef T&							reference;
 			typedef T*							pointer;
 			typedef ptrdiff_t					difference_type;
-			typedef red_black_node<T>			node;
-			typedef red_black_node<T>			&node_reference;
-			typedef red_black_node<T>			*node_pointer;
-			typedef tree_iterator<T>			iterator;
+			typedef Node						&node_reference;
+			typedef Node						*node_pointer;
+			typedef tree_iterator<T, Node>		iterator;
 			typedef bidirectional_iterator_tag	iterator_category;
 
 		public :
@@ -58,78 +57,81 @@ namespace ft
 		CONSTRUCTORS AND DESTRUCTORS
 	*/
 
-	template <class T>
-	tree_iterator<T>::tree_iterator(void) {}
+	template <class T, class Node>
+	tree_iterator<T, Node>::tree_iterator(void) {}
 	
-	template <class T>
-	tree_iterator<T>::tree_iterator(iterator const &src) : _content(src._content) {}
+	template <class T, class Node>
+	tree_iterator<T, Node>::tree_iterator(iterator const &src) : _content(src._content) {}
 
-	template <class T>
-	tree_iterator<T>::tree_iterator(node_pointer ptr) : _content(ptr) {}
+	template <class T, class Node>
+	tree_iterator<T, Node>::tree_iterator(node_pointer ptr) : _content(ptr) {}
 	
-	template <class T>
-	tree_iterator<T>::~tree_iterator(void) {}
+	template <class T, class Node>
+	tree_iterator<T, Node>::~tree_iterator(void) {}
 
 
 	/*
 		OPERATOR OVERLOADS
 	*/
 
-	template <class T>
-	tree_iterator<T>::operator				tree_iterator<const T>() const
+	//!IMPORTANT!
+	//NEED TO TRY WITHOUT THE REINTERPRET CAST NOW THAT THERE IS SO MUCH CHANGE!!!
+	template <class T, class Node>
+	tree_iterator<T, Node>::operator				tree_iterator<const T>() const
 	{
 		return reinterpret_cast<red_black_node<const T>* >(this->_content); //finding another solution would be awesome
 	}
+	//!IMPORTANT!
 
-	template <class T>
-	tree_iterator<T>::operator				node_pointer() const
+	template <class T, class Node>
+	tree_iterator<T, Node>::operator				node_pointer() const
 	{
 		return this->_content;
 	}
 
-	template <class T>
-	typename tree_iterator<T>::iterator		&tree_iterator<T>::operator=(tree_iterator const &right)
+	template <class T, class Node>
+	typename tree_iterator<T, Node>::iterator		&tree_iterator<T, Node>::operator=(tree_iterator const &right)
 	{
 		this->_content = right._content;
 		return *this;
 	}
 	
-	template <class T>
-	typename tree_iterator<T>::reference	tree_iterator<T>::operator*(void) const
+	template <class T, class Node>
+	typename tree_iterator<T, Node>::reference	tree_iterator<T, Node>::operator*(void) const
 	{
 		return this->_content->get_value();
 	}
 	
-	template <class T>
-	typename tree_iterator<T>::pointer		tree_iterator<T>::operator->(void) const
+	template <class T, class Node>
+	typename tree_iterator<T, Node>::pointer		tree_iterator<T, Node>::operator->(void) const
 	{
 		return &this->_content->get_value();
 	}
 	
-	template <class T>
-	typename tree_iterator<T>::iterator		&tree_iterator<T>::operator++(void) 
+	template <class T, class Node>
+	typename tree_iterator<T, Node>::iterator		&tree_iterator<T, Node>::operator++(void) 
 	{
 		this->_content = this->_content->iterate();
 		return *this;
 	}
 	
-	template <class T>
-	typename tree_iterator<T>::iterator		tree_iterator<T>::operator++(int)
+	template <class T, class Node>
+	typename tree_iterator<T, Node>::iterator		tree_iterator<T, Node>::operator++(int)
 	{
 		tree_iterator	tmp(*this);
 		this->_content = this->_content->iterate();
 		return tmp;
 	}
 	
-	template <class T>
-	typename tree_iterator<T>::iterator		&tree_iterator<T>::operator--(void)
+	template <class T, class Node>
+	typename tree_iterator<T, Node>::iterator		&tree_iterator<T, Node>::operator--(void)
 	{
 		this->_content = this->_content->reverse_iterate();
 		return *this;
 	}
 	
-	template <class T>
-	typename tree_iterator<T>::iterator		tree_iterator<T>::operator--(int)
+	template <class T, class Node>
+	typename tree_iterator<T, Node>::iterator		tree_iterator<T, Node>::operator--(int)
 	{
 		tree_iterator	tmp(*this);
 		this->_content = this->_content->reverse_iterate();
@@ -139,8 +141,8 @@ namespace ft
 	/*
 		UTILS
 	*/
-	// template <class T>
-	// typename tree_iterator<T>::pointer const	&tree_iterator<T>::base(void) const
+	// template <class T, class Node>
+	// typename tree_iterator<T, Node>::pointer const	&tree_iterator<T, Node>::base(void) const
 	// {
 	// 	return &this->_content->get_value();
 	// }
@@ -150,15 +152,15 @@ namespace ft
 	*/
 
 
-	template <class T>
-	bool									operator==(tree_iterator<T> &left, tree_iterator<T> &right)
+	template <class T, class Node>
+	bool									operator==(tree_iterator<T, Node> &left, tree_iterator<T, Node> &right)
 	{
 		return *left == *right;
 	}
 
 
-	template <class T>
-	bool									operator!=(tree_iterator<T> &left, tree_iterator<T> &right)
+	template <class T, class Node>
+	bool									operator!=(tree_iterator<T, Node> &left, tree_iterator<T, Node> &right)
 	{
 		return !(left == right);
 	}

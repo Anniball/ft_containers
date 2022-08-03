@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 10:12:44 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/03 11:49:58 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/03 13:23:05 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,49 +19,50 @@
 # include "../iter/TreeIterator.hpp"
 # include "../util/Pair.hpp"
 # include "../util/rbtree/RedBlackTree.hpp"
+# include "../util/rbtree/RedBlackNode.hpp"
 # include "../util/Utilities.hpp"
 
 namespace ft
 {
-	template <class T>
+	template <class T, class Compare>
 	class red_black_node;
 
-	template <class T>
+	template <class T, class Node>
 	class tree_iterator;
 
 	template <class Key, class T, class Compare = ft::less<Key>, class Alloc = std::allocator<pair<const Key,T> > >
 	class map
 	{
 		public :
-			typedef Key													key_type;
-			typedef T													mapped_type;
-			typedef pair<const Key, T>									value_type;
-			typedef Compare												key_compare;
-			typedef Alloc												allocator_type;
-			typedef	typename allocator_type::reference					reference;
-			typedef typename allocator_type::const_reference			const_reference;
-			typedef typename allocator_type::pointer					pointer;
-			typedef typename allocator_type::const_pointer				const_pointer;
-			typedef	typename ft::tree_iterator<value_type>				iterator;
-			typedef typename ft::tree_iterator<const value_type>		const_iterator;
-			typedef typename ft::reverse_iterator<iterator>				reverse_iterator;
-			typedef typename ft::reverse_iterator<const_iterator>		const_reverse_iterator;
-			typedef typename iterator_traits<iterator>::difference_type	difference_type;
-			typedef size_t												size_type;
-
 			/*
 				CLASSES
 			*/
-			class value_compare : public ft::binary_function<value_type, value_type, bool>
+			class value_compare : public ft::binary_function<pair<const Key, T>, pair<const Key, T>, bool>
 			{
 				friend class map<Key, T, Compare, Alloc>;
 				protected:
 					Compare _comp;
-					value_compare(key_compare c) : _comp(c) {}
+					value_compare(Compare c) : _comp(c) {}
 		
 				public:
-					bool operator()(const value_type& x, const value_type& y) const { return _comp(x.first, y.first); }
+					bool operator()(const pair<const Key, T>& x, const pair<const Key, T>& y) const { return _comp(x.first, y.first); }
 			};
+
+			typedef Key																							key_type;
+			typedef T																							mapped_type;
+			typedef pair<const Key, T>																			value_type;
+			typedef Compare																						key_compare;
+			typedef Alloc																						allocator_type;
+			typedef	typename allocator_type::reference															reference;
+			typedef typename allocator_type::const_reference													const_reference;
+			typedef typename allocator_type::pointer															pointer;
+			typedef typename allocator_type::const_pointer														const_pointer;
+			typedef	typename ft::tree_iterator<value_type, red_black_node<value_type, value_compare> >			iterator;
+			typedef typename ft::tree_iterator<const value_type, red_black_node<value_type, value_compare> >	const_iterator;
+			typedef typename ft::reverse_iterator<iterator>														reverse_iterator;
+			typedef typename ft::reverse_iterator<const_iterator>												const_reverse_iterator;
+			typedef typename iterator_traits<iterator>::difference_type											difference_type;
+			typedef size_t																						size_type;
 
 			/*
 				CONSTRUCTORS AND DESTRUCTORS
@@ -123,8 +124,8 @@ namespace ft
 			allocator_type						get_allocator(void) const;
 
 		private :
-			red_black_tree<value_type, Alloc>	_tree;
-			size_type							_size;
+			red_black_tree<value_type, Alloc, value_compare>	_tree;
+			size_type											_size;
 	};
 
 	/*

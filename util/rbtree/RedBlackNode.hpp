@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 13:56:12 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/02 14:37:57 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/03 14:09:18 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,23 +23,25 @@
 
 namespace ft
 {
-	template <class T, class Alloc = std::allocator<T> >
+	template <class T, class Alloc, class Compare>
 	class red_black_tree;
 
-	template <class T>
+	template <class T, class Node>
 	class tree_iterator;
 	
-	template <class T>
+	template <class T, class Compare>
 	class red_black_node
 	{
 		public :
 			typedef T													value_type;
-			typedef ft::red_black_node<T>								node_type;
-			typedef ft::red_black_tree<T>								tree_type;
+			typedef ft::red_black_node<T, Compare>						node_type;
+			typedef std::allocator<value_type>							alloc_type;
+			typedef Compare												value_compare;
+			typedef ft::red_black_tree<T, alloc_type, value_compare>	tree_type;
 			typedef node_type*											pointer;
 			typedef const node_type*									const_pointer;
-			typedef ft::tree_iterator<value_type>						iterator;
-			typedef ft::tree_iterator<const value_type>					const_iterator;
+			typedef ft::tree_iterator<value_type, node_type>			iterator;
+			typedef ft::tree_iterator<const value_type, node_type>		const_iterator;
 			typedef ft::reverse_iterator<iterator>						reverse_iterator;
 			typedef ft::reverse_iterator<const_iterator>				const_reverse_iterator;
 			typedef typename iterator_traits<iterator>::difference_type	difference_type;
@@ -49,10 +51,10 @@ namespace ft
 			/*
 				CONSTRUCTORS AND DESTRUCTORS
 			*/
-			red_black_node(red_black_tree<T> &tree);
-			red_black_node(const value_type &val, red_black_tree<T> &tree);
-			red_black_node(const pointer parent, red_black_tree<T> &tree);
-			red_black_node(const value_type &val, const pointer left, const pointer right, const pointer parent, red_black_tree<T> &tree);
+			red_black_node(tree_type &tree);
+			red_black_node(const value_type &val, tree_type &tree);
+			red_black_node(const pointer parent, tree_type &tree);
+			red_black_node(const value_type &val, const pointer left, const pointer right, const pointer parent, tree_type &tree);
 			red_black_node(const node_type &src);
 			~red_black_node(void);
 			
@@ -92,7 +94,7 @@ namespace ft
 			pointer				_left;
 			pointer				_right;
 			pointer				_parent;
-			red_black_tree<T>	&_tree;
+			tree_type			&_tree;
 
 			/*
 				PRIVATE UTILS
@@ -102,49 +104,49 @@ namespace ft
 	/*
 		CONSTRUCTORS AND DESTRUCTORS
 	*/
-	template <class T>
-	red_black_node<T>::red_black_node(red_black_tree<T> &tree) : _content(), _color(RBT_RED), _left(nullptr), _right(nullptr), _parent(nullptr), _tree(tree) {}
+	template <class T, class Compare>
+	red_black_node<T, Compare>::red_black_node(tree_type &tree) : _content(), _color(RBT_RED), _left(nullptr), _right(nullptr), _parent(nullptr), _tree(tree) {}
 	
-	template <class T>
-	red_black_node<T>::red_black_node(const value_type &val, red_black_tree<T> &tree) :
+	template <class T, class Compare>
+	red_black_node<T, Compare>::red_black_node(const value_type &val, tree_type &tree) :
 	_color(RBT_RED), _left(nullptr), _right(nullptr), _parent(nullptr), _content(val), _tree(tree) {}
 
-	template <class T>
-	red_black_node<T>::red_black_node(const pointer parent, red_black_tree<T> &tree) :
+	template <class T, class Compare>
+	red_black_node<T, Compare>::red_black_node(const pointer parent, tree_type &tree) :
 	_content(), _color(RBT_BLACK), _left(nullptr), _right(nullptr), _parent(parent), _tree(tree) {}
 	
-	template <class T>
-	red_black_node<T>::red_black_node(const value_type &val, const pointer left, const pointer right, const pointer parent, red_black_tree<T> &tree) :
+	template <class T, class Compare>
+	red_black_node<T, Compare>::red_black_node(const value_type &val, const pointer left, const pointer right, const pointer parent, tree_type &tree) :
 	_content(val), _color(RBT_RED), _left(left), _right(right), _parent(parent), _tree(tree) {}
 	
-	template <class T>
-	red_black_node<T>::red_black_node(const node_type &src) :
+	template <class T, class Compare>
+	red_black_node<T, Compare>::red_black_node(const node_type &src) :
 	_content(src._content), _color(src._color), _left(src._left), _right(src._right), _parent(src._parent), _tree(src._tree) {}
 	
-	template <class T>
-	red_black_node<T>::~red_black_node(void) {}
+	template <class T, class Compare>
+	red_black_node<T, Compare>::~red_black_node(void) {}
 
 	/*
 		GETTERS
 	*/
 	
-	template <class T>
-	typename red_black_node<T>::value_type	&red_black_node<T>::get_value(void) {return this->_content;}
+	template <class T, class Compare>
+	typename red_black_node<T, Compare>::value_type	&red_black_node<T, Compare>::get_value(void) {return this->_content;}
 
-	template <class T>
-	typename red_black_node<T>::pointer		red_black_node<T>::get_left(void) const {return this->_left;}
+	template <class T, class Compare>
+	typename red_black_node<T, Compare>::pointer		red_black_node<T, Compare>::get_left(void) const {return this->_left;}
 	
-	template <class T>
-	typename red_black_node<T>::pointer		red_black_node<T>::get_right(void) const {return this->_right;}
+	template <class T, class Compare>
+	typename red_black_node<T, Compare>::pointer		red_black_node<T, Compare>::get_right(void) const {return this->_right;}
 	
-	template <class T>
-	typename red_black_node<T>::pointer		red_black_node<T>::get_parent(void) const {return this->_parent;}
+	template <class T, class Compare>
+	typename red_black_node<T, Compare>::pointer		red_black_node<T, Compare>::get_parent(void) const {return this->_parent;}
 	
-	template <class T>
-	typename red_black_node<T>::pointer		red_black_node<T>::get_grand_parent(void) const {return this->_parent->_parent;}
+	template <class T, class Compare>
+	typename red_black_node<T, Compare>::pointer		red_black_node<T, Compare>::get_grand_parent(void) const {return this->_parent->_parent;}
 	
-	template <class T>
-	typename red_black_node<T>::pointer		red_black_node<T>::get_uncle(void) const
+	template <class T, class Compare>
+	typename red_black_node<T, Compare>::pointer		red_black_node<T, Compare>::get_uncle(void) const
 	{
 		pointer	parent = this->_parent;
 		pointer	grand_parent = parent->_parent;
@@ -156,46 +158,46 @@ namespace ft
 			return grand_parent->_left;
 	}
 
-	template <class T>
-	bool									red_black_node<T>::is_red(void) const {return this->_color == RBT_RED;}
+	template <class T, class Compare>
+	bool									red_black_node<T, Compare>::is_red(void) const {return this->_color == RBT_RED;}
 	
-	template <class T>
-	bool									red_black_node<T>::is_black(void) const {return this->_color == RBT_BLACK;}
+	template <class T, class Compare>
+	bool									red_black_node<T, Compare>::is_black(void) const {return this->_color == RBT_BLACK;}
 	
-	template <class T>
-	bool									red_black_node<T>::is_leaf(void) const {return this->_left == nullptr && this->_right == nullptr;}
+	template <class T, class Compare>
+	bool									red_black_node<T, Compare>::is_leaf(void) const {return this->_left == nullptr && this->_right == nullptr;}
 
-	template <class T>
-	void									red_black_node<T>::set_value(value_type	const &val) {this->_content = val;}
+	template <class T, class Compare>
+	void									red_black_node<T, Compare>::set_value(value_type	const &val) {this->_content = val;}
 	
-	template <class T>
-	void									red_black_node<T>::set_right(pointer node) {this->_right = node;}
+	template <class T, class Compare>
+	void									red_black_node<T, Compare>::set_right(pointer node) {this->_right = node;}
 	
-	template <class T>
-	void									red_black_node<T>::set_left(pointer node) {this->_left = node;}
+	template <class T, class Compare>
+	void									red_black_node<T, Compare>::set_left(pointer node) {this->_left = node;}
 	
-	template <class T>
-	void									red_black_node<T>::set_parent(pointer node) {this->_parent = node;}
+	template <class T, class Compare>
+	void									red_black_node<T, Compare>::set_parent(pointer node) {this->_parent = node;}
 
 
 	/*
 		UTILS
 	*/
 
-	template <class T>
-	typename red_black_node<T>::pointer		red_black_node<T>::iterate(void)
+	template <class T, class Compare>
+	typename red_black_node<T, Compare>::pointer		red_black_node<T, Compare>::iterate(void)
 	{
 		return this->_tree.iterate(this);
 	}
 
-	template <class T>
-	typename red_black_node<T>::pointer		red_black_node<T>::reverse_iterate(void)
+	template <class T, class Compare>
+	typename red_black_node<T, Compare>::pointer		red_black_node<T, Compare>::reverse_iterate(void)
 	{
 		return this->_tree.reverse_iterate(this);
 	}
 
-	template <class T>
-	typename red_black_node<T>::pointer		red_black_node<T>::get_smallest(void) 
+	template <class T, class Compare>
+	typename red_black_node<T, Compare>::pointer		red_black_node<T, Compare>::get_smallest(void) 
 	{
 		node_type	*tmp = this;
 		while (!tmp->is_leaf() && !tmp->_left->is_leaf())
@@ -203,8 +205,8 @@ namespace ft
 		return tmp;
 	}
 	
-	template <class T>
-	typename red_black_node<T>::pointer		red_black_node<T>::get_biggest(void)
+	template <class T, class Compare>
+	typename red_black_node<T, Compare>::pointer		red_black_node<T, Compare>::get_biggest(void)
 	{
 		node_type	*tmp = this;
 		while (!tmp->is_leaf() && !tmp->_right->is_leaf())
@@ -215,8 +217,8 @@ namespace ft
 	/*
 		OPERATORS
 	*/
-	template <class T>
-	red_black_node<T>::operator				red_black_node<const T>() const
+	template <class T, class Compare>
+	red_black_node<T, Compare>::operator				red_black_node<const T>() const
 	{
 		return red_black_node<const T>(*this);
 	}
@@ -225,38 +227,38 @@ namespace ft
 		RELATIONAL OPERATORS
 	*/
 
-	template <class T>
-	bool									operator==(red_black_node<T> const &left, red_black_node<T> const &right)
+	template <class T, class Compare>
+	bool									operator==(red_black_node<T, Compare> const &left, red_black_node<T, Compare> const &right)
 	{
 		return left.get_value() == right.get_value();
 	}
 
-	template <class T>
-	bool									operator!=(red_black_node<T> const &left, red_black_node<T> const &right)
+	template <class T, class Compare>
+	bool									operator!=(red_black_node<T, Compare> const &left, red_black_node<T, Compare> const &right)
 	{
 		return !(left == right);
 	}
 
-	template <class T>
-	bool									operator<(red_black_node<T> const &left, red_black_node<T> const &right)
+	template <class T, class Compare>
+	bool									operator<(red_black_node<T, Compare> const &left, red_black_node<T, Compare> const &right)
 	{
 		return left.get_value() < right.get_value();
 	}
 
-	template <class T>
-	bool									operator<=(red_black_node<T> const &left, red_black_node<T> const &right)
+	template <class T, class Compare>
+	bool									operator<=(red_black_node<T, Compare> const &left, red_black_node<T, Compare> const &right)
 	{
 		return !(right < left);
 	}
 
-	template <class T>
-	bool									operator>(red_black_node<T> const &left, red_black_node<T> const &right)
+	template <class T, class Compare>
+	bool									operator>(red_black_node<T, Compare> const &left, red_black_node<T, Compare> const &right)
 	{
 		return (right < left);
 	}
 
-	template <class T>
-	bool									operator>=(red_black_node<T> const &left, red_black_node<T> const &right)
+	template <class T, class Compare>
+	bool									operator>=(red_black_node<T, Compare> const &left, red_black_node<T, Compare> const &right)
 	{
 		return !(left < right);
 	}
