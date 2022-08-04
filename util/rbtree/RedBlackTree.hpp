@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 16:02:21 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/04 11:19:58 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/04 11:40:45 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,7 +153,7 @@ namespace ft
 		while (*z != tmp)
 		{
 			if (z->is_leaf())
-				return nullptr;
+				return this->_end;
 			else if (tmp > *z)
 				z = z->get_right();
 			else
@@ -237,7 +237,7 @@ namespace ft
 		node_type	*z = this->search(val);
 		node_type	*left = z->get_left();
 		node_type	*right = z->get_right();
-		if (!z)
+		if (z == this->_end)
 			return false;
 		if ( (left->is_leaf() && right->is_leaf()) || (!left->is_leaf() && right->is_leaf()) )
 		{

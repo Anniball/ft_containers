@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 10:12:44 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/04 11:34:09 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/04 11:45:34 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,7 +144,7 @@ namespace ft
 	template <class Key, class T, class Compare, class Alloc>
 	template <class InputIterator>
 	map<Key, T, Compare, Alloc>::map(InputIterator first, InputIterator last, const map<Key, T, Compare, Alloc>::key_compare &comp, const map<Key, T, Compare, Alloc>::allocator_type &alloc)
-	: _tree(_val_comp), _size(0), _val_comp(key_compare()), key_comp
+	: _tree(_val_comp), _size(0), _val_comp(key_compare()), _key_comp()
 	{
 		(void)comp;
 		(void)alloc;
@@ -261,7 +261,7 @@ namespace ft
 	{
 		value_type v = value_type(k, mapped_type());
 		red_black_node<value_type, value_compare> *tmp = this->_tree.search(v);
-		if (tmp)
+		if (tmp != this->end())
 			return tmp->get_value().second;
 		this->_size++;
 		return this->_tree.insert(v)->get_value().second;
@@ -355,19 +355,19 @@ namespace ft
 	template <class Key, class T, class Compare, class Alloc>
 	typename map<Key, T, Compare, Alloc>::iterator					map<Key, T, Compare, Alloc>::find(const key_type& k)
 	{
-		(void)k;
+		return iterator(this->_tree.search(value_type(k, mapped_type())));
 	}
 	
 	template <class Key, class T, class Compare, class Alloc>
 	typename map<Key, T, Compare, Alloc>::const_iterator			map<Key, T, Compare, Alloc>::find(const key_type& k) const
 	{
-		(void)k;
+		return const_iterator(this->_tree.search(value_type(k, mapped_type())));
 	}
 	
 	template <class Key, class T, class Compare, class Alloc>
 	typename map<Key, T, Compare, Alloc>::size_type					map<Key, T, Compare, Alloc>::count(const key_type& k) const
 	{
-		(void)k;
+		return ft::distance(this->begin(), this->end());
 	}
 	
 	template <class Key, class T, class Compare, class Alloc>
