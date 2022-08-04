@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 10:12:44 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/04 11:28:47 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/04 11:34:09 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,8 @@ namespace ft
 		private :
 			red_black_tree<value_type, Alloc, value_compare>	_tree;
 			size_type											_size;
-			value_compare										_comp;
+			value_compare										_val_comp;
+			key_compare											_key_comp;
 	};
 
 	/*
@@ -143,7 +144,7 @@ namespace ft
 	template <class Key, class T, class Compare, class Alloc>
 	template <class InputIterator>
 	map<Key, T, Compare, Alloc>::map(InputIterator first, InputIterator last, const map<Key, T, Compare, Alloc>::key_compare &comp, const map<Key, T, Compare, Alloc>::allocator_type &alloc)
-	: _tree(_comp), _size(0), _comp(key_compare())
+	: _tree(_val_comp), _size(0), _val_comp(key_compare()), key_comp
 	{
 		(void)comp;
 		(void)alloc;
@@ -280,7 +281,7 @@ namespace ft
 	typename map<Key, T, Compare, Alloc>::iterator					map<Key, T, Compare, Alloc>::insert(iterator position, const value_type& val)
 	{
 		this->_size++;
-		if (this->_comp(*(position - 1), val) && this->_comp(val, *position))
+		if (this->_val_comp(*(position - 1), val) && this->_val_comp(val, *position))
 			return iterator(this->_tree.insert(val, position));
 		else
 			return iterator(this->_tree.insert(val));
@@ -339,9 +340,16 @@ namespace ft
 	
 	/*Observers*/
 	template <class Key, class T, class Compare, class Alloc>
-	typename map<Key, T, Compare, Alloc>::key_compare				map<Key, T, Compare, Alloc>::key_comp() const {}
+	typename map<Key, T, Compare, Alloc>::key_compare				map<Key, T, Compare, Alloc>::key_comp() const
+	{
+		return this->_key_comp;
+	}
+	
 	template <class Key, class T, class Compare, class Alloc>
-	typename map<Key, T, Compare, Alloc>::value_compare				map<Key, T, Compare, Alloc>::value_comp() const {}
+	typename map<Key, T, Compare, Alloc>::value_compare				map<Key, T, Compare, Alloc>::value_comp() const
+	{
+		return this->_val_comp;
+	}
 	
 	/*Operations*/
 	template <class Key, class T, class Compare, class Alloc>
