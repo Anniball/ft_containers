@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 16:02:21 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/04 11:40:45 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/04 13:44:55 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@ namespace ft
 				MEMBER METHODS
 			*/
 			node_type			*search(value_type &val);
+			node_type			*search_lower_bound(value_type &val);
+			node_type			*search_upper_bound(value_type &val);
 			node_type			*insert(value_type &val);
 			node_type			*insert(value_type &val, node_type *hint);
 			bool				erase(value_type &val);
@@ -160,6 +162,40 @@ namespace ft
 				z = z->get_left();
 		}
 		return z;
+	}
+
+	template <class T, class Alloc, class Compare>
+	typename red_black_tree<T, Alloc, Compare>::node_type			*red_black_tree<T, Alloc, Compare>::search_lower_bound(value_type &val)
+	{
+		node_type	*z = this->root;
+		node_type	tmp(val, *this);
+		while (!z->is_leaf())
+		{
+			if (*z == tmp)
+				return z;
+			else if (tmp > *z)
+				z = z->get_right();
+			else
+				z = z->get_left();
+		}
+		return z->iterate();
+	}
+
+	template <class T, class Alloc, class Compare>
+	typename red_black_tree<T, Alloc, Compare>::node_type			*red_black_tree<T, Alloc, Compare>::search_lower_bound(value_type &val)
+	{
+		node_type	*z = this->root;
+		node_type	tmp(val, *this);
+		while (!z->is_leaf())
+		{
+			if (*z == tmp)
+				break;
+			else if (tmp > *z)
+				z = z->get_right();
+			else
+				z = z->get_left();
+		}
+		return z->iterate();
 	}
 
 	//DELETE ME
@@ -277,10 +313,12 @@ namespace ft
 	template <class T, class Alloc, class Compare>
 	typename red_black_tree<T, Alloc, Compare>::node_type			*red_black_tree<T, Alloc, Compare>::iterate(node_type *k)
 	{
-		node_type	*right = k->get_right();
+		node_type	*right = nullptr;
+		if (!k->is_leaf())
+			k = k->get_right();
 		node_type	*parent = k->get_parent();
 		
-		if (!right->is_leaf())
+		if (right && !right->is_leaf())
 			return right->get_smallest();
 		while (parent && parent->get_right() == k)
 		{

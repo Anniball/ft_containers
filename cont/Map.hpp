@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 10:12:44 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/04 11:45:34 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/04 13:54:19 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,30 +83,30 @@ namespace ft
 				MEMBER FUNCTIONS
 			*/
 			/*Iterators*/ 
-			iterator							begin(void); //ok
-			const_iterator						begin(void) const; //ok
-			iterator							end(void); //ok
-			const_iterator						end(void) const; //ok
-			reverse_iterator					rbegin(void); //ok
-			const_reverse_iterator				rbegin(void) const; //ok
-			reverse_iterator					rend(void); //ok
-			const_reverse_iterator				rend(void) const; //ok
+			iterator							begin(void);
+			const_iterator						begin(void) const;
+			iterator							end(void);
+			const_iterator						end(void) const;
+			reverse_iterator					rbegin(void);
+			const_reverse_iterator				rbegin(void) const;
+			reverse_iterator					rend(void);
+			const_reverse_iterator				rend(void) const;
 			/*Capacity*/
-			bool								empty(void) const; //ok
-			size_type							size(void) const; //ok
-			size_type							max_size(void) const; //ok
+			bool								empty(void) const;
+			size_type							size(void) const;
+			size_type							max_size(void) const;
 			/*Element access*/
-			mapped_type							&operator[](const key_type& k); //ok
+			mapped_type							&operator[](const key_type& k);
 			/*Modifiers*/
-			pair<iterator,bool>					insert(const value_type& val); //ok
-			iterator							insert(iterator position, const value_type& val); //ok
+			pair<iterator,bool>					insert(const value_type& val);
+			iterator							insert(iterator position, const value_type& val);
 			template <class InputIterator>
-			void 								insert(InputIterator first, InputIterator last); //ok
-			void								erase(iterator position); //ok
-			size_type							erase(const key_type& k); //ok
-			void								erase(iterator first, iterator last); //ok
+			void 								insert(InputIterator first, InputIterator last);
+			void								erase(iterator position);
+			size_type							erase(const key_type& k);
+			void								erase(iterator first, iterator last);
 			void								swap(map& x);
-			void								clear(void); //ok
+			void								clear(void);
 			/*Observers*/
 			key_compare							key_comp(void) const;
 			value_compare						value_comp(void) const;
@@ -119,7 +119,7 @@ namespace ft
 			iterator							upper_bound(const key_type& k);
 			const_iterator						upper_bound(const key_type& k) const;
 			pair<const_iterator,const_iterator>	equal_range(const key_type& k) const;
-			pair<iterator,iterator>				equal_range (const key_type& k);
+			pair<iterator,iterator>				equal_range(const key_type& k);
 			/*Allocator*/
 			allocator_type						get_allocator(void) const;
 
@@ -260,9 +260,9 @@ namespace ft
 	typename map<Key, T, Compare, Alloc>::mapped_type				&map<Key, T, Compare, Alloc>::operator[](const key_type& k)
 	{
 		value_type v = value_type(k, mapped_type());
-		red_black_node<value_type, value_compare> *tmp = this->_tree.search(v);
-		if (tmp != this->end())
-			return tmp->get_value().second;
+		iterator it = iterator(this->_tree.search(v));
+		if (it != this->end())
+			return it->get_value().second;
 		this->_size++;
 		return this->_tree.insert(v)->get_value().second;
 	}
@@ -373,42 +373,45 @@ namespace ft
 	template <class Key, class T, class Compare, class Alloc>
 	typename map<Key, T, Compare, Alloc>::iterator					map<Key, T, Compare, Alloc>::lower_bound(const key_type& k)
 	{
-		(void)k;
+		return iterator(this->_tree.search_lower_bound(value_type(k, mapped_type())));
 	}
 	
 	template <class Key, class T, class Compare, class Alloc>
 	typename map<Key, T, Compare, Alloc>::const_iterator			map<Key, T, Compare, Alloc>::lower_bound(const key_type& k) const
 	{
-		(void)k;
+		return const_iterator(this->_tree.search_lower_bound(value_type(k, mapped_type())));
 	}
 	
 	template <class Key, class T, class Compare, class Alloc>
 	typename map<Key, T, Compare, Alloc>::iterator					map<Key, T, Compare, Alloc>::upper_bound(const key_type& k)
 	{
-		(void)k;
+		return iterator(this->_tree.search_upper_bound(value_type(k, mapped_type())));
 	}
 	
 	template <class Key, class T, class Compare, class Alloc>
 	typename map<Key, T, Compare, Alloc>::const_iterator			map<Key, T, Compare, Alloc>::upper_bound(const key_type& k) const
 	{
-		(void)k;
+		return const_iterator(this->_tree.search_upper_bound(value_type(k, mapped_type())));
 	}
 	
 	template <class Key, class T, class Compare, class Alloc>
 	pair<typename map<Key, T, Compare, Alloc>::const_iterator,typename map<Key, T, Compare, Alloc>::const_iterator>	map<Key, T, Compare, Alloc>::equal_range(const key_type& k) const
 	{
-		(void)k;
+		return pair<const_iterator, const_iterator>(this->lower_bound(), this->upper_bound());
 	}
 	
 	template <class Key, class T, class Compare, class Alloc>
 	pair<typename map<Key, T, Compare, Alloc>::iterator,typename map<Key, T, Compare, Alloc>::iterator>				map<Key, T, Compare, Alloc>::equal_range (const key_type& k)
 	{
-		(void)k;
+		return pair<iterator, iterator>(this->lower_bound(), this->upper_bound());
 	}
 
 	/*Allocator*/
 	template <class Key, class T, class Compare, class Alloc>
-	typename map<Key, T, Compare, Alloc>::allocator_type			map<Key, T, Compare, Alloc>::get_allocator() const {}
+	typename map<Key, T, Compare, Alloc>::allocator_type			map<Key, T, Compare, Alloc>::get_allocator() const
+	{
+		return allocator_type();
+	}
 
 	
 	/*
