@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 10:12:44 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/04 11:21:16 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/04 11:28:47 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,21 +92,21 @@ namespace ft
 			reverse_iterator					rend(void); //ok
 			const_reverse_iterator				rend(void) const; //ok
 			/*Capacity*/
-			bool								empty(void) const;
-			size_type							size(void) const;
-			size_type							max_size(void) const;
+			bool								empty(void) const; //ok
+			size_type							size(void) const; //ok
+			size_type							max_size(void) const; //ok
 			/*Element access*/
-			mapped_type							&operator[](const key_type& k);
+			mapped_type							&operator[](const key_type& k); //ok
 			/*Modifiers*/
-			pair<iterator,bool>					insert(const value_type& val);
-			iterator							insert(iterator position, const value_type& val);
+			pair<iterator,bool>					insert(const value_type& val); //ok
+			iterator							insert(iterator position, const value_type& val); //ok
 			template <class InputIterator>
-			void 								insert(InputIterator first, InputIterator last);
-			void								erase(iterator position);
-			size_type							erase(const key_type& k);
-			void								erase(iterator first, iterator last);
+			void 								insert(InputIterator first, InputIterator last); //ok
+			void								erase(iterator position); //ok
+			size_type							erase(const key_type& k); //ok
+			void								erase(iterator first, iterator last); //ok
 			void								swap(map& x);
-			void								clear(void);
+			void								clear(void); //ok
 			/*Observers*/
 			key_compare							key_comp(void) const;
 			value_compare						value_comp(void) const;
@@ -329,7 +329,13 @@ namespace ft
 	}
 	
 	template <class Key, class T, class Compare, class Alloc>
-	void															map<Key, T, Compare, Alloc>::clear() {}
+	void															map<Key, T, Compare, Alloc>::clear()
+	{
+		iterator ite = this->end();
+		for (iterator it = this->begin(); it < ite; it++)
+			this->_tree.erase(*it);
+		this->_size = 0;
+	}
 	
 	/*Observers*/
 	template <class Key, class T, class Compare, class Alloc>
