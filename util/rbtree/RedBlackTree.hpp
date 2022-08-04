@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 16:02:21 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/04 15:17:12 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/04 15:48:50 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ namespace ft
 			node_type	*_create_leaf( node_type *parent);
 			void		_replace_node(node_type *parent, node_type *z, node_type *replacer);
 			void		_print_tree(void);
+			void		_remove_children(node_type *k);
 	};
 	
 	
@@ -95,15 +96,27 @@ namespace ft
 		this->_root = _node_alloc.allocate(1);
 		_node_alloc.construct(this->_end, node_type(*this));
 		_node_alloc.construct(this->_root, node_type(*this));
+		return ;
 	}
 	
-	// template <class T, class Alloc>
-	// red_black_tree(const &tree_type src) {} //LET'S GO BACK ON IT LATER
+	template <class T, class Alloc, class Compare>
+	red_black_tree<T, Alloc, Compare>::red_black_tree(const tree_type &src) : _node_alloc(src._node_alloc), _comp(src._comp)
+	{
+		this->_end = _node_alloc.allocate(1);
+		this->_root = _node_alloc.allocate(1);
+		_node_alloc.construct(this->_end, node_type(*src._end));
+		_node_alloc.construct(this->_root, node_type(*src._root));
+		for (node_type *node = src._root->iterate(); node != src._end; node = node->iterate())
+			this->insert(node->get_value());
+		return ;
+	}
 	
 	template <class T, class Alloc, class Compare>
 	red_black_tree<T, Alloc, Compare>::~red_black_tree()
 	{
-		//gotta put some things here	
+		this->_remove_children(this->_root);
+		this->_node_alloc.destroy(this->_end);
+		this->_node_alloc.deallocate(this->_end, 1);
 	}
 
 
@@ -369,7 +382,7 @@ namespace ft
 	}
 
 	template <class T, class Alloc, class Compare>
-	void														red_black_tree<T, Alloc, Compare>::_replace_node(node_type *parent, node_type *z, node_type *replacer)
+	void													red_black_tree<T, Alloc, Compare>::_replace_node(node_type *parent, node_type *z, node_type *replacer)
 	{
 		if (parent)
 		{
@@ -384,6 +397,17 @@ namespace ft
 		this->_node_alloc.destroy(z);
 		this->_node_alloc.deallocate(z, 1);
 		return ;
+	}
+
+	template <class T, class Alloc, class Compare>
+	void													red_black_tree<T, Alloc, Compare>::_remove_children(node_type *k)
+	{
+		if (k->get_left())
+			this->_remove_children(k->get_left());
+		if (k->get_right())
+			this->_remove_children(k->get_right());
+		this->_node_alloc.destroy(k);
+		this->_node_alloc.deallocate(k, 1);
 	}
 }
 
