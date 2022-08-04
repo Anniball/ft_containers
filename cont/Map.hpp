@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 10:12:44 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/04 14:24:57 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/04 14:50:17 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,8 +126,8 @@ namespace ft
 		private :
 			red_black_tree<value_type, Alloc, value_compare>	_tree;
 			size_type											_size;
-			value_compare										_val_comp;
 			key_compare											_key_comp;
+			value_compare										_val_comp;
 	};
 
 	/*
@@ -136,7 +136,7 @@ namespace ft
 
 	template <class Key, class T, class Compare, class Alloc>
 	map<Key, T, Compare, Alloc>::map(const typename map<Key, T, Compare, Alloc>::key_compare &comp, const typename map<Key, T, Compare, Alloc>::allocator_type &alloc)
-	: _tree(_val_comp), size(0), _val_comp(_key_comp), _key_comp(comp)
+	: _tree(_val_comp), _size(0), _key_comp(comp), _val_comp(_key_comp)
 	{
 		(void)alloc;
 	}
@@ -144,7 +144,7 @@ namespace ft
 	template <class Key, class T, class Compare, class Alloc>
 	template <class InputIterator>
 	map<Key, T, Compare, Alloc>::map(InputIterator first, InputIterator last, const map<Key, T, Compare, Alloc>::key_compare &comp, const map<Key, T, Compare, Alloc>::allocator_type &alloc)
-	: _tree(_val_comp), _size(0), _val_comp(_key_comp), _key_comp(comp)
+	: _tree(_val_comp), _size(0), _key_comp(comp), _val_comp(_key_comp)
 	{
 		(void)alloc;
 		for (InputIterator it = first; it != last; it++)
@@ -259,7 +259,7 @@ namespace ft
 		value_type v = value_type(k, mapped_type());
 		iterator it = iterator(this->_tree.search(v));
 		if (it != this->end())
-			return it->get_value().second;
+			return it->second;
 		this->_size++;
 		return this->_tree.insert(v)->get_value().second;
 	}
@@ -323,7 +323,7 @@ namespace ft
 	template <class Key, class T, class Compare, class Alloc>
 	void															map<Key, T, Compare, Alloc>::swap(map& x)
 	{
-		this->_tree.swap_content(map._tree);
+		this->_tree.swap_content(x._tree);
 	}
 	
 	template <class Key, class T, class Compare, class Alloc>
@@ -364,7 +364,9 @@ namespace ft
 	template <class Key, class T, class Compare, class Alloc>
 	typename map<Key, T, Compare, Alloc>::size_type					map<Key, T, Compare, Alloc>::count(const key_type& k) const
 	{
-		return ft::distance(this->begin(), this->end());
+		if (this->_tree.search(value_type(k, mapped_type())) == this->end())
+			return 0;
+		return 1;
 	}
 	
 	template <class Key, class T, class Compare, class Alloc>
@@ -394,13 +396,15 @@ namespace ft
 	template <class Key, class T, class Compare, class Alloc>
 	pair<typename map<Key, T, Compare, Alloc>::const_iterator,typename map<Key, T, Compare, Alloc>::const_iterator>	map<Key, T, Compare, Alloc>::equal_range(const key_type& k) const
 	{
-		return pair<const_iterator, const_iterator>(this->lower_bound(), this->upper_bound());
+		value_type	val(k, mapped_type());
+		return pair<const_iterator, const_iterator>(this->_tree.search_lower_bound(val), this->_tree.search_upper_bound(val));
 	}
 	
 	template <class Key, class T, class Compare, class Alloc>
 	pair<typename map<Key, T, Compare, Alloc>::iterator,typename map<Key, T, Compare, Alloc>::iterator>				map<Key, T, Compare, Alloc>::equal_range (const key_type& k)
 	{
-		return pair<iterator, iterator>(this->lower_bound(), this->upper_bound());
+		value_type	val(k, mapped_type());
+		return pair<iterator, iterator>(this->_tree.search_lower_bound(val), this->_tree.search_upper_bound(val));
 	}
 
 	/*Allocator*/

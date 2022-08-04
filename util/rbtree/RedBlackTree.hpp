@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 16:02:21 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/04 14:13:12 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/04 14:39:56 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,7 @@ namespace ft
 			/*
 				CONSTRUCTORS AND DESTRUCTORS
 			*/
-			red_black_tree(void);
-			red_black_tree(const value_compare &comp);
+			explicit red_black_tree(const value_compare &comp = value_compare());
 			red_black_tree(const tree_type &src);
 			~red_black_tree(void);
 
@@ -88,17 +87,9 @@ namespace ft
 	/*
 		CONSTRUCTORS AND DESTRUCTORS
 	*/
-	template <class T, class Alloc, class Compare>
-	red_black_tree<T, Alloc, Compare>::red_black_tree() : _node_alloc(allocator_type()), _comp()
-	{
-		this->_end = _node_alloc.allocate(1);
-		this->_root = _node_alloc.allocate(1);
-		_node_alloc.construct(this->_end, node_type(*this));
-		_node_alloc.construct(this->_root, node_type(*this));
-	}
 
 	template <class T, class Alloc, class Compare>
-	red_black_tree<T, Alloc, Compare>::red_black_tree(const value_compare &comp) : _node_alloc(allocator_type()), _comp(comp)
+	red_black_tree<T, Alloc, Compare>::red_black_tree(const value_compare &comp) : _node_alloc(), _comp(comp)
 	{
 		this->_end = _node_alloc.allocate(1);
 		this->_root = _node_alloc.allocate(1);
@@ -184,7 +175,7 @@ namespace ft
 	}
 
 	template <class T, class Alloc, class Compare>
-	typename red_black_tree<T, Alloc, Compare>::node_type			*red_black_tree<T, Alloc, Compare>::search_lower_bound(value_type &val)
+	typename red_black_tree<T, Alloc, Compare>::node_type			*red_black_tree<T, Alloc, Compare>::search_upper_bound(value_type &val)
 	{
 		node_type	*z = this->root;
 		node_type	tmp(val, *this);
