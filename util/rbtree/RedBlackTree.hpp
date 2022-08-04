@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 16:02:21 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/04 13:44:55 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/04 14:13:12 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ namespace ft
 			~red_black_tree(void);
 
 			/*
-				GETTERS
+				GETTERS & SETTERS
 			*/
 			node_type				*get_root(void) const;
 			node_type				*get_end(void) const;
@@ -68,6 +68,7 @@ namespace ft
 			node_type			*create_node(node_type *parent, node_type *left, node_type *right, value_type &content);
 			node_type			*iterate(node_type *k);
 			node_type			*reverse_iterate(node_type *k);
+			void				swap_content(tree_type &tree);
 
 		private :
 			node_type			*_root;
@@ -142,6 +143,7 @@ namespace ft
 	{
 		return this->_node_alloc;
 	}
+	
 
 	/*
 		MEMBER METHODS
@@ -352,6 +354,18 @@ namespace ft
 		//return this->_get_smallest(this->_root); //maybe this instead
 	}
 
+	template <class T, class Alloc, class Compare>
+	void													red_black_tree<T, Alloc, Compare>::swap_content(tree_type &tree)
+	{
+		node_type *tmp_root = tree._root;
+		node_type *tmp_end = tree._end;
+		tree._root = this->_root;
+		tree._end = this->_end;
+		this->_root = tmp_root;
+		this->_end = tmp_end;
+		return ;
+	}
+
 
 	/*
 		PRIVATE UTILS METHOD
@@ -380,6 +394,7 @@ namespace ft
 		replacer->set_parent(parent);
 		this->_node_alloc.destroy(z);
 		this->_node_alloc.deallocate(z, 1);
+		return ;
 	}
 }
 

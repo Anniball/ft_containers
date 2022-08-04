@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 10:12:44 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/04 13:54:19 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/04 14:14:16 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -326,7 +326,7 @@ namespace ft
 	template <class Key, class T, class Compare, class Alloc>
 	void															map<Key, T, Compare, Alloc>::swap(map& x)
 	{
-		(void)x; 
+		this->_tree.swap_content(map._tree);
 	}
 	
 	template <class Key, class T, class Compare, class Alloc>

@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 13:56:12 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/03 16:54:58 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/04 13:56:48 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,6 @@
 
 # define RBT_RED true
 # define RBT_BLACK false
-
-/*
-'const ft::red_black_node<ft::pair<const int, std::__1::basic_string<char> >, ft::map<int, std::__1::basic_string<char>, ft::less<int>, std::__1::allocator<ft::pair<const int, std::__1::basic_string<char> > > >::value_compare>::node_type'
-aka
-'const red_black_node<ft::pair<const int, std::__1::basic_string<char> >, ft::map<int, std::__1::basic_string<char>, ft::less<int>, std::__1::allocator<ft::pair<const int, std::__1::basic_string<char> > > >::value_compare>')
-and
-'ft::red_black_node<ft::pair<const int, std::__1::basic_string<char> >, ft::map<int, std::__1::basic_string<char>, ft::less<int>, std::__1::allocator<ft::pair<const int, std::__1::basic_string<char> > > >::value_compare>'
-*/
 
 namespace ft
 {
