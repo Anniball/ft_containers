@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 16:02:21 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/03 17:03:22 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/04 11:19:58 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,10 @@ namespace ft
 			/*
 				GETTERS
 			*/
-			node_type			*get_root(void) const;
-			node_type			*get_end(void) const;
-			value_compare const	&get_comp(void) const;
+			node_type				*get_root(void) const;
+			node_type				*get_end(void) const;
+			value_compare const		&get_comp(void) const;
+			allocator_type const	&get_alloc(void) const;
 
 			/*
 				MEMBER METHODS
@@ -117,23 +118,28 @@ namespace ft
 	*/
 	
 	template <class T, class Alloc, class Compare>
-	typename red_black_tree<T, Alloc, Compare>::node_type			*red_black_tree<T, Alloc, Compare>::get_root(void) const
+	typename red_black_tree<T, Alloc, Compare>::node_type				*red_black_tree<T, Alloc, Compare>::get_root(void) const
 	{
 		return this->_root;
 	}
 	
 	template <class T, class Alloc, class Compare>
-	typename red_black_tree<T, Alloc, Compare>::node_type			*red_black_tree<T, Alloc, Compare>::get_end(void) const
+	typename red_black_tree<T, Alloc, Compare>::node_type				*red_black_tree<T, Alloc, Compare>::get_end(void) const
 	{
 		return this->_end;
 	}
 
 	template <class T, class Alloc, class Compare>
-	typename red_black_tree<T, Alloc, Compare>::value_compare const	&red_black_tree<T, Alloc, Compare>::get_comp(void) const
+	typename red_black_tree<T, Alloc, Compare>::value_compare const		&red_black_tree<T, Alloc, Compare>::get_comp(void) const
 	{
 		return this->_comp;	
 	}
 	
+	template <class T, class Alloc, class Compare>
+	typename red_black_tree<T, Alloc, Compare>::allocator_type const	&red_black_tree<T, Alloc, Compare>::get_alloc(void) const
+	{
+		return this->_node_alloc;
+	}
 
 	/*
 		MEMBER METHODS
@@ -163,10 +169,7 @@ namespace ft
 		std:: cout << "Starting printing tree :" << std::endl;
 		node_type *z = this->_root;
 		while (z != this->_end)
-		{
-			std::cout << z->get_value().second << " - "  << z->get_value().first << std::endl;
 			z = z->iterate();
-		}
 		std:: cout << "Ending printing tree" << std::endl << std::endl;
 	}
 	//DELETE ME
@@ -191,10 +194,13 @@ namespace ft
 		z->set_parent(new_node);
 		if (z == this->_root)
 			this->_root = new_node;
-		if (parent && parent->get_left() == z)
-			parent->set_left(new_node);
-		else if (parent)
-			parent->set_right(new_node);
+		if (parent)
+		{
+			if (parent->get_left() == z)
+				parent->set_left(new_node);
+			else if (parent)
+				parent->set_right(new_node);
+		}
 		return new_node;
 	}
 
@@ -281,7 +287,7 @@ namespace ft
 			k = parent;
 			parent = k->get_parent();
 		}
-		if (parent)
+		if (parent && parent->get_left() == k)
 			return parent;
 		return this->_end;
 	}

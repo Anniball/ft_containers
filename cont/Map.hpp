@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 10:12:44 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/03 17:45:19 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/04 11:21:16 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -250,7 +250,8 @@ namespace ft
 	template <class Key, class T, class Compare, class Alloc>
 	typename map<Key, T, Compare, Alloc>::size_type					map<Key, T, Compare, Alloc>::max_size(void) const
 	{
-		return 0;
+		return 288230376151711743;
+		// return this->_tree.get_alloc().max_size(); //the correct one
 	}
 
 	/*Element access*/
@@ -302,9 +303,6 @@ namespace ft
 		if (this->_tree.erase(*position))
 			this->_size--;
 	}
-	
-//ft::pair<const int, std::__1::basic_string<char> >
-//tree_iterator<pair<const int, std::__1::basic_string<char> > >
 
 	template <class Key, class T, class Compare, class Alloc>
 	typename map<Key, T, Compare, Alloc>::size_type					map<Key, T, Compare, Alloc>::erase(const key_type& k)
