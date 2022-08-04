@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 16:02:21 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/04 14:39:56 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/04 15:17:12 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -306,9 +306,7 @@ namespace ft
 	template <class T, class Alloc, class Compare>
 	typename red_black_tree<T, Alloc, Compare>::node_type			*red_black_tree<T, Alloc, Compare>::iterate(node_type *k)
 	{
-		node_type	*right = nullptr;
-		if (!k->is_leaf())
-			k = k->get_right();
+		node_type	*right = k->get_right();
 		node_type	*parent = k->get_parent();
 		
 		if (right && !right->is_leaf())
