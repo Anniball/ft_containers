@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 10:12:44 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/04 14:14:16 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/04 14:24:57 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,32 +136,29 @@ namespace ft
 
 	template <class Key, class T, class Compare, class Alloc>
 	map<Key, T, Compare, Alloc>::map(const typename map<Key, T, Compare, Alloc>::key_compare &comp, const typename map<Key, T, Compare, Alloc>::allocator_type &alloc)
+	: _tree(_val_comp), size(0), _val_comp(_key_comp), _key_comp(comp)
 	{
-		(void)comp;
 		(void)alloc;
 	}
 	
 	template <class Key, class T, class Compare, class Alloc>
 	template <class InputIterator>
 	map<Key, T, Compare, Alloc>::map(InputIterator first, InputIterator last, const map<Key, T, Compare, Alloc>::key_compare &comp, const map<Key, T, Compare, Alloc>::allocator_type &alloc)
-	: _tree(_val_comp), _size(0), _val_comp(key_compare()), _key_comp()
+	: _tree(_val_comp), _size(0), _val_comp(_key_comp), _key_comp(comp)
 	{
-		(void)comp;
 		(void)alloc;
 		for (InputIterator it = first; it != last; it++)
 		{
 			this->_tree.insert(*it);
 			this->_size++;
 		}
-		// (void)first;
-		// (void)last;
-		// (void)alloc;
 	}
 	
 	template <class Key, class T, class Compare, class Alloc>
 	map<Key, T, Compare, Alloc>::map(const map &x)
+	: _tree(x._tree), _size(x.size()), _val_comp(_key_comp), _key_comp(x._key_comp)
 	{
-		(void)x;
+		return ;
 	}
 	
 	template <class Key, class T, class Compare, class Alloc>
