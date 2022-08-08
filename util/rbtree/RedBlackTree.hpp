@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 16:02:21 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/04 15:48:50 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/08 11:12:37 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,15 @@
 # include "RedBlackNode.hpp"
 # include "../Pair.hpp"
 # include "../../iter/IteratorsTraits.hpp"
+# include "../../iter/TreeIterator.hpp"
 # include "../Utilities.hpp"
 
 namespace ft
 {
+
+	template <class T, class Node>
+	class tree_iterator;
+
 	template <class T, class Compare = ft::less<T> >
 	class red_black_node;
 
@@ -37,6 +42,10 @@ namespace ft
 			typedef typename allocator_type::const_reference			const_reference;
 			typedef typename allocator_type::pointer					pointer;
 			typedef typename allocator_type::const_pointer				const_pointer;
+			typedef ft::tree_iterator<value_type, node_type>			iterator;
+			typedef ft::tree_iterator<const value_type, node_type>		const_iterator;
+			typedef ft::reverse_iterator<iterator>						reverse_iterator;
+			typedef ft::reverse_iterator<const_iterator>				const_reverse_iterator;
 			typedef size_t												size_type;
 
 		public :
@@ -58,16 +67,22 @@ namespace ft
 			/*
 				MEMBER METHODS
 			*/
-			node_type			*search(value_type &val);
-			node_type			*search_lower_bound(value_type &val);
-			node_type			*search_upper_bound(value_type &val);
+			node_type			*search(value_type &val) const;
+			node_type			*search_lower_bound(value_type &val) const;
+			node_type			*search_upper_bound(value_type &val) const;
 			node_type			*insert(value_type &val);
 			node_type			*insert(value_type &val, node_type *hint);
 			bool				erase(value_type &val);
 			node_type			*create_node(node_type *parent, node_type *left, node_type *right, value_type &content);
-			node_type			*iterate(node_type *k);
-			node_type			*reverse_iterate(node_type *k);
+			node_type			*iterate(const node_type *k)  const;
+			node_type			*reverse_iterate(const node_type *k) const;
 			void				swap_content(tree_type &tree);
+
+			/*
+				CONVERSION METHODS
+			*/
+			iterator			node_to_iter(node_type *k);
+			const_iterator		node_to_const_iter(node_type *k);
 
 		private :
 			node_type			*_root;
@@ -154,7 +169,7 @@ namespace ft
 	*/
 
 	template <class T, class Alloc, class Compare>
-	typename red_black_tree<T, Alloc, Compare>::node_type			*red_black_tree<T, Alloc, Compare>::search(value_type &val)
+	typename red_black_tree<T, Alloc, Compare>::node_type			*red_black_tree<T, Alloc, Compare>::search(value_type &val) const
 	{
 		node_type	*z = this->_root;
 		node_type	tmp(val, *this);
@@ -171,9 +186,9 @@ namespace ft
 	}
 
 	template <class T, class Alloc, class Compare>
-	typename red_black_tree<T, Alloc, Compare>::node_type			*red_black_tree<T, Alloc, Compare>::search_lower_bound(value_type &val)
+	typename red_black_tree<T, Alloc, Compare>::node_type			*red_black_tree<T, Alloc, Compare>::search_lower_bound(value_type &val) const
 	{
-		node_type	*z = this->root;
+		node_type	*z = this->_root;
 		node_type	tmp(val, *this);
 		while (!z->is_leaf())
 		{
@@ -188,9 +203,9 @@ namespace ft
 	}
 
 	template <class T, class Alloc, class Compare>
-	typename red_black_tree<T, Alloc, Compare>::node_type			*red_black_tree<T, Alloc, Compare>::search_upper_bound(value_type &val)
+	typename red_black_tree<T, Alloc, Compare>::node_type			*red_black_tree<T, Alloc, Compare>::search_upper_bound(value_type &val) const
 	{
-		node_type	*z = this->root;
+		node_type	*z = this->_root;
 		node_type	tmp(val, *this);
 		while (!z->is_leaf())
 		{
@@ -317,7 +332,7 @@ namespace ft
 
 
 	template <class T, class Alloc, class Compare>
-	typename red_black_tree<T, Alloc, Compare>::node_type			*red_black_tree<T, Alloc, Compare>::iterate(node_type *k)
+	typename red_black_tree<T, Alloc, Compare>::node_type			*red_black_tree<T, Alloc, Compare>::iterate(const node_type *k) const
 	{
 		node_type	*right = k->get_right();
 		node_type	*parent = k->get_parent();
@@ -335,7 +350,7 @@ namespace ft
 	}
 
 	template <class T, class Alloc, class Compare>
-	typename red_black_tree<T, Alloc, Compare>::node_type	*red_black_tree<T, Alloc, Compare>::reverse_iterate(node_type *k)
+	typename red_black_tree<T, Alloc, Compare>::node_type	*red_black_tree<T, Alloc, Compare>::reverse_iterate(const node_type *k) const
 	{
 		if (k == this->_end)
 			return this->_root->get_biggest();
@@ -368,9 +383,24 @@ namespace ft
 		return ;
 	}
 
+	/*
+		CONVERSION METHODS
+	*/
+
+	template <class T, class Alloc, class Compare>
+	typename red_black_tree<T, Alloc, Compare>::iterator	red_black_tree<T, Alloc, Compare>::node_to_iter(node_type *k)
+	{
+		return iterator(k);
+	}
+
+	template <class T, class Alloc, class Compare>
+	typename red_black_tree<T, Alloc, Compare>::const_iterator	red_black_tree<T, Alloc, Compare>::node_to_const_iter(node_type *k)
+	{
+		return iterator(static_cast<node_type *>(k));
+	}
 
 	/*
-		PRIVATE UTILS METHOD
+		PRIVATE UTILS METHODS
 	*/
 	
 	template <class T, class Alloc, class Compare>

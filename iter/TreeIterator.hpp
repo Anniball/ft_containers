@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 14:25:03 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/04 11:39:22 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/05 14:11:56 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ namespace ft
 			tree_iterator(node_pointer ptr);
 			~tree_iterator(void);
 
-			operator		tree_iterator<const T>() const;
+			operator		tree_iterator<const T, red_black_node<const T> >() const;
 			operator		node_pointer() const;
 
 			iterator		&operator=(tree_iterator const &right);
@@ -74,7 +74,7 @@ namespace ft
 	*/
 
 	template <class T, class Node>
-	tree_iterator<T, Node>::operator				tree_iterator<const T>() const
+	tree_iterator<T, Node>::operator				tree_iterator<const T, red_black_node<const T> >() const
 	{
 		return this->_content;
 	}

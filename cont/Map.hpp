@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 10:12:44 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/04 16:04:13 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/08 11:15:54 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -371,25 +371,29 @@ namespace ft
 	template <class Key, class T, class Compare, class Alloc>
 	typename map<Key, T, Compare, Alloc>::iterator					map<Key, T, Compare, Alloc>::lower_bound(const key_type& k)
 	{
-		return iterator(this->_tree.search_lower_bound(value_type(k, mapped_type())));
+		value_type val(k, mapped_type());
+		return iterator(this->_tree.search_lower_bound(val));
 	}
-	
+
 	template <class Key, class T, class Compare, class Alloc>
 	typename map<Key, T, Compare, Alloc>::const_iterator			map<Key, T, Compare, Alloc>::lower_bound(const key_type& k) const
 	{
-		return const_iterator(this->_tree.search_lower_bound(value_type(k, mapped_type())));
+		value_type val(k, mapped_type());
+		return const_iterator(this->_tree.search_lower_bound(val));
 	}
 	
 	template <class Key, class T, class Compare, class Alloc>
 	typename map<Key, T, Compare, Alloc>::iterator					map<Key, T, Compare, Alloc>::upper_bound(const key_type& k)
 	{
-		return iterator(this->_tree.search_upper_bound(value_type(k, mapped_type())));
+		value_type val(k, mapped_type());
+		return iterator(this->_tree.search_upper_bound(val));
 	}
 	
 	template <class Key, class T, class Compare, class Alloc>
 	typename map<Key, T, Compare, Alloc>::const_iterator			map<Key, T, Compare, Alloc>::upper_bound(const key_type& k) const
 	{
-		return const_iterator(this->_tree.search_upper_bound(value_type(k, mapped_type())));
+		value_type val(k, mapped_type());
+		return const_iterator(this->_tree.search_upper_bound(val));
 	}
 	
 	template <class Key, class T, class Compare, class Alloc>

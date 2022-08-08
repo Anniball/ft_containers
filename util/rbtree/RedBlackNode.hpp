@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 13:56:12 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/04 13:56:48 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/08 11:10:59 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,8 @@ namespace ft
 				CONSTRUCTORS AND DESTRUCTORS
 			*/
 			red_black_node(tree_type &tree);
-			red_black_node(const value_type &val, tree_type &tree);
-			red_black_node(const pointer parent, tree_type &tree);
+			red_black_node(const value_type &val, const tree_type &tree);
+			red_black_node(const pointer parent, const tree_type &tree);
 			red_black_node(const value_type &val, const pointer left, const pointer right, const pointer parent, tree_type &tree);
 			red_black_node(const node_type &src);
 			~red_black_node(void);
@@ -78,8 +78,8 @@ namespace ft
 			/*
 				PUBLIC UTILS
 			*/
-			pointer				iterate(void);
-			pointer				reverse_iterate(void);
+			pointer				iterate(void) const;
+			pointer				reverse_iterate(void) const;
 			pointer				get_smallest(void);
 			pointer				get_biggest(void);
 
@@ -100,7 +100,7 @@ namespace ft
 			pointer				_left;
 			pointer				_right;
 			pointer				_parent;
-			tree_type			&_tree;
+			const tree_type		&_tree;
 			const value_compare &_comp;	
 
 			/*
@@ -116,11 +116,11 @@ namespace ft
 	_content(), _color(RBT_RED), _left(nullptr), _right(nullptr), _parent(nullptr), _tree(tree), _comp(tree.get_comp()) {}
 	
 	template <class T, class Compare>
-	red_black_node<T, Compare>::red_black_node(const value_type &val, tree_type &tree) :
+	red_black_node<T, Compare>::red_black_node(const value_type &val, const tree_type &tree) :
 	 _content(val), _color(RBT_RED), _left(nullptr), _right(nullptr), _parent(nullptr), _tree(tree), _comp(tree.get_comp()) {}
 
 	template <class T, class Compare>
-	red_black_node<T, Compare>::red_black_node(const pointer parent, tree_type &tree) :
+	red_black_node<T, Compare>::red_black_node(const pointer parent, const tree_type &tree) :
 	_content(), _color(RBT_BLACK), _left(nullptr), _right(nullptr), _parent(parent), _tree(tree), _comp(tree.get_comp()) {}
 	
 	template <class T, class Compare>
@@ -193,13 +193,13 @@ namespace ft
 	*/
 
 	template <class T, class Compare>
-	typename red_black_node<T, Compare>::pointer		red_black_node<T, Compare>::iterate(void)
+	typename red_black_node<T, Compare>::pointer		red_black_node<T, Compare>::iterate(void) const
 	{
 		return this->_tree.iterate(this);
 	}
 
 	template <class T, class Compare>
-	typename red_black_node<T, Compare>::pointer		red_black_node<T, Compare>::reverse_iterate(void)
+	typename red_black_node<T, Compare>::pointer		red_black_node<T, Compare>::reverse_iterate(void) const
 	{
 		return this->_tree.reverse_iterate(this);
 	}
