@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 16:02:21 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/08 11:12:37 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/08 13:25:36 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 namespace ft
 {
 
-	template <class T, class Node>
+	template <class T, class Compare, class Node>
 	class tree_iterator;
 
 	template <class T, class Compare = ft::less<T> >
@@ -33,20 +33,21 @@ namespace ft
 	class red_black_tree
 	{
 		public :
-			typedef T													value_type;
-			typedef red_black_node<T, Compare>							node_type;
-			typedef typename Alloc::template rebind<node_type>::other	allocator_type;
-			typedef Compare												value_compare;
-			typedef red_black_tree<T, allocator_type, Compare>			tree_type;
-			typedef	typename allocator_type::reference					reference;
-			typedef typename allocator_type::const_reference			const_reference;
-			typedef typename allocator_type::pointer					pointer;
-			typedef typename allocator_type::const_pointer				const_pointer;
-			typedef ft::tree_iterator<value_type, node_type>			iterator;
-			typedef ft::tree_iterator<const value_type, node_type>		const_iterator;
-			typedef ft::reverse_iterator<iterator>						reverse_iterator;
-			typedef ft::reverse_iterator<const_iterator>				const_reverse_iterator;
-			typedef size_t												size_type;
+			typedef T																		value_type;
+			typedef red_black_node<value_type, Compare>										node_type;
+			typedef red_black_node<const value_type, Compare>								node_const_type;
+			typedef typename Alloc::template rebind<node_type>::other						allocator_type;
+			typedef Compare																	value_compare;
+			typedef red_black_tree<T, allocator_type, Compare>								tree_type;
+			typedef	typename allocator_type::reference										reference;
+			typedef typename allocator_type::const_reference								const_reference;
+			typedef typename allocator_type::pointer										pointer;
+			typedef typename allocator_type::const_pointer									const_pointer;
+			typedef ft::tree_iterator<value_type, value_compare, node_type>					iterator;
+			typedef ft::tree_iterator<const value_type, value_compare, node_const_type >	const_iterator;
+			typedef ft::reverse_iterator<iterator>											reverse_iterator;
+			typedef ft::reverse_iterator<const_iterator>									const_reverse_iterator;
+			typedef size_t																	size_type;
 
 		public :
 			/*
@@ -109,8 +110,8 @@ namespace ft
 	{
 		this->_end = _node_alloc.allocate(1);
 		this->_root = _node_alloc.allocate(1);
-		_node_alloc.construct(this->_end, node_type(*this));
-		_node_alloc.construct(this->_root, node_type(*this));
+		this->_node_alloc.construct(this->_end, node_type(*this));
+		this->_node_alloc.construct(this->_root, node_type(*this));
 		return ;
 	}
 	
@@ -119,8 +120,8 @@ namespace ft
 	{
 		this->_end = _node_alloc.allocate(1);
 		this->_root = _node_alloc.allocate(1);
-		_node_alloc.construct(this->_end, node_type(*src._end));
-		_node_alloc.construct(this->_root, node_type(*src._root));
+		this->_node_alloc.construct(this->_end, node_type(*src._end));
+		this->_node_alloc.construct(this->_root, node_type(*src._root));
 		for (node_type *node = src._root->iterate(); node != src._end; node = node->iterate())
 			this->insert(node->get_value());
 		return ;
