@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 10:12:44 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/09 16:42:59 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/09 16:50:04 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -269,20 +269,24 @@ namespace ft
 	template <class Key, class T, class Compare, class Alloc>
 	pair<typename map<Key, T, Compare, Alloc>::iterator,bool>		map<Key, T, Compare, Alloc>::insert(const value_type& val)
 	{
-		pair<red_black_node<value_type, value_compare>*, bool> tmp = this->_tree.insert(val);
+		pair<red_black_node<value_type, value_compare>*, bool> tmp = this->_tree.insert(val); //find a solution to not call rbnode directly in map
 		pair<iterator, bool> itp(iterator(tmp.first), tmp.second);
-		this->_size++;
+		if (itp.second)
+			this->_size++;
 		return itp;
 	}
 	
 	template <class Key, class T, class Compare, class Alloc>
 	typename map<Key, T, Compare, Alloc>::iterator					map<Key, T, Compare, Alloc>::insert(iterator position, const value_type& val)
 	{
-		this->_size++;
+		pair<red_black_node<value_type, value_compare>*, bool> tmp; //find a solution to not call rbnode directly in map
 		if (position != begin() && position != this->end() && this->_val_comp(*(--position), val) && this->_val_comp(val, *(++position)))
-			return iterator(this->_tree.insert(val, position).first);
+			tmp = this->_tree.insert(val, position);
 		else
-			return iterator(this->_tree.insert(val).first);
+			tmp = this->_tree.insert(val);
+		if (tmp.second)
+			this->_size++;
+		return iterator(tmp.first);
 	}
 	
 	template <class Key, class T, class Compare, class Alloc>
@@ -291,8 +295,9 @@ namespace ft
 	{
 		while (first != last)
 		{
-			this->_tree.insert(*first++);
-			this->_size++;
+			pair<red_black_node<value_type, value_compare>*, bool> tmp = this->_tree.insert(*first++);
+			if (tmp.second)
+				this->_size++;
 		}
 		return ;
 	}
