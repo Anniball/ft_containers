@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 10:12:44 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/09 14:56:04 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/09 15:26:51 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -355,19 +355,22 @@ namespace ft
 	template <class Key, class T, class Compare, class Alloc>
 	typename map<Key, T, Compare, Alloc>::iterator					map<Key, T, Compare, Alloc>::find(const key_type& k)
 	{
-		return iterator(this->_tree.search(value_type(k, mapped_type())));
+		value_type val(k, mapped_type());
+		return iterator(this->_tree.search(val));
 	}
 	
 	template <class Key, class T, class Compare, class Alloc>
 	typename map<Key, T, Compare, Alloc>::const_iterator			map<Key, T, Compare, Alloc>::find(const key_type& k) const
 	{
-		return static_cast<const_iterator>(iterator(this->_tree.search(value_type(k, mapped_type()))));
+		value_type val(k, mapped_type());
+		return static_cast<const_iterator>(iterator(this->_tree.search(val)));
 	}
-	
+
 	template <class Key, class T, class Compare, class Alloc>
 	typename map<Key, T, Compare, Alloc>::size_type					map<Key, T, Compare, Alloc>::count(const key_type& k) const
 	{
-		if (this->_tree.search(value_type(k, mapped_type())) == this->end())
+		value_type val(k, mapped_type());
+		if (this->_tree.search(val) == this->_tree.get_end())
 			return 0;
 		return 1;
 	}
