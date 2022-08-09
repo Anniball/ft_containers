@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 10:12:44 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/08 14:05:16 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/09 11:39:59 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ namespace ft
 				friend class map<Key, T, Compare, Alloc>;
 				protected:
 					Compare _comp;
-					value_compare(Compare c) : _comp(c) {}
+					value_compare(Compare c) : _comp(c) {return ;}
 		
 				public:
 					bool operator()(const pair<const Key, T>& x, const pair<const Key, T>& y) const { return _comp(x.first, y.first); }
@@ -156,7 +156,7 @@ namespace ft
 	
 	template <class Key, class T, class Compare, class Alloc>
 	map<Key, T, Compare, Alloc>::map(const map &x)
-	: _tree(x._tree), _size(x.size()), _val_comp(_key_comp), _key_comp(x._key_comp)
+	: _tree(x._tree), _size(x.size()), _key_comp(x._key_comp), _val_comp(_key_comp)
 	{
 		return ;
 	}
@@ -172,7 +172,9 @@ namespace ft
 	template <class Key, class T, class Compare, class Alloc>
 	map<Key, T, Compare, Alloc>										&map<Key, T, Compare, Alloc>::operator=(const map &x)
 	{
-		(void)x;
+		this->_tree = x._tree;
+		this->_size = x._size;
+		return *this;
 	}
 
 	
@@ -327,9 +329,10 @@ namespace ft
 	template <class Key, class T, class Compare, class Alloc>
 	void															map<Key, T, Compare, Alloc>::clear()
 	{
-		iterator ite = this->end();
-		for (iterator it = this->begin(); it < ite; it++)
-			this->_tree.erase(*it);
+		this->_tree.clear();
+		// iterator ite = this->end();
+		// for (iterator it = this->begin(); it < ite; it++)
+		// 	this->_tree.erase(*it);
 		this->_size = 0;
 	}
 	

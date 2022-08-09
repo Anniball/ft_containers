@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 16:02:21 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/08 13:25:36 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/09 11:41:29 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,14 @@ namespace ft
 			/*
 				CONSTRUCTORS AND DESTRUCTORS
 			*/
-			explicit red_black_tree(const value_compare &comp = value_compare());
-			red_black_tree(const tree_type &src);
+			explicit red_black_tree(value_compare &comp = value_compare());
+			red_black_tree(const red_black_tree &src);
 			~red_black_tree(void);
+
+			/*
+				OPERATOR OVERLOADS
+			*/
+			red_black_tree			&operator=(const red_black_tree &right);
 
 			/*
 				GETTERS & SETTERS
@@ -74,6 +79,7 @@ namespace ft
 			node_type			*insert(value_type &val);
 			node_type			*insert(value_type &val, node_type *hint);
 			bool				erase(value_type &val);
+			void				clear(void);
 			node_type			*create_node(node_type *parent, node_type *left, node_type *right, value_type &content);
 			node_type			*iterate(const node_type *k)  const;
 			node_type			*reverse_iterate(const node_type *k) const;
@@ -89,7 +95,7 @@ namespace ft
 			node_type			*_root;
 			node_type			*_end;
 			allocator_type		_node_alloc;
-			const value_compare	&_comp;
+			value_compare		&_comp;
 
 			/*
 				PRIVATE UTILS METHOD
@@ -106,7 +112,7 @@ namespace ft
 	*/
 
 	template <class T, class Alloc, class Compare>
-	red_black_tree<T, Alloc, Compare>::red_black_tree(const value_compare &comp) : _node_alloc(), _comp(comp)
+	red_black_tree<T, Alloc, Compare>::red_black_tree(value_compare &comp) : _node_alloc(), _comp(comp)
 	{
 		this->_end = _node_alloc.allocate(1);
 		this->_root = _node_alloc.allocate(1);
@@ -116,13 +122,13 @@ namespace ft
 	}
 	
 	template <class T, class Alloc, class Compare>
-	red_black_tree<T, Alloc, Compare>::red_black_tree(const tree_type &src) : _node_alloc(src._node_alloc), _comp(src._comp)
+	red_black_tree<T, Alloc, Compare>::red_black_tree(const red_black_tree<T, Alloc, Compare> &src) : _node_alloc(src._node_alloc), _comp(src._comp)
 	{
 		this->_end = _node_alloc.allocate(1);
 		this->_root = _node_alloc.allocate(1);
-		this->_node_alloc.construct(this->_end, node_type(*src._end));
-		this->_node_alloc.construct(this->_root, node_type(*src._root));
-		for (node_type *node = src._root->iterate(); node != src._end; node = node->iterate())
+		this->_node_alloc.construct(this->_end, node_type(*this));
+		this->_node_alloc.construct(this->_root, node_type(*this));
+		for (node_type *node = src._root->get_smallest(); node != src._end; node = node->iterate())
 			this->insert(node->get_value());
 		return ;
 	}
@@ -131,10 +137,35 @@ namespace ft
 	red_black_tree<T, Alloc, Compare>::~red_black_tree()
 	{
 		this->_remove_children(this->_root);
+		std::cout << "STEP 1 DONE" << std::endl;
 		this->_node_alloc.destroy(this->_end);
+		std::cout << "STEP 2 DONE" << std::endl;
 		this->_node_alloc.deallocate(this->_end, 1);
+		std::cout << "STEP 3 DONE" << std::endl;
 	}
 
+
+	/*
+		OPERATOR OVERLOADS
+	*/
+
+	template <class T, class Alloc, class Compare>
+	red_black_tree<T, Alloc, Compare>							&red_black_tree<T, Alloc, Compare>::operator=(const red_black_tree<T, Alloc, Compare> &right)
+	{
+		std::cout << "====================================" << std::endl;
+		std::cout << "STARTING COPY BY ASSIGNATION" << std::endl;
+		std::cout << "====================================" << std::endl;
+		this->_remove_children(this->_root->iterate());
+		this->_node_alloc.destroy(this->_root);
+		this->_node_alloc.construct(this->_root, node_type(*this));
+		for (node_type *node = right._root->get_smallest(); node != right._end; node = node->iterate())
+		{
+			std::cout << "Copying key : " << node->get_value().first << " value : " << node->get_value().second << std::endl;
+			this->insert(node->get_value());
+		}
+		return *this;
+	}
+	
 
 	/*
 		GETTERS
@@ -290,7 +321,7 @@ namespace ft
 	}
 
 	template <class T, class Alloc, class Compare>
-	bool									red_black_tree<T, Alloc, Compare>::erase(value_type &val)
+	bool													red_black_tree<T, Alloc, Compare>::erase(value_type &val)
 	{
 		node_type	*z = this->search(val);
 		node_type	*left = z->get_left();
@@ -324,7 +355,16 @@ namespace ft
 	}
 
 	template <class T, class Alloc, class Compare>
-	typename red_black_tree<T, Alloc, Compare>::node_type			*red_black_tree<T, Alloc, Compare>::create_node(node_type *parent, node_type *left, node_type *right, value_type &content)
+	void													red_black_tree<T, Alloc, Compare>::clear(void)
+	{
+		this->_remove_children(this->_root->iterate());
+		this->_node_alloc.destroy(this->_root);
+		this->_node_alloc.construct(this->_root, node_type(*this));
+		return ;
+	}
+
+	template <class T, class Alloc, class Compare>
+	typename red_black_tree<T, Alloc, Compare>::node_type	*red_black_tree<T, Alloc, Compare>::create_node(node_type *parent, node_type *left, node_type *right, value_type &content)
 	{
 		node_type *new_node = this->_node_alloc.allocate(1);
 		_node_alloc.construct(new_node, node_type(content, left, right, parent, *this));
@@ -333,7 +373,7 @@ namespace ft
 
 
 	template <class T, class Alloc, class Compare>
-	typename red_black_tree<T, Alloc, Compare>::node_type			*red_black_tree<T, Alloc, Compare>::iterate(const node_type *k) const
+	typename red_black_tree<T, Alloc, Compare>::node_type	*red_black_tree<T, Alloc, Compare>::iterate(const node_type *k) const
 	{
 		node_type	*right = k->get_right();
 		node_type	*parent = k->get_parent();
