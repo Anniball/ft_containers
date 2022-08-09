@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 10:12:44 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/09 15:26:51 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/09 16:42:59 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,7 +162,7 @@ namespace ft
 	}
 	
 	template <class Key, class T, class Compare, class Alloc>
-	map<Key, T, Compare, Alloc>::~map() {}
+	map<Key, T, Compare, Alloc>::~map() {return ;}
 
 
 	/*
@@ -261,27 +261,28 @@ namespace ft
 		if (it != this->end())
 			return it->second;
 		this->_size++;
-		return this->_tree.insert(v)->get_value().second;
+		return this->_tree.insert(v).first->get_value().second;
 	}
 	
 	/*Modifiers*/
-	
+
 	template <class Key, class T, class Compare, class Alloc>
 	pair<typename map<Key, T, Compare, Alloc>::iterator,bool>		map<Key, T, Compare, Alloc>::insert(const value_type& val)
 	{
-		this->_tree.insert(val);
+		pair<red_black_node<value_type, value_compare>*, bool> tmp = this->_tree.insert(val);
+		pair<iterator, bool> itp(iterator(tmp.first), tmp.second);
 		this->_size++;
-		return val ;
+		return itp;
 	}
 	
 	template <class Key, class T, class Compare, class Alloc>
 	typename map<Key, T, Compare, Alloc>::iterator					map<Key, T, Compare, Alloc>::insert(iterator position, const value_type& val)
 	{
 		this->_size++;
-		if (this->_val_comp(*(position - 1), val) && this->_val_comp(val, *position))
-			return iterator(this->_tree.insert(val, position));
+		if (position != begin() && position != this->end() && this->_val_comp(*(--position), val) && this->_val_comp(val, *(++position)))
+			return iterator(this->_tree.insert(val, position).first);
 		else
-			return iterator(this->_tree.insert(val));
+			return iterator(this->_tree.insert(val).first);
 	}
 	
 	template <class Key, class T, class Compare, class Alloc>
@@ -293,6 +294,7 @@ namespace ft
 			this->_tree.insert(*first++);
 			this->_size++;
 		}
+		return ;
 	}
 	
 	template <class Key, class T, class Compare, class Alloc>
@@ -300,6 +302,7 @@ namespace ft
 	{
 		if (this->_tree.erase(*position))
 			this->_size--;
+		return ;
 	}
 
 	template <class Key, class T, class Compare, class Alloc>
@@ -323,12 +326,14 @@ namespace ft
 				this->_size--;
 			first++; //maybe use ft::distance instead
 		}
+		return ;
 	}
 	
 	template <class Key, class T, class Compare, class Alloc>
 	void															map<Key, T, Compare, Alloc>::swap(map& x)
 	{
 		this->_tree.swap_content(x._tree);
+		return ;
 	}
 	
 	template <class Key, class T, class Compare, class Alloc>
@@ -336,6 +341,7 @@ namespace ft
 	{
 		this->_tree.clear();
 		this->_size = 0;
+		return ;
 	}
 	
 	/*Observers*/

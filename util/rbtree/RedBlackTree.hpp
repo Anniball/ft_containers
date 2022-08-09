@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 16:02:21 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/09 15:20:02 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/09 16:17:59 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,18 +73,18 @@ namespace ft
 			/*
 				MEMBER METHODS
 			*/
-			node_type			*search(value_type &val) const;
-			node_type			*search_lower_bound(value_type &val) const;
-			node_type			*search_upper_bound(value_type &val) const;
-			node_type			*insert(value_type &val);
-			node_type			*insert(value_type &val, node_type *hint);
-			bool				erase(value_type &val);
-			bool				erase(node_type *z);
-			void				clear(void);
-			node_type			*create_node(node_type *parent, node_type *left, node_type *right, value_type &content);
-			node_type			*iterate(const node_type *k)  const;
-			node_type			*reverse_iterate(const node_type *k) const;
-			void				swap_content(tree_type &tree);
+			node_type				*search(value_type &val) const;
+			node_type				*search_lower_bound(value_type &val) const;
+			node_type				*search_upper_bound(value_type &val) const;
+			pair<node_type*, bool>	insert(const value_type &val);
+			pair<node_type*, bool>	insert(const value_type &val, node_type *hint);
+			bool					erase(value_type &val);
+			bool					erase(node_type *z);
+			void					clear(void);
+			node_type				*create_node(node_type *parent, node_type *left, node_type *right, value_type &content);
+			node_type				*iterate(const node_type *k)  const;
+			node_type				*reverse_iterate(const node_type *k) const;
+			void					swap_content(tree_type &tree);
 
 			/*
 				CONVERSION METHODS
@@ -253,14 +253,14 @@ namespace ft
 	//DELETE ME
 
 	template <class T, class Alloc, class Compare>
-	typename red_black_tree<T, Alloc, Compare>::node_type	*red_black_tree<T, Alloc, Compare>::insert(value_type &value)
+	pair<typename red_black_tree<T, Alloc, Compare>::node_type*, bool>	red_black_tree<T, Alloc, Compare>::insert(const value_type &value)
 	{
 		node_type	*z = this->_root;
 		node_type	tmp(value, *this);
 		while (!z->is_leaf())
 		{
 			if (*z == tmp)
-				return z;
+				return pair<node_type*, bool>(z, false);
 			else if (tmp > *z)
 				z = z->get_right();
 			else
@@ -279,12 +279,12 @@ namespace ft
 			else if (parent)
 				parent->set_right(new_node);
 		}
-		return new_node;
+		return pair<node_type*, bool>(new_node, true);
 	}
 
 	//FUUUUUH
 	template <class T, class Alloc, class Compare>
-	typename red_black_tree<T, Alloc, Compare>::node_type	*red_black_tree<T, Alloc, Compare>::insert(value_type &val, node_type *hint)
+	pair<typename red_black_tree<T, Alloc, Compare>::node_type*, bool>	red_black_tree<T, Alloc, Compare>::insert(const value_type &val, node_type *hint)
 	{
 		// TEMPORARY SOLUTION
 		(void)hint;
