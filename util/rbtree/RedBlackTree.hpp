@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 16:02:21 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/09 14:50:40 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/09 15:20:02 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ namespace ft
 			node_type			*insert(value_type &val);
 			node_type			*insert(value_type &val, node_type *hint);
 			bool				erase(value_type &val);
+			bool				erase(node_type *z);
 			void				clear(void);
 			node_type			*create_node(node_type *parent, node_type *left, node_type *right, value_type &content);
 			node_type			*iterate(const node_type *k)  const;
@@ -193,15 +194,15 @@ namespace ft
 	{
 		node_type	*z = this->_root;
 		node_type	tmp(val, *this);
-		while (*z != tmp)
+		while (!z->is_leaf() && *z != tmp)
 		{
-			if (z->is_leaf())
-				return this->_end;
-			else if (tmp > *z)
+			if (tmp > *z)
 				z = z->get_right();
 			else
 				z = z->get_left();
 		}
+		if (z->is_leaf())
+			return this->_end;
 		return z;
 	}
 
@@ -312,6 +313,12 @@ namespace ft
 	bool													red_black_tree<T, Alloc, Compare>::erase(value_type &val)
 	{
 		node_type	*z = this->search(val);
+		return this->erase(z);
+	}
+
+	template <class T, class Alloc, class Compare>
+	bool													red_black_tree<T, Alloc, Compare>::erase(node_type *z)
+	{
 		node_type	*left = z->get_left();
 		node_type	*right = z->get_right();
 		if (z == this->_end)
@@ -337,7 +344,7 @@ namespace ft
 			node_type	*smallest = right->get_smallest();
 			this->_node_alloc.destroy(z);
 			this->_node_alloc.construct(z, node_type(smallest->get_value(), left, right, z->get_parent(), *this));
-			this->erase(smallest->get_value()); //not optimal, could create a erase(node_type &val)
+			this->erase(smallest); //not optimal, could create a erase(node_type &val)
 		}
 		return true;
 	}
