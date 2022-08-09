@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 16:02:21 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/09 11:41:29 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/09 14:50:40 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,6 @@ namespace ft
 			node_type	*_create_leaf( node_type *parent);
 			void		_replace_node(node_type *parent, node_type *z, node_type *replacer);
 			void		_print_tree(void);
-			void		_remove_children(node_type *k);
 	};
 	
 	
@@ -136,12 +135,9 @@ namespace ft
 	template <class T, class Alloc, class Compare>
 	red_black_tree<T, Alloc, Compare>::~red_black_tree()
 	{
-		this->_remove_children(this->_root);
-		std::cout << "STEP 1 DONE" << std::endl;
+		this->clear();
 		this->_node_alloc.destroy(this->_end);
-		std::cout << "STEP 2 DONE" << std::endl;
 		this->_node_alloc.deallocate(this->_end, 1);
-		std::cout << "STEP 3 DONE" << std::endl;
 	}
 
 
@@ -152,17 +148,9 @@ namespace ft
 	template <class T, class Alloc, class Compare>
 	red_black_tree<T, Alloc, Compare>							&red_black_tree<T, Alloc, Compare>::operator=(const red_black_tree<T, Alloc, Compare> &right)
 	{
-		std::cout << "====================================" << std::endl;
-		std::cout << "STARTING COPY BY ASSIGNATION" << std::endl;
-		std::cout << "====================================" << std::endl;
-		this->_remove_children(this->_root->iterate());
-		this->_node_alloc.destroy(this->_root);
-		this->_node_alloc.construct(this->_root, node_type(*this));
+		this->clear();
 		for (node_type *node = right._root->get_smallest(); node != right._end; node = node->iterate())
-		{
-			std::cout << "Copying key : " << node->get_value().first << " value : " << node->get_value().second << std::endl;
 			this->insert(node->get_value());
-		}
 		return *this;
 	}
 	
@@ -357,9 +345,22 @@ namespace ft
 	template <class T, class Alloc, class Compare>
 	void													red_black_tree<T, Alloc, Compare>::clear(void)
 	{
-		this->_remove_children(this->_root->iterate());
-		this->_node_alloc.destroy(this->_root);
-		this->_node_alloc.construct(this->_root, node_type(*this));
+		node_type *nd = this->_root->get_smallest(); 
+		while (nd != this->_end)
+		{
+			node_type *tmp = nd->iterate();
+			if (nd == this->_root)
+			{
+				this->_node_alloc.destroy(nd);
+				this->_node_alloc.construct(nd, *this);
+			}
+			else
+			{
+				this->_node_alloc.destroy(nd);
+				this->_node_alloc.deallocate(nd, 1);
+			}
+			nd = tmp;
+		}
 		return ;
 	}
 
@@ -468,17 +469,6 @@ namespace ft
 		this->_node_alloc.destroy(z);
 		this->_node_alloc.deallocate(z, 1);
 		return ;
-	}
-
-	template <class T, class Alloc, class Compare>
-	void													red_black_tree<T, Alloc, Compare>::_remove_children(node_type *k)
-	{
-		if (k->get_left())
-			this->_remove_children(k->get_left());
-		if (k->get_right())
-			this->_remove_children(k->get_right());
-		this->_node_alloc.destroy(k);
-		this->_node_alloc.deallocate(k, 1);
 	}
 }
 

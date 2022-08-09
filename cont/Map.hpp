@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 10:12:44 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/09 11:39:59 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/09 14:40:33 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -330,9 +330,6 @@ namespace ft
 	void															map<Key, T, Compare, Alloc>::clear()
 	{
 		this->_tree.clear();
-		// iterator ite = this->end();
-		// for (iterator it = this->begin(); it < ite; it++)
-		// 	this->_tree.erase(*it);
 		this->_size = 0;
 	}
 	
