@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 13:56:12 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/10 14:45:43 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/10 14:55:05 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,8 @@ namespace ft
 			/*
 				CONSTRUCTORS AND DESTRUCTORS
 			*/
-			explicit red_black_node(const tree_type &tree = tree_type());
-			red_black_node(const value_type &val, const tree_type &tree);
+			explicit red_black_node(value_type &val = value_type(), const tree_type &tree = tree_type());
+			red_black_node(const tree_type &tree_type, value_type &val = value_type());
 			red_black_node(const pointer parent, const tree_type &tree);
 			red_black_node(const value_type &val, const pointer left, const pointer right, const pointer parent, tree_type &tree);
 			red_black_node(const node_type &src);
@@ -96,7 +96,7 @@ namespace ft
 			bool				operator>=(node_type const &right) const;
 
 		private :
-			value_type			_content;
+			value_type			&_content;
 			bool				_color;
 			pointer				_left;
 			pointer				_right;
@@ -109,23 +109,17 @@ namespace ft
 			*/
 	};
 
+	
 	/*
 		CONSTRUCTORS AND DESTRUCTORS
 	*/
-	// template <class T, class Compare>
-	// red_black_node<T, Compare>::red_black_node(tree_type &tree, const value_type) :
-	// _color(RBT_RED), _left(nullptr), _right(nullptr), _parent(nullptr), _tree(tree), _comp(tree.get_comp())
-	// {
-	// 	value_type val = value_type();
-	// 	_content = val;
-	// }
-	
-	template <class T, class Compare>
-	red_black_node<T, Compare>::red_black_node(const tree_type &tree) :
-	_content(), _color(RBT_RED), _left(nullptr), _right(nullptr), _parent(nullptr), _tree(tree), _comp(tree.get_comp()) {return ;}
 
 	template <class T, class Compare>
-	red_black_node<T, Compare>::red_black_node(const value_type &val, const tree_type &tree) :
+	red_black_node<T, Compare>::red_black_node(value_type &val, const tree_type &tree) :
+	_content(val), _color(RBT_RED), _left(nullptr), _right(nullptr), _parent(nullptr), _tree(tree), _comp(tree.get_comp()) {return ;}
+
+	template <class T, class Compare>
+	red_black_node<T, Compare>::red_black_node(const tree_type &tree, value_type &val) :
 	_content(val), _color(RBT_RED), _left(nullptr), _right(nullptr), _parent(nullptr), _tree(tree), _comp(tree.get_comp()) {return ;}
 
 	template <class T, class Compare>
