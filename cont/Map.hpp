@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 10:12:44 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/09 17:02:33 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/10 17:14:17 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -338,6 +338,9 @@ namespace ft
 	void															map<Key, T, Compare, Alloc>::swap(map& x)
 	{
 		this->_tree.swap_content(x._tree);
+		size_type tmp = x._size;
+		x._size = this->_size;
+		this->_size = tmp;
 		return ;
 	}
 	

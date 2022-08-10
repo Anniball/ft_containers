@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 16:02:21 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/10 16:30:24 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/10 17:11:35 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,12 +85,6 @@ namespace ft
 			void					clear(void);
 			node_type				*create_node(node_type *parent, node_type *left, node_type *right, value_type &content);
 			void					swap_content(tree_type &tree);
-
-			/*
-				CONVERSION METHODS
-			*/
-			iterator			node_to_iter(node_type *k);
-			const_iterator		node_to_const_iter(node_type *k);
 
 		private :
 			node_type			*_root;
@@ -406,22 +400,6 @@ namespace ft
 		for (node_type *k = tree.get_root(); k != tree.get_end(); k = k->iterate())
 			k->set_end(tree.get_end());
 		return ;
-	}
-
-	/*
-		CONVERSION METHODS
-	*/
-
-	template <class T, class Alloc, class Compare>
-	typename red_black_tree<T, Alloc, Compare>::iterator	red_black_tree<T, Alloc, Compare>::node_to_iter(node_type *k)
-	{
-		return iterator(k);
-	}
-
-	template <class T, class Alloc, class Compare>
-	typename red_black_tree<T, Alloc, Compare>::const_iterator	red_black_tree<T, Alloc, Compare>::node_to_const_iter(node_type *k)
-	{
-		return iterator(static_cast<node_type *>(k));
 	}
 
 	/*
