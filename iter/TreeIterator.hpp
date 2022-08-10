@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 14:25:03 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/10 14:21:11 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/10 15:09:45 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ namespace ft
 			iterator			&operator--(void);
 			iterator			operator--(int);
 			
-			pointer const		&base(void) const;
+			node_pointer const	&base(void) const;
 
 		private :
 			node_pointer		_content;
@@ -143,20 +143,10 @@ namespace ft
 		PUBLIC METHODS
 	*/
 
-	/*
-'const ft::tree_iterator<ft::pair<const char, int>, ft::map<char, int, ft::less<char>, std::__1::allocator<ft::pair<const char, int> > >::value_compare, ft::red_black_node<ft::pair<const char, int>, ft::map<char, int, ft::less<char>, std::__1::allocator<ft::pair<const char, int> > >::value_compare> >::node_pointer'
-	aka
-'ft::red_black_node<ft::pair<const char, int>, ft::map<char, int, ft::less<char>, std::__1::allocator<ft::pair<const char, int> > >::value_compare> *const')
-	could not bind to an rvalue of type
-'ft::red_black_node<ft::pair<const char, int>, ft::map<char, int, ft::less<char>, std::__1::allocator<ft::pair<const char, int> > >::value_compare>::value_type *'
-	aka
-'ft::pair<const char, int> *'
-	*/
-
 	template <class T, class Compare, class Node>
-	typename tree_iterator<T, Compare, Node>::pointer const	&tree_iterator<T, Compare, Node>::base(void) const
+	typename tree_iterator<T, Compare, Node>::node_pointer const	&tree_iterator<T, Compare, Node>::base(void) const
 	{
-		return &(this->_content->get_value());
+		return this->_content;
 	}
 
 
