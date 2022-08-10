@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 16:02:21 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/10 17:11:35 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/10 17:51:39 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ namespace ft
 			/*
 				PRIVATE UTILS METHOD
 			*/
-			node_type	*_create_leaf( node_type *parent);
+			node_type	*_create_leaf(node_type *parent);
 			void		_replace_node(node_type *parent, node_type *z, node_type *replacer);
 			void		_print_tree(void);
 	};
@@ -122,7 +122,7 @@ namespace ft
 		this->_root = _node_alloc.allocate(1);
 		this->_node_alloc.construct(this->_end, node_type(nullptr, this->_comp));
 		this->_node_alloc.construct(this->_root, node_type(this->_end, this->_comp));
-		for (node_type *node = src._root->get_smallest(); node != src._end; node = node->iterate())
+		for (node_type *node = node_type::get_smallest(src._root); node != src._end; node = node->iterate())
 			this->insert(node->get_value());
 		return ;
 	}
@@ -144,7 +144,7 @@ namespace ft
 	red_black_tree<T, Alloc, Compare>							&red_black_tree<T, Alloc, Compare>::operator=(const red_black_tree<T, Alloc, Compare> &right)
 	{
 		this->clear();
-		for (node_type *node = right._root->get_smallest(); node != right._end; node = node->iterate())
+		for (node_type *node = node_type::get_smallest(right._root); node != right._end; node = node->iterate())
 			this->insert(node->get_value());
 		return *this;
 	}
@@ -200,7 +200,7 @@ namespace ft
 	typename red_black_tree<T, Alloc, Compare>::node_type			*red_black_tree<T, Alloc, Compare>::search(value_type &val) const
 	{
 		node_type	*z = this->_root;
-		node_type	tmp(val, *this);
+		node_type	tmp(val, this->_end, this->_comp);
 		while (!z->is_leaf() && *z != tmp)
 		{
 			if (tmp > *z)
@@ -217,7 +217,7 @@ namespace ft
 	typename red_black_tree<T, Alloc, Compare>::node_type			*red_black_tree<T, Alloc, Compare>::search_lower_bound(value_type &val) const
 	{
 		node_type	*z = this->_root;
-		node_type	tmp(val, *this);
+		node_type	tmp(val, this->_end, this->_comp);
 		while (!z->is_leaf())
 		{
 			if (*z == tmp)
@@ -234,7 +234,7 @@ namespace ft
 	typename red_black_tree<T, Alloc, Compare>::node_type			*red_black_tree<T, Alloc, Compare>::search_upper_bound(value_type &val) const
 	{
 		node_type	*z = this->_root;
-		node_type	tmp(val, *this);
+		node_type	tmp(val, this->_end, this->_comp);
 		while (!z->is_leaf())
 		{
 			if (*z == tmp)
@@ -348,7 +348,7 @@ namespace ft
 		}
 		else
 		{
-			node_type	*smallest = right->get_smallest();
+			node_type	*smallest = node_type::get_smallest(right);
 			this->_node_alloc.destroy(z);
 			this->_node_alloc.construct(z, node_type(smallest->get_value(), left, right, z->get_parent(), this->_end, this->_comp));
 			this->erase(smallest); //not optimal, could create a erase(node_type &val)
@@ -359,7 +359,7 @@ namespace ft
 	template <class T, class Alloc, class Compare>
 	void													red_black_tree<T, Alloc, Compare>::clear(void)
 	{
-		node_type *nd = this->_root->get_smallest(); 
+		node_type *nd = node_type::get_smallest(this->_root); 
 		while (nd != this->_end)
 		{
 			node_type *tmp = nd->iterate();

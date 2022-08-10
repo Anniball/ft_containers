@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 10:12:44 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/10 17:14:17 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/10 17:54:25 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,14 +185,13 @@ namespace ft
 	template <class Key, class T, class Compare, class Alloc>
 	typename map<Key, T, Compare, Alloc>::iterator					map<Key, T, Compare, Alloc>::begin(void)
 	{
-
-		return iterator(this->_tree.get_root()->get_smallest());
+		return iterator(red_black_node<value_type, value_compare>::get_smallest(this->_tree.get_root()));
 	}
 	
 	template <class Key, class T, class Compare, class Alloc>
 	typename map<Key, T, Compare, Alloc>::const_iterator			map<Key, T, Compare, Alloc>::begin(void) const
 	{
-		return static_cast<const_iterator>(iterator(this->_tree.get_root()->get_smallest()));
+		return static_cast<const_iterator>(iterator(red_black_node<value_type, value_compare>::get_smallest(this->_tree.get_root())));
 	}
 	
 	template <class Key, class T, class Compare, class Alloc>
@@ -223,13 +222,13 @@ namespace ft
 	template <class Key, class T, class Compare, class Alloc>
 	typename map<Key, T, Compare, Alloc>::reverse_iterator			map<Key, T, Compare, Alloc>::rend(void)
 	{
-		return reverse_iterator(this->_tree.get_root()->get_smallest());
+		return reverse_iterator(red_black_node<value_type, value_compare>::get_smallest(this->_tree.get_root()));
 	}
 	
 	template <class Key, class T, class Compare, class Alloc>
 	typename map<Key, T, Compare, Alloc>::const_reverse_iterator	map<Key, T, Compare, Alloc>::rend(void) const
 	{
-		return const_reverse_iterator(this->_tree.get_root()->get_smallest());
+		return const_reverse_iterator(red_black_node<value_type, value_compare>::get_smallest(this->_tree.get_root()));
 	}
 
 	/*Capacity*/

@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 13:56:12 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/10 16:27:01 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/10 18:06:42 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,8 +87,12 @@ namespace ft
 			*/
 			pointer				iterate(void) const;
 			pointer				reverse_iterate(void) const;
-			pointer				get_smallest(void);
-			pointer				get_biggest(void);
+
+			/*
+				STATIC UTILS
+			*/
+			static pointer		get_smallest(pointer ptr);
+			static pointer		get_biggest(pointer ptr);
 
 			/*
 				OPERATORS
@@ -109,10 +113,6 @@ namespace ft
 			pointer				_parent;
 			pointer				_end;
 			const value_compare &_comp;
-
-			/*
-				PRIVATE UTILS
-			*/
 	};
 
 	
@@ -215,7 +215,7 @@ namespace ft
 		node_type		*parent = k->get_parent();
 		
 		if (right && !right->is_leaf())
-			return right->get_smallest();
+			return node_type::get_smallest(right);
 		while (parent && parent->get_right() == k)
 		{
 			k = parent;
@@ -229,17 +229,13 @@ namespace ft
 	template <class T, class Compare>
 	typename red_black_node<T, Compare>::pointer		red_black_node<T, Compare>::reverse_iterate(void) const
 	{
-		const node_type	*k = this;
 		if (!this->_end) //meaning this node is the end
-		{
-			while (k->get_parent())
-				k = k->get_parent();
-			return k->get_biggest();
-		}
+			return nullptr; //HUGE PROBLEM HERE MUST RETURN BIGGEST PAIR
+		const node_type	*k = this;
 		node_type	*left = k->get_left();
 		node_type	*parent = k->get_parent();
 		if (!left->is_leaf())
-			return left->get_biggest();
+			return node_type::get_biggest(left);
 		while (parent && parent->get_left() == k)
 		{
 			k = parent;
@@ -250,22 +246,25 @@ namespace ft
 		return this->_end; //probably not that since it's the first
 	}
 
+
+	/*
+		STATIC UTILS
+	*/
+
 	template <class T, class Compare>
-	typename red_black_node<T, Compare>::pointer		red_black_node<T, Compare>::get_smallest(void) 
+	typename red_black_node<T, Compare>::pointer		red_black_node<T, Compare>::get_smallest(pointer ptr)
 	{
-		node_type	*tmp = this;
-		while (!tmp->is_leaf() && !tmp->_left->is_leaf())
-			tmp = tmp->_left;
-		return tmp;
+		while (!ptr->is_leaf() && !ptr->_left->is_leaf())
+			ptr = ptr->_left;
+		return ptr;
 	}
 	
 	template <class T, class Compare>
-	typename red_black_node<T, Compare>::pointer		red_black_node<T, Compare>::get_biggest(void)
+	typename red_black_node<T, Compare>::pointer		red_black_node<T, Compare>::get_biggest(pointer ptr)
 	{
-		node_type	*tmp = this;
-		while (!tmp->is_leaf() && !tmp->_right->is_leaf())
-			tmp = tmp->_right;
-		return tmp;
+		while (!ptr->is_leaf() && !ptr->_right->is_leaf())
+			ptr = ptr->_right;
+		return ptr;
 	}
 
 	/*
