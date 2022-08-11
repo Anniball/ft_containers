@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 16:02:21 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/10 17:51:39 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/11 11:44:29 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ namespace ft
 	{
 		this->_end = _node_alloc.allocate(1);
 		this->_root = _node_alloc.allocate(1);
-		this->_node_alloc.construct(this->_end, node_type(nullptr, this->_comp));
+		this->_node_alloc.construct(this->_end, node_type(this->_root, this->_comp));
 		this->_node_alloc.construct(this->_root, node_type(this->_end, this->_comp));
 		return ;
 	}
@@ -120,7 +120,7 @@ namespace ft
 	{
 		this->_end = _node_alloc.allocate(1);
 		this->_root = _node_alloc.allocate(1);
-		this->_node_alloc.construct(this->_end, node_type(nullptr, this->_comp));
+		this->_node_alloc.construct(this->_end, node_type(this->_root, this->_comp));
 		this->_node_alloc.construct(this->_root, node_type(this->_end, this->_comp));
 		for (node_type *node = node_type::get_smallest(src._root); node != src._end; node = node->iterate())
 			this->insert(node->get_value());
@@ -183,6 +183,7 @@ namespace ft
 	void																red_black_tree<T, Alloc, Compare>::set_root(node_type *ptr)
 	{
 		this->_root = ptr;
+		this->_end->set_end(ptr);
 	}
 	
 	template <class T, class Alloc, class Compare>
@@ -278,7 +279,7 @@ namespace ft
 		this->_node_alloc.construct(new_node, node_type(value, z, this->_create_leaf(new_node), parent, this->_end, this->_comp));
 		z->set_parent(new_node);
 		if (z == this->_root)
-			this->_root = new_node;
+			this->set_root(new_node);
 		if (parent)
 		{
 			if (parent->get_left() == z)
@@ -335,7 +336,7 @@ namespace ft
 			this->_node_alloc.destroy(right);
 			this->_node_alloc.deallocate(right, 1);
 			if (z == this->_root)
-				this->_root = left;
+				this->set_root(left);
 			this->_replace_node(z->get_parent(), z, left);
 		}
 		else if (left->is_leaf() && !right->is_leaf())
@@ -344,7 +345,7 @@ namespace ft
 			this->_node_alloc.deallocate(left, 1);
 			this->_replace_node(z->get_parent(), z, right);
 			if (z == this->_root)
-				this->_root = right;
+				this->set_root(right);
 		}
 		else
 		{

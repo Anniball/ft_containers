@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 13:56:12 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/10 18:06:42 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/11 11:45:40 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ namespace ft
 			pointer				_left;
 			pointer				_right;
 			pointer				_parent;
-			pointer				_end;
+			pointer				_end; //lead to the end of the tree except for the end node itself that lead to the root
 			const value_compare &_comp;
 	};
 
@@ -229,8 +229,8 @@ namespace ft
 	template <class T, class Compare>
 	typename red_black_node<T, Compare>::pointer		red_black_node<T, Compare>::reverse_iterate(void) const
 	{
-		if (!this->_end) //meaning this node is the end
-			return nullptr; //HUGE PROBLEM HERE MUST RETURN BIGGEST PAIR
+		if (!this->_parent && !this->_left && !this->_right) //meaning this node is the end
+			return node_type::get_biggest(this->_end);
 		const node_type	*k = this;
 		node_type	*left = k->get_left();
 		node_type	*parent = k->get_parent();
