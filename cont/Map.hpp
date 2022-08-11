@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 10:12:44 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/10 17:54:25 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/11 12:13:44 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -251,13 +251,22 @@ namespace ft
 		// return this->_tree.get_alloc().max_size(); //the correct one
 	}
 
+	/*
+	const ft::pair<const char, foo<std::__1::basic_string<char> > >::second_type
+	aka
+	const foo<std::__1::basic_string<char> >
+	and
+	const ft::pair<const char, foo<std::__1::basic_string<char> > >::second_type
+	*/
+
 	/*Element access*/
 	template <class Key, class T, class Compare, class Alloc>
 	typename map<Key, T, Compare, Alloc>::mapped_type				&map<Key, T, Compare, Alloc>::operator[](const key_type& k)
 	{
 		value_type v = value_type(k, mapped_type());
 		iterator it = iterator(this->_tree.search(v));
-		if (it != this->end())
+		iterator ite = this->end();
+		if (it != ite)
 			return it->second;
 		this->_size++;
 		return this->_tree.insert(v).first->get_value().second;

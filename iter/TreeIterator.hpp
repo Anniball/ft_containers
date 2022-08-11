@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 14:25:03 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/10 18:06:28 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/11 13:30:36 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,7 +157,7 @@ namespace ft
 	template <class T1, class T2, class Compare, class Node1, class Node2>
 	bool									operator==(const tree_iterator<T1, Compare, Node1> &left, const tree_iterator<T2, Compare, Node2> &right)
 	{
-		return *left == *right;
+		return left.base() == reinterpret_cast<typename tree_iterator<T1, Compare, Node1>::node_pointer>(right.base());
 	}
 
 	template <class T1, class T2, class Compare, class Node1, class Node2>
