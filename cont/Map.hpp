@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 10:12:44 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/11 12:13:44 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/11 14:18:50 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,11 +147,7 @@ namespace ft
 	: _tree(_val_comp), _size(0), _key_comp(comp), _val_comp(_key_comp)
 	{
 		(void)alloc;
-		for (InputIterator it = first; it != last; it++)
-		{
-			this->_tree.insert(*it);
-			this->_size++;
-		}
+		this->insert(first, last);
 	}
 	
 	template <class Key, class T, class Compare, class Alloc>
@@ -185,12 +181,16 @@ namespace ft
 	template <class Key, class T, class Compare, class Alloc>
 	typename map<Key, T, Compare, Alloc>::iterator					map<Key, T, Compare, Alloc>::begin(void)
 	{
+		if (this->_tree.get_root()->is_leaf()) //there is clearly a better way
+			return this->end();
 		return iterator(red_black_node<value_type, value_compare>::get_smallest(this->_tree.get_root()));
 	}
 	
 	template <class Key, class T, class Compare, class Alloc>
 	typename map<Key, T, Compare, Alloc>::const_iterator			map<Key, T, Compare, Alloc>::begin(void) const
 	{
+		if (this->_tree.get_root()->is_leaf()) //there is clearly a better way
+			return this->end();
 		return static_cast<const_iterator>(iterator(red_black_node<value_type, value_compare>::get_smallest(this->_tree.get_root())));
 	}
 	
@@ -288,7 +288,7 @@ namespace ft
 	typename map<Key, T, Compare, Alloc>::iterator					map<Key, T, Compare, Alloc>::insert(iterator position, const value_type& val)
 	{
 		pair<red_black_node<value_type, value_compare>*, bool> tmp; //find a solution to not call rbnode directly in map
-		if (position != begin() && position != this->end() && this->_val_comp(*(--position), val) && this->_val_comp(val, *(++position)))
+		if (position != this->begin() && position != this->end() && this->_val_comp(*(--position), val) && this->_val_comp(val, *(++position)))
 			tmp = this->_tree.insert(val, position);
 		else
 			tmp = this->_tree.insert(val);

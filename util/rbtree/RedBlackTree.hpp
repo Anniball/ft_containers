@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 16:02:21 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/11 11:44:29 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/11 13:48:56 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,17 +87,17 @@ namespace ft
 			void					swap_content(tree_type &tree);
 
 		private :
-			node_type			*_root;
-			node_type			*_end;
-			allocator_type		_node_alloc;
-			value_compare		&_comp;
+			node_type				*_root;
+			node_type				*_end;
+			allocator_type			_node_alloc;
+			value_compare			&_comp;
 
 			/*
 				PRIVATE UTILS METHOD
 			*/
-			node_type	*_create_leaf(node_type *parent);
-			void		_replace_node(node_type *parent, node_type *z, node_type *replacer);
-			void		_print_tree(void);
+			node_type				*_create_leaf(node_type *parent);
+			void					_replace_node(node_type *parent, node_type *z, node_type *replacer);
+			void					_print_tree(void);
 	};
 	
 	
@@ -352,7 +352,7 @@ namespace ft
 			node_type	*smallest = node_type::get_smallest(right);
 			this->_node_alloc.destroy(z);
 			this->_node_alloc.construct(z, node_type(smallest->get_value(), left, right, z->get_parent(), this->_end, this->_comp));
-			this->erase(smallest); //not optimal, could create a erase(node_type &val)
+			this->erase(smallest);
 		}
 		return true;
 	}
