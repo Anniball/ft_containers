@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 10:12:44 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/11 14:18:50 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/11 14:20:12 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -247,8 +247,7 @@ namespace ft
 	template <class Key, class T, class Compare, class Alloc>
 	typename map<Key, T, Compare, Alloc>::size_type					map<Key, T, Compare, Alloc>::max_size(void) const
 	{
-		return 288230376151711743;
-		// return this->_tree.get_alloc().max_size(); //the correct one
+		return this->_tree.get_alloc().max_size();
 	}
 
 	/*
