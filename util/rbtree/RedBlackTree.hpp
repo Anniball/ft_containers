@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 16:02:21 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/12 14:06:48 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/12 14:23:37 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -342,16 +342,12 @@ namespace ft
 			return false;
 		if ( (!left && !right) || (left && !right) )
 		{
-			this->_node_alloc.destroy(right);
-			this->_node_alloc.deallocate(right, 1);
+			this->_replace_node(z->get_parent(), z, left);
 			if (z == this->_root)
 				this->set_root(left);
-			this->_replace_node(z->get_parent(), z, left);
 		}
 		else if (!left && right)
 		{
-			this->_node_alloc.destroy(left);
-			this->_node_alloc.deallocate(left, 1);
 			this->_replace_node(z->get_parent(), z, right);
 			if (z == this->_root)
 				this->set_root(right);
@@ -421,7 +417,8 @@ namespace ft
 			else
 				return ;
 		}
-		replacer->set_parent(parent);
+		if (replacer)
+			replacer->set_parent(parent);
 		this->_node_alloc.destroy(z);
 		this->_node_alloc.deallocate(z, 1);
 		return ;
