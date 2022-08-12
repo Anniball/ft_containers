@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 16:02:21 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/11 13:48:56 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/12 13:42:09 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,6 @@ namespace ft
 			/*
 				PRIVATE UTILS METHOD
 			*/
-			node_type				*_create_leaf(node_type *parent);
 			void					_replace_node(node_type *parent, node_type *z, node_type *replacer);
 			void					_print_tree(void);
 	};
@@ -106,22 +105,18 @@ namespace ft
 	*/
 
 	template <class T, class Alloc, class Compare>
-	red_black_tree<T, Alloc, Compare>::red_black_tree(value_compare &comp) : _node_alloc(), _comp(comp)
+	red_black_tree<T, Alloc, Compare>::red_black_tree(value_compare &comp) : _root(nullptr), _node_alloc(), _comp(comp)
 	{
 		this->_end = _node_alloc.allocate(1);
-		this->_root = _node_alloc.allocate(1);
 		this->_node_alloc.construct(this->_end, node_type(this->_root, this->_comp));
-		this->_node_alloc.construct(this->_root, node_type(this->_end, this->_comp));
 		return ;
 	}
 	
 	template <class T, class Alloc, class Compare>
-	red_black_tree<T, Alloc, Compare>::red_black_tree(const red_black_tree<T, Alloc, Compare> &src) : _node_alloc(src._node_alloc), _comp(src._comp)
+	red_black_tree<T, Alloc, Compare>::red_black_tree(const red_black_tree<T, Alloc, Compare> &src) : _node_alloc(src._node_alloc), _comp(src._comp), _root(nullptr)
 	{
 		this->_end = _node_alloc.allocate(1);
-		this->_root = _node_alloc.allocate(1);
 		this->_node_alloc.construct(this->_end, node_type(this->_root, this->_comp));
-		this->_node_alloc.construct(this->_root, node_type(this->_end, this->_comp));
 		for (node_type *node = node_type::get_smallest(src._root); node != src._end; node = node->iterate())
 			this->insert(node->get_value());
 		return ;
@@ -144,7 +139,7 @@ namespace ft
 	red_black_tree<T, Alloc, Compare>							&red_black_tree<T, Alloc, Compare>::operator=(const red_black_tree<T, Alloc, Compare> &right)
 	{
 		this->clear();
-		for (node_type *node = node_type::get_smallest(right._root); node != right._end; node = node->iterate())
+		for (node_type *node = node_type::get_smallest(right._root); node != right._end && node; node = node->iterate())
 			this->insert(node->get_value());
 		return *this;
 	}
@@ -202,24 +197,7 @@ namespace ft
 	{
 		node_type	*z = this->_root;
 		node_type	tmp(val, this->_end, this->_comp);
-		while (!z->is_leaf() && *z != tmp)
-		{
-			if (tmp > *z)
-				z = z->get_right();
-			else
-				z = z->get_left();
-		}
-		if (z->is_leaf())
-			return this->_end;
-		return z;
-	}
-
-	template <class T, class Alloc, class Compare>
-	typename red_black_tree<T, Alloc, Compare>::node_type			*red_black_tree<T, Alloc, Compare>::search_lower_bound(value_type &val) const
-	{
-		node_type	*z = this->_root;
-		node_type	tmp(val, this->_end, this->_comp);
-		while (!z->is_leaf())
+		while (z)
 		{
 			if (*z == tmp)
 				return z;
@@ -228,7 +206,30 @@ namespace ft
 			else
 				z = z->get_left();
 		}
-		return z->iterate();
+		return this->_end;
+	}
+
+	template <class T, class Alloc, class Compare>
+	typename red_black_tree<T, Alloc, Compare>::node_type			*red_black_tree<T, Alloc, Compare>::search_lower_bound(value_type &val) const
+	{
+		node_type	*z = this->_root;
+		node_type	tmp(val, this->_end, this->_comp);
+		node_type	*previous = nullptr;
+		while (z)
+		{
+			previous = z;
+			if (*z == tmp)
+				return z;
+			else if (tmp > *z)
+				z = z->get_right();
+			else
+				z = z->get_left();
+		}
+		if (!previous)
+			return this->_end;
+		else if (tmp > *previous)
+			return previous->iterate();
+		return previous;
 	}
 
 	template <class T, class Alloc, class Compare>
@@ -236,16 +237,22 @@ namespace ft
 	{
 		node_type	*z = this->_root;
 		node_type	tmp(val, this->_end, this->_comp);
-		while (!z->is_leaf())
+		node_type	*previous = nullptr;
+		while (z)
 		{
+			previous = z;
 			if (*z == tmp)
-				break;
+				return z->iterate();
 			else if (tmp > *z)
 				z = z->get_right();
 			else
 				z = z->get_left();
 		}
-		return z->iterate();
+		if (!previous)
+			return this->_end;
+		else if (tmp > *previous)
+			return previous->iterate();
+		return previous;
 	}
 
 	//DELETE ME
@@ -265,28 +272,30 @@ namespace ft
 	{
 		node_type	*z = this->_root;
 		node_type	tmp(value, this->_end, this->_comp);
-		while (!z->is_leaf())
+		node_type	*previous = nullptr;
+		bool		is_left = false;
+		while (z)
 		{
+			previous = z;
 			if (*z == tmp)
 				return pair<node_type*, bool>(z, false);
 			else if (tmp > *z)
+			{
 				z = z->get_right();
+				is_left = false;
+			}
 			else
+			{
 				z = z->get_left();
+				is_left = true;
+			}
 		}
-		node_type *parent = z->get_parent();
 		node_type *new_node = this->_node_alloc.allocate(1);
-		this->_node_alloc.construct(new_node, node_type(value, z, this->_create_leaf(new_node), parent, this->_end, this->_comp));
-		z->set_parent(new_node);
-		if (z == this->_root)
+		this->_node_alloc.construct(new_node, node_type(value, nullptr, nullptr, previous, this->_end, this->_comp));
+		if (!this->_root)
 			this->set_root(new_node);
-		if (parent)
-		{
-			if (parent->get_left() == z)
-				parent->set_left(new_node);
-			else if (parent)
-				parent->set_right(new_node);
-		}
+		else
+			is_left ? previous->set_left(new_node) : previous->set_right(new_node);
 		return pair<node_type*, bool>(new_node, true);
 	}
 
@@ -331,7 +340,7 @@ namespace ft
 		node_type	*right = z->get_right();
 		if (z == this->_end)
 			return false;
-		if ( (left->is_leaf() && right->is_leaf()) || (!left->is_leaf() && right->is_leaf()) )
+		if ( (!left && !right) || (left && !right) )
 		{
 			this->_node_alloc.destroy(right);
 			this->_node_alloc.deallocate(right, 1);
@@ -339,7 +348,7 @@ namespace ft
 				this->set_root(left);
 			this->_replace_node(z->get_parent(), z, left);
 		}
-		else if (left->is_leaf() && !right->is_leaf())
+		else if (!left && right)
 		{
 			this->_node_alloc.destroy(left);
 			this->_node_alloc.deallocate(left, 1);
@@ -406,14 +415,6 @@ namespace ft
 	/*
 		PRIVATE UTILS METHODS
 	*/
-	
-	template <class T, class Alloc, class Compare>
-	typename red_black_tree<T, Alloc, Compare>::node_type	*red_black_tree<T, Alloc, Compare>::_create_leaf(node_type *parent)
-	{
-		node_type *new_node = _node_alloc.allocate(1);
-		_node_alloc.construct(new_node, node_type(parent, this->_end, this->_comp));
-		return new_node;
-	}
 
 	template <class T, class Alloc, class Compare>
 	void													red_black_tree<T, Alloc, Compare>::_replace_node(node_type *parent, node_type *z, node_type *replacer)
