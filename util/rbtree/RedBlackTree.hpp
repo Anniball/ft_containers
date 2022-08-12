@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 16:02:21 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/12 13:42:09 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/12 14:06:48 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ namespace ft
 	}
 	
 	template <class T, class Alloc, class Compare>
-	red_black_tree<T, Alloc, Compare>::red_black_tree(const red_black_tree<T, Alloc, Compare> &src) : _node_alloc(src._node_alloc), _comp(src._comp), _root(nullptr)
+	red_black_tree<T, Alloc, Compare>::red_black_tree(const red_black_tree<T, Alloc, Compare> &src) :  _root(nullptr), _node_alloc(src._node_alloc), _comp(src._comp)
 	{
 		this->_end = _node_alloc.allocate(1);
 		this->_node_alloc.construct(this->_end, node_type(this->_root, this->_comp));
@@ -370,21 +370,14 @@ namespace ft
 	void													red_black_tree<T, Alloc, Compare>::clear(void)
 	{
 		node_type *nd = node_type::get_smallest(this->_root); 
-		while (nd != this->_end)
+		while (nd && nd != this->_end)
 		{
 			node_type *tmp = nd->iterate();
-			if (nd == this->_root)
-			{
-				this->_node_alloc.destroy(nd);
-				this->_node_alloc.construct(nd, node_type(this->_end, this->_comp));
-			}
-			else
-			{
-				this->_node_alloc.destroy(nd);
-				this->_node_alloc.deallocate(nd, 1);
-			}
+			this->_node_alloc.destroy(nd);
+			this->_node_alloc.deallocate(nd, 1);
 			nd = tmp;
 		}
+		this->_root = nullptr;
 		return ;
 	}
 
