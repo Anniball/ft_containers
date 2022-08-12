@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 10:12:44 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/11 14:23:47 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/12 14:32:03 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,7 +181,7 @@ namespace ft
 	template <class Key, class T, class Compare, class Alloc>
 	typename map<Key, T, Compare, Alloc>::iterator					map<Key, T, Compare, Alloc>::begin(void)
 	{
-		if (!this->_tree.get_root()) //there is clearly a better way
+		if (!this->_size)
 			return this->end();
 		return iterator(red_black_node<value_type, value_compare>::get_smallest(this->_tree.get_root()));
 	}
@@ -189,7 +189,7 @@ namespace ft
 	template <class Key, class T, class Compare, class Alloc>
 	typename map<Key, T, Compare, Alloc>::const_iterator			map<Key, T, Compare, Alloc>::begin(void) const
 	{
-		if (!this->_tree.get_root()) //there is clearly a better way
+		if (!this->_size)
 			return this->end();
 		return static_cast<const_iterator>(iterator(red_black_node<value_type, value_compare>::get_smallest(this->_tree.get_root())));
 	}
@@ -250,15 +250,8 @@ namespace ft
 		return this->_tree.get_alloc().max_size();
 	}
 
-	/*
-	const ft::pair<const char, foo<std::__1::basic_string<char> > >::second_type
-	aka
-	const foo<std::__1::basic_string<char> >
-	and
-	const ft::pair<const char, foo<std::__1::basic_string<char> > >::second_type
-	*/
-
 	/*Element access*/
+
 	template <class Key, class T, class Compare, class Alloc>
 	typename map<Key, T, Compare, Alloc>::mapped_type				&map<Key, T, Compare, Alloc>::operator[](const key_type& k)
 	{
