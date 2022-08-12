@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 13:56:12 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/11 14:02:00 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/11 15:51:21 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -214,7 +214,7 @@ namespace ft
 		node_type		*right = k->get_right();
 		node_type		*parent = k->get_parent();
 		
-		if (right && !right->is_leaf())
+		if (right)
 			return node_type::get_smallest(right);
 		while (parent && parent->get_right() == k)
 		{
@@ -234,7 +234,7 @@ namespace ft
 		const node_type	*k = this;
 		node_type	*left = k->get_left();
 		node_type	*parent = k->get_parent();
-		if (!left->is_leaf())
+		if (left)
 			return node_type::get_biggest(left);
 		while (parent && parent->get_left() == k)
 		{
@@ -254,7 +254,7 @@ namespace ft
 	template <class T, class Compare>
 	typename red_black_node<T, Compare>::pointer		red_black_node<T, Compare>::get_smallest(pointer ptr)
 	{
-		while (!ptr->is_leaf() && !ptr->_left->is_leaf())
+		while (ptr && ptr->_left)
 			ptr = ptr->_left;
 		return ptr;
 	}
@@ -262,7 +262,7 @@ namespace ft
 	template <class T, class Compare>
 	typename red_black_node<T, Compare>::pointer		red_black_node<T, Compare>::get_biggest(pointer ptr)
 	{
-		while (!ptr->is_leaf() && !ptr->_right->is_leaf())
+		while (ptr && ptr->_right)
 			ptr = ptr->_right;
 		return ptr;
 	}
