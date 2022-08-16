@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 16:02:21 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/16 11:04:13 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/16 15:19:04 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,9 @@ namespace ft
 				PRIVATE UTILS METHOD
 			*/
 			void					_replace_node(node_type *parent, node_type *z, node_type *replacer);
+			bool					_is_black(node_type *k);
+			node_type				*_left_rotate(node_type *k);
+			node_type				*_right_rotate(node_type *k);
 			void					_print_tree(void);
 	};
 	
@@ -421,6 +424,56 @@ namespace ft
 		this->_node_alloc.destroy(z);
 		this->_node_alloc.deallocate(z, 1);
 		return ;
+	}
+
+	template <class T, class Alloc, class Compare>
+	bool													red_black_tree<T, Alloc, Compare>::_is_black(node_type *k)
+	{
+		if (!k || k->is_black())
+			return true;
+		return false;
+	}
+
+	template <class T, class Alloc, class Compare>
+	typename red_black_tree<T, Alloc, Compare>::node_type	*red_black_tree<T, Alloc, Compare>::_left_rotate(node_type *k)
+	{
+		node_type *parent = k->get_parent();
+		node_type *left = k->get_left();
+		parent->set_right(left);
+		if (left)
+			left->_parent = parent;
+		node_type *gparent = parent->get_parent();
+		if (!gparent)
+		{
+			this->_root = k;
+		}
+		else if (parent == gparent->get_left())
+			gparent->set_left(k);
+		else
+			gparent->set_right(k);
+		parent->left = k;
+		k->parent = parent;
+	}
+
+	template <class T, class Alloc, class Compare>
+	typename red_black_tree<T, Alloc, Compare>::node_type	*red_black_tree<T, Alloc, Compare>::_right_rotate(node_type *k)
+	{
+		node_type *parent = k->get_parent();
+		node_type *right = k->get_right();
+		parent->set_left(right);
+		if (right)
+			right->_parent = parent;
+		node_type *gparent = parent->get_parent();
+		if (!gparent)
+		{
+			this->_root = k;
+		}
+		else if (parent == gparent->get_left())
+			gparent->set_left(k);
+		else
+			gparent->set_right(k);
+		parent->right = k;
+		k->parent = parent;
 	}
 }
 
