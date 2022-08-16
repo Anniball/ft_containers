@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 16:02:21 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/12 14:23:37 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/16 11:04:13 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -369,8 +369,7 @@ namespace ft
 		while (nd && nd != this->_end)
 		{
 			node_type *tmp = nd->iterate();
-			this->_node_alloc.destroy(nd);
-			this->_node_alloc.deallocate(nd, 1);
+			this->erase(tmp);
 			nd = tmp;
 		}
 		this->_root = nullptr;
