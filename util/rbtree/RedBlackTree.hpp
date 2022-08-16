@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 16:02:21 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/16 16:24:12 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/16 17:11:19 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,9 +100,10 @@ namespace ft
 			*/
 			void					_replace_node(node_type *parent, node_type *z, node_type *replacer);
 			bool					_is_black(node_type *k);
-			node_type				*_left_rotate(node_type *k);
-			node_type				*_right_rotate(node_type *k);
-			node_type				*_check_violation(node_type *k);
+			bool					_is_red(node_type *k);
+			void					_left_rotate(node_type *k);
+			void					_right_rotate(node_type *k);
+			void					_check_violation(node_type *k);
 			void					_print_tree(void);
 	};
 	
@@ -299,6 +300,7 @@ namespace ft
 			previous->set_left(new_node);
 		else
 			previous->set_right(new_node);
+		this->_check_violation(new_node);
 		return pair<node_type*, bool>(new_node, true);
 	}
 
@@ -435,57 +437,87 @@ namespace ft
 	}
 
 	template <class T, class Alloc, class Compare>
-	typename red_black_tree<T, Alloc, Compare>::node_type	*red_black_tree<T, Alloc, Compare>::_left_rotate(node_type *k)
+	bool													red_black_tree<T, Alloc, Compare>::_is_red(node_type *k)
+	{
+		if (k && k->is_red())
+			return true;
+		return false;
+	}
+
+	template <class T, class Alloc, class Compare>
+	void													red_black_tree<T, Alloc, Compare>::_left_rotate(node_type *k)
 	{
 		node_type *parent = k->get_parent();
 		node_type *left = k->get_left();
 		parent->set_right(left);
 		if (left)
-			left->_parent = parent;
+			left->set_parent(parent);
 		node_type *gparent = parent->get_parent();
 		if (!gparent)
-		{
 			this->_root = k;
-		}
 		else if (parent == gparent->get_left())
 			gparent->set_left(k);
 		else
 			gparent->set_right(k);
-		parent->left = k;
-		k->parent = parent;
+		parent->set_left(k);
+		k->set_parent(parent);
 	}
 
 	template <class T, class Alloc, class Compare>
-	typename red_black_tree<T, Alloc, Compare>::node_type	*red_black_tree<T, Alloc, Compare>::_right_rotate(node_type *k)
+	void													red_black_tree<T, Alloc, Compare>::_right_rotate(node_type *k)
 	{
 		node_type *parent = k->get_parent();
 		node_type *right = k->get_right();
 		parent->set_left(right);
 		if (right)
-			right->_parent = parent;
+			right->set_parent(parent);
 		node_type *gparent = parent->get_parent();
 		if (!gparent)
-		{
 			this->_root = k;
-		}
 		else if (parent == gparent->get_left())
 			gparent->set_left(k);
 		else
 			gparent->set_right(k);
-		parent->right = k;
-		k->parent = parent;
+		parent->set_right(k);
+		k->set_parent(parent);
 	}
 
 
-	// template <class T, class Alloc, class Compare>
-	// typename red_black_tree<T, Alloc, Compare>::node_type	*red_black_tree<T, Alloc, Compare>::_check_violation(node_type *k)
-	// {
-	// 	if (k == this->_root)
-	// 		k->set_color(RBT_BLACK);
-	// 	else if (k->get_uncle()->get_color() == RBT_RED)
-	// 		//case1 correction
-	// 	else if ()
-	// }
+	template <class T, class Alloc, class Compare>
+	void													red_black_tree<T, Alloc, Compare>::_check_violation(node_type *k)
+	{
+		if (k == this->_root)
+		{
+			k->set_color(RBT_BLACK);
+			return ;
+		}
+		while ( this->_is_red(k->get_parent()) )
+		{
+			node_type	*parent = k->get_parent();
+			node_type	*gparent = parent->get_parent(); //WHAT IN NO GPARENT CASE???
+			bool		is_left = (gparent->get_left() == parent);
+			node_type	*uncle = (is_left ? gparent->get_right() : gparent->get_left());
+
+			if ( this->_is_red(uncle) )
+			{
+				parent->set_color(RBT_BLACK);
+				uncle->set_color(RBT_BLACK);
+				gparent->set_color(RBT_RED);
+				k = gparent;
+			}
+			else
+			{
+				if ( k == (is_left ? parent->get_right() : parent->get_left()) )
+				{
+					k = parent;
+					is_left ? this->_left_rotate(k) : this->_right_rotate(k);
+				}
+				gparent->set_color(RBT_BLACK);
+				gparent->get_parent()->set_color(RBT_RED);
+				is_left ? this->_right_rotate(gparent->get_parent()) : this->_left_rotate(gparent->get_parent());
+			}
+		}
+	}
 }
 
 /*

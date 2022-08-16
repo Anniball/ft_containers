@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 13:56:12 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/16 16:16:31 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/16 16:41:11 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,6 @@ namespace ft
 			bool				get_color(void) const;
 			bool				is_red(void) const;
 			bool				is_black(void) const;
-			bool				is_leaf(void) const;
 			pointer				get_uncle(void) const;
 			void				set_value(value_type	const &val);
 			void				set_right(pointer node);
@@ -188,9 +187,6 @@ namespace ft
 	
 	template <class T, class Compare>
 	bool									red_black_node<T, Compare>::is_black(void) const {return this->_color == RBT_BLACK;}
-	
-	template <class T, class Compare>
-	bool									red_black_node<T, Compare>::is_leaf(void) const {return this->_left == nullptr && this->_right == nullptr;}
 
 	template <class T, class Compare>
 	void									red_black_node<T, Compare>::set_value(value_type	const &val) {this->_content = val;}
