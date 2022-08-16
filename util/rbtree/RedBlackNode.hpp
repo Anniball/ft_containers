@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 13:56:12 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/11 15:51:21 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/16 16:16:31 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ namespace ft
 			pointer				get_parent(void) const;
 			pointer				get_grand_parent(void) const;
 			pointer				get_end(void) const;
+			bool				get_color(void) const;
 			bool				is_red(void) const;
 			bool				is_black(void) const;
 			bool				is_leaf(void) const;
@@ -81,6 +82,7 @@ namespace ft
 			void				set_left(pointer node);
 			void				set_parent(pointer node);
 			void				set_end(pointer ptr);
+			void				set_color(bool color);
 			
 			/*
 				PUBLIC UTILS
@@ -164,6 +166,9 @@ namespace ft
 
 	template <class T, class Compare>
 	typename red_black_node<T, Compare>::pointer			red_black_node<T, Compare>::get_end(void) const {return this->_end;}
+
+	template <class T, class Compare>
+	bool													red_black_node<T, Compare>::get_color(void) const {return this->_color;}
 	
 	template <class T, class Compare>
 	typename red_black_node<T, Compare>::pointer			red_black_node<T, Compare>::get_uncle(void) const
@@ -201,6 +206,9 @@ namespace ft
 	
 	template <class T, class Compare>
 	void									red_black_node<T, Compare>::set_end(const pointer ptr) {this->_end = ptr;}
+
+	template <class T, class Compare>
+	void									red_black_node<T, Compare>::set_color(bool color) {this->_color = color;}
 
 
 	/*

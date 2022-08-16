@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 16:02:21 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/16 15:19:04 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/16 16:24:12 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,9 @@
 # include "../../iter/IteratorsTraits.hpp"
 # include "../../iter/TreeIterator.hpp"
 # include "../Utilities.hpp"
+
+# define RBT_RED true
+# define RBT_BLACK false
 
 namespace ft
 {
@@ -99,6 +102,7 @@ namespace ft
 			bool					_is_black(node_type *k);
 			node_type				*_left_rotate(node_type *k);
 			node_type				*_right_rotate(node_type *k);
+			node_type				*_check_violation(node_type *k);
 			void					_print_tree(void);
 	};
 	
@@ -270,35 +274,31 @@ namespace ft
 	}
 	//DELETE ME
 
+
 	template <class T, class Alloc, class Compare>
 	pair<typename red_black_tree<T, Alloc, Compare>::node_type*, bool>	red_black_tree<T, Alloc, Compare>::insert(const value_type &value)
 	{
 		node_type	*z = this->_root;
 		node_type	tmp(value, this->_end, this->_comp);
 		node_type	*previous = nullptr;
-		bool		is_left = false;
 		while (z)
 		{
 			previous = z;
-			if (*z == tmp)
+			if (tmp == *z)
 				return pair<node_type*, bool>(z, false);
-			else if (tmp > *z)
-			{
-				z = z->get_right();
-				is_left = false;
-			}
-			else
-			{
+			if (tmp < *z)
 				z = z->get_left();
-				is_left = true;
-			}
+			else
+				z = z->get_right();
 		}
 		node_type *new_node = this->_node_alloc.allocate(1);
 		this->_node_alloc.construct(new_node, node_type(value, nullptr, nullptr, previous, this->_end, this->_comp));
-		if (!this->_root)
+		if (!previous)
 			this->set_root(new_node);
+		else if (tmp < *previous)
+			previous->set_left(new_node);
 		else
-			is_left ? previous->set_left(new_node) : previous->set_right(new_node);
+			previous->set_right(new_node);
 		return pair<node_type*, bool>(new_node, true);
 	}
 
@@ -475,6 +475,17 @@ namespace ft
 		parent->right = k;
 		k->parent = parent;
 	}
+
+
+	// template <class T, class Alloc, class Compare>
+	// typename red_black_tree<T, Alloc, Compare>::node_type	*red_black_tree<T, Alloc, Compare>::_check_violation(node_type *k)
+	// {
+	// 	if (k == this->_root)
+	// 		k->set_color(RBT_BLACK);
+	// 	else if (k->get_uncle()->get_color() == RBT_RED)
+	// 		//case1 correction
+	// 	else if ()
+	// }
 }
 
 /*
