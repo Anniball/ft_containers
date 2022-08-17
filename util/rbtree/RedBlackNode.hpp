@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 13:56:12 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/17 13:43:03 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/17 13:50:24 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -233,7 +233,7 @@ namespace ft
 	template <class T, class Compare>
 	typename red_black_node<T, Compare>::pointer		red_black_node<T, Compare>::reverse_iterate(void) const
 	{
-		if (!this->_parent && !this->_left && !this->_right) //meaning this node is the end
+		if (!this->_parent && !this->_left && !this->_right)
 			return node_type::get_biggest(this->_end);
 		const node_type	*k = this;
 		node_type	*left = k->get_left();
@@ -247,7 +247,7 @@ namespace ft
 		}
 		if (parent)
 			return parent;
-		return this->_end; //probably not that since it's the first
+		return this->_end;
 	}
 
 

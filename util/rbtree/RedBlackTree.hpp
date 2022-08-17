@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 16:02:21 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/17 13:43:56 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/17 15:59:24 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ namespace ft
 			pair<node_type*, bool>	insert(const value_type &val);
 			pair<node_type*, bool>	insert(const value_type &val, node_type *hint);
 			bool					erase(value_type &val);
-			bool					erase(node_type *z);
+			bool					erase(node_type *k);
 			void					clear(void);
 			node_type				*create_node(node_type *parent, node_type *left, node_type *right, value_type &content);
 			void					swap_content(tree_type &tree);
@@ -98,7 +98,7 @@ namespace ft
 			/*
 				PRIVATE UTILS METHOD
 			*/
-			void					_replace_node(node_type *parent, node_type *z, node_type *replacer);
+			void					_replace_node(node_type *parent, node_type *k, node_type *replacer);
 			bool					_is_black(node_type *k);
 			bool					_is_red(node_type *k);
 			void					_left_rotate(node_type *k);
@@ -326,30 +326,31 @@ namespace ft
 	}
 
 	template <class T, class Alloc, class Compare>
-	bool													red_black_tree<T, Alloc, Compare>::erase(node_type *z)
+	bool													red_black_tree<T, Alloc, Compare>::erase(node_type *k)
 	{
-		node_type	*left = z->get_left();
-		node_type	*right = z->get_right();
-		if (z == this->_end)
+		node_type	*left = k->get_left();
+		node_type	*right = k->get_right();
+		if (k == this->_end)
 			return false;
-		if ( (!left && !right) || (left && !right) )
-		{
-			this->_replace_node(z->get_parent(), z, left);
-			if (z == this->_root)
-				this->set_root(left);
-		}
+		if (!right)
+			this->_replace_node(k->get_parent(), k, left);
 		else if (!left && right)
-		{
-			this->_replace_node(z->get_parent(), z, right);
-			if (z == this->_root)
-				this->set_root(right);
-		}
+			this->_replace_node(k->get_parent(), k, right);
 		else
 		{
 			node_type	*smallest = node_type::get_smallest(right);
-			this->_node_alloc.destroy(z);
-			this->_node_alloc.construct(z, node_type(smallest->get_value(), left, right, z->get_parent(), this->_end, this->_comp));
-			this->erase(smallest);
+			if (k == smallest->get_parent())
+				right->set_parent(smallest);
+			else
+			{
+				this->_replace_node(smallest->get_parent(), smallest, smallest->get_right());
+				smallest->set_right(right);
+				right->set_parent(smallest);
+			}
+			this->_replace_node(k->get_parent(), k, smallest);
+			smallest->set_left(left);
+			smallest->get_left()->set_parent(smallest);
+			smallest->set_color(k->get_color());
 		}
 		return true;
 	}
@@ -397,21 +398,18 @@ namespace ft
 	*/
 
 	template <class T, class Alloc, class Compare>
-	void													red_black_tree<T, Alloc, Compare>::_replace_node(node_type *parent, node_type *z, node_type *replacer)
+	void													red_black_tree<T, Alloc, Compare>::_replace_node(node_type *parent, node_type *k, node_type *replacer)
 	{
-		if (parent)
-		{
-			if (z == parent->get_left())
-				parent->set_left(replacer);
-			else if (z == parent->get_right())
-				parent->set_right(replacer);
-			else
-				return ;
-		}
+		if (!parent)
+			this->set_root(replacer);
+		else if (k == parent->get_left())
+			parent->set_left(replacer);
+		else
+			parent->set_right(replacer);
 		if (replacer)
 			replacer->set_parent(parent);
-		this->_node_alloc.destroy(z);
-		this->_node_alloc.deallocate(z, 1);
+		this->_node_alloc.destroy(k);
+		this->_node_alloc.deallocate(k, 1);
 		return ;
 	}
 
