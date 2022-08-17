@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 16:02:21 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/17 15:59:24 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/17 17:16:36 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ namespace ft
 			typedef typename allocator_type::pointer										pointer;
 			typedef typename allocator_type::const_pointer									const_pointer;
 			typedef ft::tree_iterator<value_type, value_compare, node_type>					iterator;
-			typedef ft::tree_iterator<const value_type, value_compare, node_const_type >	const_iterator;
+			typedef ft::tree_iterator<const value_type, value_compare, node_const_type>		const_iterator;
 			typedef ft::reverse_iterator<iterator>											reverse_iterator;
 			typedef ft::reverse_iterator<const_iterator>									const_reverse_iterator;
 			typedef size_t																	size_type;
@@ -103,7 +103,8 @@ namespace ft
 			bool					_is_red(node_type *k);
 			void					_left_rotate(node_type *k);
 			void					_right_rotate(node_type *k);
-			void					_check_violation(node_type *k);
+			void					_fix_insertion(node_type *k);
+			void					_fix_deletion(node_type *k);
 			void					_print_tree(void);
 	};
 	
@@ -205,6 +206,7 @@ namespace ft
 	{
 		node_type	*z = this->_root;
 		node_type	tmp(val, this->_end, this->_comp);
+	
 		while (z)
 		{
 			if (*z == tmp)
@@ -223,6 +225,7 @@ namespace ft
 		node_type	*z = this->_root;
 		node_type	tmp(val, this->_end, this->_comp);
 		node_type	*previous = nullptr;
+	
 		while (z)
 		{
 			previous = z;
@@ -246,6 +249,7 @@ namespace ft
 		node_type	*z = this->_root;
 		node_type	tmp(val, this->_end, this->_comp);
 		node_type	*previous = nullptr;
+	
 		while (z)
 		{
 			previous = z;
@@ -269,6 +273,7 @@ namespace ft
 		node_type	*z = this->_root;
 		node_type	tmp(value, this->_end, this->_comp);
 		node_type	*previous = nullptr;
+	
 		while (z)
 		{
 			previous = z;
@@ -287,7 +292,7 @@ namespace ft
 			previous->set_left(new_node);
 		else
 			previous->set_right(new_node);
-		this->_check_violation(new_node);
+		this->_fix_insertion(new_node);
 		return pair<node_type*, bool>(new_node, true);
 	}
 
@@ -330,18 +335,29 @@ namespace ft
 	{
 		node_type	*left = k->get_left();
 		node_type	*right = k->get_right();
+		node_type	*check = k;
+		bool		color = k->get_color();
+	
 		if (k == this->_end)
 			return false;
 		if (!right)
+		{
+			check = right;
 			this->_replace_node(k->get_parent(), k, left);
+		}
 		else if (!left && right)
+		{
+			check = left;
 			this->_replace_node(k->get_parent(), k, right);
+		}
 		else
 		{
 			node_type	*smallest = node_type::get_smallest(right);
-			if (k == smallest->get_parent())
-				right->set_parent(smallest);
-			else
+			color = smallest->get_color();
+			check = smallest->get_right();
+			if (k == smallest->get_parent() && check)
+				check->set_parent(smallest);
+			else if (k != smallest->get_parent())
 			{
 				this->_replace_node(smallest->get_parent(), smallest, smallest->get_right());
 				smallest->set_right(right);
@@ -352,6 +368,8 @@ namespace ft
 			smallest->get_left()->set_parent(smallest);
 			smallest->set_color(k->get_color());
 		}
+		if (color == RBT_BLACK && check) //not sure if we should check if check is NULL and do nothing or if it should be a leaf with parents etc
+			this->_fix_deletion(check);
 		return true;
 	}
 
@@ -382,6 +400,7 @@ namespace ft
 	{
 		node_type *tmp_root = tree.get_root();
 		node_type *tmp_end = tree.get_end();
+	
 		tree.set_root(this->get_root());
 		tree.set_end(this->get_end());
 		this->set_root(tmp_root);
@@ -434,6 +453,7 @@ namespace ft
 	{
 		node_type	*right = k->get_right();
 		node_type	*child_left = right->get_left();
+	
 		k->set_right(child_left);
 		if (child_left)
 			child_left->set_parent(k);
@@ -454,6 +474,7 @@ namespace ft
 	{
 		node_type	*left = k->get_left();
 		node_type	*child_right = left->get_right();
+	
 		k->set_left(child_right);
 		if (child_right)
 			child_right->set_parent(k);
@@ -469,8 +490,9 @@ namespace ft
 		return ;
 	}
 
+	//WILL REQUIRE A LOT OF OPTIMIZATION INSTEAD OF ALL THOSE TERNARIES
 	template <class T, class Alloc, class Compare>
-	void													red_black_tree<T, Alloc, Compare>::_check_violation(node_type *k)
+	void													red_black_tree<T, Alloc, Compare>::_fix_insertion(node_type *k)
 	{
 		while ( this->_is_red(k->get_parent()) && k->get_parent()->get_parent() )
 		{
@@ -493,13 +515,55 @@ namespace ft
 					k = parent;
 					is_left ? this->_left_rotate(k) : this->_right_rotate(k);
 				}
-				parent->set_color(RBT_BLACK);
-				gparent->set_color(RBT_RED);
-				is_left ? this->_right_rotate(gparent) : this->_left_rotate(gparent);
+				parent->set_color(RBT_BLACK); //probably a problem here since k can change and pseudo code is about k.parent and k.parent.parent
+				gparent->set_color(RBT_RED); //same
+				is_left ? this->_right_rotate(gparent) : this->_left_rotate(gparent); //same
 			}
 		}
 		this->_root->set_color(RBT_BLACK);
 		return ;
+	}
+
+	//WILL REQUIRE A LOT OF OPTIMIZATION INSTEAD OF ALL THOSE TERNARIES
+	template <class T, class Alloc, class Compare>
+	void													red_black_tree<T, Alloc, Compare>::_fix_deletion(node_type *k)
+	{
+		while (this->_root != k && this->_is_black(k))
+		{
+			node_type	*parent = k->get_parent();
+			bool		is_left = (k == k->get_parent()->get_left());
+			node_type	*uncle = is_left ? parent->get_right() : parent->get_left();
+			
+			if (this->_is_red(uncle))
+			{
+				uncle->set_color(RBT_BLACK);
+				parent->set_color(RBT_RED);
+				is_left ? this->_left_rotate(parent) : this->_right_rotate(parent);
+				is_left ? uncle = parent->get_right() : parent->get_left();
+			}
+			if (this->_is_black(uncle->get_left()) && this->_is_black(uncle->get_right()))
+			{
+				uncle->set_color(RBT_BLACK);
+				k = parent;
+				parent = parent->get_parent();
+			}
+			else
+			{
+				if ( (is_left && this->_is_black(uncle->get_right())) || this->_is_black(uncle->get_left()) )
+				{
+					is_left ? uncle->get_left()->set_color(RBT_BLACK) : uncle->get_right()->set_color(RBT_BLACK);
+					uncle->set_color(RBT_RED);
+					is_left ? this->_right_rotate(uncle) : this->_left_rotate(uncle);
+					uncle = ( is_left ? parent->get_right() : parent->get_left() );
+				}
+				uncle->set_color(parent->get_color());
+				parent->set_color(RBT_BLACK);
+				uncle->get_right()->set_color(RBT_BLACK);
+				is_left ? this->_left_rotate(parent) : this->_right_rotate(parent);
+				break ;
+			}
+		}
+		this->_root->set_color(RBT_BLACK);
 	}
 
 	//DELETE ME
