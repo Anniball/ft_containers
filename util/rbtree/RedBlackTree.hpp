@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 16:02:21 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/16 17:11:19 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/17 13:43:56 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -263,19 +263,6 @@ namespace ft
 		return previous;
 	}
 
-	//DELETE ME
-	template <class T, class Alloc, class Compare>
-	void	red_black_tree<T, Alloc, Compare>::_print_tree(void)
-	{
-		std:: cout << "Starting printing tree :" << std::endl;
-		node_type *z = this->_root;
-		while (z != this->_end)
-			z = z->iterate();
-		std:: cout << "Ending printing tree" << std::endl << std::endl;
-	}
-	//DELETE ME
-
-
 	template <class T, class Alloc, class Compare>
 	pair<typename red_black_tree<T, Alloc, Compare>::node_type*, bool>	red_black_tree<T, Alloc, Compare>::insert(const value_type &value)
 	{
@@ -447,54 +434,50 @@ namespace ft
 	template <class T, class Alloc, class Compare>
 	void													red_black_tree<T, Alloc, Compare>::_left_rotate(node_type *k)
 	{
-		node_type *parent = k->get_parent();
-		node_type *left = k->get_left();
-		parent->set_right(left);
-		if (left)
-			left->set_parent(parent);
-		node_type *gparent = parent->get_parent();
-		if (!gparent)
-			this->_root = k;
-		else if (parent == gparent->get_left())
-			gparent->set_left(k);
+		node_type	*right = k->get_right();
+		node_type	*child_left = right->get_left();
+		k->set_right(child_left);
+		if (child_left)
+			child_left->set_parent(k);
+		right->set_parent(k->get_parent());
+		if (!k->get_parent())
+			this->set_root(right);
+		else if (k == k->get_parent()->get_left())
+			k->get_parent()->set_left(right);
 		else
-			gparent->set_right(k);
-		parent->set_left(k);
-		k->set_parent(parent);
+			k->get_parent()->set_right(right);
+		right->set_left(k);
+		k->set_parent(right);
+		return ;
 	}
 
 	template <class T, class Alloc, class Compare>
 	void													red_black_tree<T, Alloc, Compare>::_right_rotate(node_type *k)
 	{
-		node_type *parent = k->get_parent();
-		node_type *right = k->get_right();
-		parent->set_left(right);
-		if (right)
-			right->set_parent(parent);
-		node_type *gparent = parent->get_parent();
-		if (!gparent)
-			this->_root = k;
-		else if (parent == gparent->get_left())
-			gparent->set_left(k);
+		node_type	*left = k->get_left();
+		node_type	*child_right = left->get_right();
+		k->set_left(child_right);
+		if (child_right)
+			child_right->set_parent(k);
+		left->set_parent(k->get_parent());
+		if (!k->get_parent())
+			this->set_root(left);
+		else if (k == k->get_parent()->get_right())
+			k->get_parent()->set_right(left);
 		else
-			gparent->set_right(k);
-		parent->set_right(k);
-		k->set_parent(parent);
+			k->get_parent()->set_left(left);
+		left->set_right(k);
+		k->set_parent(left);
+		return ;
 	}
-
 
 	template <class T, class Alloc, class Compare>
 	void													red_black_tree<T, Alloc, Compare>::_check_violation(node_type *k)
 	{
-		if (k == this->_root)
-		{
-			k->set_color(RBT_BLACK);
-			return ;
-		}
-		while ( this->_is_red(k->get_parent()) )
+		while ( this->_is_red(k->get_parent()) && k->get_parent()->get_parent() )
 		{
 			node_type	*parent = k->get_parent();
-			node_type	*gparent = parent->get_parent(); //WHAT IN NO GPARENT CASE???
+			node_type	*gparent = parent->get_parent();
 			bool		is_left = (gparent->get_left() == parent);
 			node_type	*uncle = (is_left ? gparent->get_right() : gparent->get_left());
 
@@ -512,12 +495,29 @@ namespace ft
 					k = parent;
 					is_left ? this->_left_rotate(k) : this->_right_rotate(k);
 				}
-				gparent->set_color(RBT_BLACK);
-				gparent->get_parent()->set_color(RBT_RED);
-				is_left ? this->_right_rotate(gparent->get_parent()) : this->_left_rotate(gparent->get_parent());
+				parent->set_color(RBT_BLACK);
+				gparent->set_color(RBT_RED);
+				is_left ? this->_right_rotate(gparent) : this->_left_rotate(gparent);
 			}
 		}
+		this->_root->set_color(RBT_BLACK);
+		return ;
 	}
+
+	//DELETE ME
+	template <class T, class Alloc, class Compare>
+	void	red_black_tree<T, Alloc, Compare>::_print_tree(void)
+	{
+		std:: cout << "Starting printing tree :" << std::endl;
+		node_type *z = red_black_node<T, Compare>::get_smallest(this->_root);
+		while (z != this->_end)
+		{
+			std::cout << "\t key : " << z->get_value().first << " | value : " << z->get_value().second << std::endl;
+			z = z->iterate();
+		}
+		std:: cout << "Ending printing tree" << std::endl << std::endl;
+	}
+	//DELETE ME
 }
 
 /*
