@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 10:12:44 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/12 14:32:03 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/22 17:08:25 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -327,9 +327,10 @@ namespace ft
 	{
 		while (first != last)
 		{
-			if (this->_tree.erase(*first))
+			iterator tmp = first;
+			++first;
+			if (this->_tree.erase(*tmp))
 				this->_size--;
-			first++; //maybe use ft::distance instead
 		}
 		return ;
 	}

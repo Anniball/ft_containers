@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 16:02:21 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/17 17:16:36 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/22 17:18:19 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ namespace ft
 			/*
 				PRIVATE UTILS METHOD
 			*/
+			pair<node_type*, bool>	_create_child(node_type *parent, bool is_left);
 			void					_replace_node(node_type *parent, node_type *k, node_type *replacer);
 			bool					_is_black(node_type *k);
 			bool					_is_red(node_type *k);
@@ -106,6 +107,7 @@ namespace ft
 			void					_fix_insertion(node_type *k);
 			void					_fix_deletion(node_type *k);
 			void					_print_tree(void);
+			void					_print_node(node_type *k);
 	};
 	
 	
@@ -333,30 +335,31 @@ namespace ft
 	template <class T, class Alloc, class Compare>
 	bool													red_black_tree<T, Alloc, Compare>::erase(node_type *k)
 	{
-		node_type	*left = k->get_left();
-		node_type	*right = k->get_right();
-		node_type	*check = k;
-		bool		color = k->get_color();
+		node_type				*left = k->get_left();
+		node_type				*right = k->get_right();
+		pair<node_type*, bool>	check = pair<node_type*, bool>(k, true);
+		bool					color = k->get_color();
 	
+		// this->_print_tree();
 		if (k == this->_end)
 			return false;
-		if (!right)
+		if (!right) //if only left child
 		{
-			check = right;
-			this->_replace_node(k->get_parent(), k, left);
+			check = this->_create_child(k, true);
+			this->_replace_node(k->get_parent(), k, check.first);
 		}
-		else if (!left && right)
+		else if (!left) //if only right child
 		{
-			check = left;
-			this->_replace_node(k->get_parent(), k, right);
+			check = this->_create_child(k, false);
+			this->_replace_node(k->get_parent(), k, check.first);
 		}
 		else
 		{
 			node_type	*smallest = node_type::get_smallest(right);
 			color = smallest->get_color();
-			check = smallest->get_right();
-			if (k == smallest->get_parent() && check)
-				check->set_parent(smallest);
+			check = this->_create_child(smallest, false);
+			if (k == smallest->get_parent())
+				check.first->set_parent(smallest);
 			else if (k != smallest->get_parent())
 			{
 				this->_replace_node(smallest->get_parent(), smallest, smallest->get_right());
@@ -368,8 +371,15 @@ namespace ft
 			smallest->get_left()->set_parent(smallest);
 			smallest->set_color(k->get_color());
 		}
-		if (color == RBT_BLACK && check) //not sure if we should check if check is NULL and do nothing or if it should be a leaf with parents etc
-			this->_fix_deletion(check);
+		if (color == RBT_BLACK)
+			this->_fix_deletion(check.first);
+		if (check.second)
+		{
+			if (check.first->get_parent())
+			check.first == check.first->get_parent()->get_left() ? check.first->get_parent()->set_left(nullptr) : check.first->get_parent()->set_right(nullptr);
+			this->_node_alloc.destroy(check.first);
+			this->_node_alloc.deallocate(check.first, 1);
+		}
 		return true;
 	}
 
@@ -415,6 +425,19 @@ namespace ft
 	/*
 		PRIVATE UTILS METHODS
 	*/
+
+	template <class T, class Alloc, class Compare>
+	pair<typename red_black_tree<T, Alloc, Compare>::node_type*, bool>	red_black_tree<T, Alloc, Compare>::_create_child(node_type *parent, bool is_left)
+	{
+		node_type	*child = (is_left ? parent->get_left() : parent->get_right());
+		if (child)
+			return pair<node_type*, bool>(child, false);
+		node_type	*new_node = this->_node_alloc.allocate(1);
+		this->_node_alloc.construct(new_node, node_type(value_type(), nullptr, nullptr, parent, this->_end, this->_comp));
+		new_node->set_color(RBT_BLACK);
+		is_left ? parent->set_left(new_node) : parent->set_right(new_node);
+		return pair<node_type*, bool>(new_node, true);
+	}
 
 	template <class T, class Alloc, class Compare>
 	void													red_black_tree<T, Alloc, Compare>::_replace_node(node_type *parent, node_type *k, node_type *replacer)
@@ -532,35 +555,39 @@ namespace ft
 		{
 			node_type	*parent = k->get_parent();
 			bool		is_left = (k == k->get_parent()->get_left());
-			node_type	*uncle = is_left ? parent->get_right() : parent->get_left();
+			node_type	*brother = is_left ? parent->get_right() : parent->get_left();
 			
-			if (this->_is_red(uncle))
+			if (this->_is_red(brother)) //Case1
 			{
-				uncle->set_color(RBT_BLACK);
-				parent->set_color(RBT_RED);
-				is_left ? this->_left_rotate(parent) : this->_right_rotate(parent);
-				is_left ? uncle = parent->get_right() : parent->get_left();
+				brother->set_color(RBT_BLACK); //color w black
+				parent->set_color(RBT_RED); //color p[x] red
+				is_left ? this->_left_rotate(parent) : this->_right_rotate(parent); //left rotate on p[x]
+				parent = k->get_parent(); //logical deduction (maybe, not sure)
+				is_left ? brother = parent->get_right() : parent->get_left(); //move pointer w to right[p[x]]
 			}
-			if (this->_is_black(uncle->get_left()) && this->_is_black(uncle->get_right()))
+			if (this->_is_black(brother) && this->_is_black(brother->get_left()) && this->_is_black(brother->get_right())) //Case 2
 			{
-				uncle->set_color(RBT_BLACK);
-				k = parent;
-				parent = parent->get_parent();
+				brother->set_color(RBT_RED); //color w red
+				k = parent; //move pointer x up to p[x]
+				parent = parent->get_parent(); //logical deduction (for sure)
 			}
 			else
 			{
-				if ( (is_left && this->_is_black(uncle->get_right())) || this->_is_black(uncle->get_left()) )
+				if ( (is_left && this->_is_black(brother) && this->_is_black(brother->get_right()) && this->_is_red(brother->get_left()))
+					|| (!is_left && this->_is_black(brother) && this->_is_black(brother->get_left()) && this->_is_red(brother->get_right())) ) //Case3
 				{
-					is_left ? uncle->get_left()->set_color(RBT_BLACK) : uncle->get_right()->set_color(RBT_BLACK);
-					uncle->set_color(RBT_RED);
-					is_left ? this->_right_rotate(uncle) : this->_left_rotate(uncle);
-					uncle = ( is_left ? parent->get_right() : parent->get_left() );
+					is_left ? brother->get_left()->set_color(RBT_BLACK) : brother->get_right()->set_color(RBT_BLACK); //color w left child black
+					brother->set_color(RBT_RED); //color w red
+					is_left ? this->_right_rotate(brother) : this->_left_rotate(brother); //right rotate on w
+					parent = k->get_parent(); //logical deduction (not for sure)
+					brother = ( is_left ? parent->get_right() : parent->get_left() ); //move w to p[x]'s right child
 				}
-				uncle->set_color(parent->get_color());
-				parent->set_color(RBT_BLACK);
-				uncle->get_right()->set_color(RBT_BLACK);
-				is_left ? this->_left_rotate(parent) : this->_right_rotate(parent);
-				break ;
+				//Case4
+				brother->set_color(parent->get_color()); //color w to be the same as p[x]
+				parent->set_color(RBT_BLACK); //color p[x] black
+				brother->get_right()->set_color(RBT_BLACK); //color w's right child black
+				is_left ? this->_left_rotate(parent) : this->_right_rotate(parent); //left rotate on p[x]
+				break ; //break the loop
 			}
 		}
 		this->_root->set_color(RBT_BLACK);
@@ -574,12 +601,24 @@ namespace ft
 		node_type *z = red_black_node<T, Compare>::get_smallest(this->_root);
 		while (z != this->_end)
 		{
-			std::cout << "\t key : " << z->get_value().first << " | value : " << z->get_value().second << std::endl;
+			std::cout << "\tkey : " << z->get_value().first << " | value : " << z->get_value().second << std::endl;
+			this->_print_node(z);
 			z = z->iterate();
 		}
 		std:: cout << "Ending printing tree" << std::endl << std::endl;
 	}
+
 	//DELETE ME
+	template <class T, class Alloc, class Compare>
+	void	red_black_tree<T, Alloc, Compare>::_print_node(node_type *k)
+	{
+		if (k->get_parent())
+			std::cout << "\t\tparent key : " << k->get_parent()->get_value().first << std::endl;
+		if (k->get_left())
+			std::cout << "\t\tleft key : " << k->get_left()->get_value().first << std::endl;
+		if (k->get_right())
+			std::cout << "\t\tright key : " << k->get_right()->get_value().first << std::endl;
+	}
 }
 
 /*
