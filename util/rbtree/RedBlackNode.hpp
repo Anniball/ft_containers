@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 13:56:12 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/17 13:50:24 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/23 14:01:09 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -271,6 +271,7 @@ namespace ft
 		return ptr;
 	}
 
+
 	/*
 		OPERATORS
 	*/
@@ -280,6 +281,7 @@ namespace ft
 	{
 		return red_black_node<const T>(*this);
 	}
+	
 	
 	/*
 		RELATIONAL OPERATORS

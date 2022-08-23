@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 16:02:21 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/23 13:47:31 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/23 14:17:39 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -375,7 +375,9 @@ namespace ft
 		if (check.second)
 		{
 			if (check.first->get_parent())
-			check.first == check.first->get_parent()->get_left() ? check.first->get_parent()->set_left(nullptr) : check.first->get_parent()->set_right(nullptr);
+				check.first == check.first->get_parent()->get_left() ? check.first->get_parent()->set_left(nullptr) : check.first->get_parent()->set_right(nullptr);
+			if (check.first == this->_root)
+				this->set_root(nullptr);
 			this->_node_alloc.destroy(check.first);
 			this->_node_alloc.deallocate(check.first, 1);
 		}
@@ -385,11 +387,11 @@ namespace ft
 	template <class T, class Alloc, class Compare>
 	void													red_black_tree<T, Alloc, Compare>::clear(void)
 	{
-		node_type *nd = node_type::get_smallest(this->_root); 
+		node_type *nd = node_type::get_smallest(this->_root);
 		while (nd && nd != this->_end)
 		{
 			node_type *tmp = nd->iterate();
-			this->erase(tmp);
+			this->erase(nd);
 			nd = tmp;
 		}
 		this->_root = nullptr;
