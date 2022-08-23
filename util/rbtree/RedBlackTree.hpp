@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 16:02:21 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/23 14:17:39 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/23 15:59:17 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,7 @@ namespace ft
 			*/
 			pair<node_type*, bool>	_create_child(node_type *parent, bool is_left);
 			void					_replace_node(node_type *parent, node_type *k, node_type *replacer);
+			void					_transplant_node(node_type *parent, node_type *k, node_type *replacer);
 			bool					_is_black(node_type *k);
 			bool					_is_red(node_type *k);
 			void					_left_rotate(node_type *k);
@@ -342,12 +343,12 @@ namespace ft
 	
 		if (k == this->_end)
 			return false;
-		if (!right) //if only left child/no children
+		if (!right)
 		{
 			check = this->_create_child(k, true);
 			this->_replace_node(k->get_parent(), k, check.first);
 		}
-		else if (!left) //if only right child
+		else if (!left)
 		{
 			check = this->_create_child(k, false);
 			this->_replace_node(k->get_parent(), k, check.first);
@@ -356,20 +357,21 @@ namespace ft
 		{
 			node_type	*smallest = node_type::get_smallest(right);
 			color = smallest->get_color();
-			check = this->_create_child(smallest, false);
+			check = this->_create_child(smallest, false); //we create a null leaf right child to 27 (smallest)
 			if (k == smallest->get_parent())
 				check.first->set_parent(smallest);
-			else if (k != smallest->get_parent())
+			else
 			{
-				this->_replace_node(smallest->get_parent(), smallest, smallest->get_right());
-				smallest->set_right(right);
-				right->set_parent(smallest);
+				this->_transplant_node(smallest->get_parent(), smallest, smallest->get_right()); //27 is replaced by NULL
+				smallest->set_right(right); //27's right is replaced by 
+				smallest->get_right()->set_parent(smallest);
 			}
 			this->_replace_node(k->get_parent(), k, smallest);
 			smallest->set_left(left);
 			smallest->get_left()->set_parent(smallest);
 			smallest->set_color(k->get_color());
 		}
+		// this->_print_tree();
 		if (color == RBT_BLACK)
 			this->_fix_deletion(check.first);
 		if (check.second)
@@ -381,6 +383,7 @@ namespace ft
 			this->_node_alloc.destroy(check.first);
 			this->_node_alloc.deallocate(check.first, 1);
 		}
+		// this->_print_tree();
 		return true;
 	}
 
@@ -457,6 +460,20 @@ namespace ft
 	}
 
 	template <class T, class Alloc, class Compare>
+	void													red_black_tree<T, Alloc, Compare>::_transplant_node(node_type *parent, node_type *k, node_type *replacer)
+	{
+		if (!parent)
+			this->set_root(replacer);
+		else if (k == parent->get_left())
+			parent->set_left(replacer);
+		else
+			parent->set_right(replacer);
+		if (replacer)
+			replacer->set_parent(parent);
+		return ;
+	}
+
+	template <class T, class Alloc, class Compare>
 	bool													red_black_tree<T, Alloc, Compare>::_is_black(node_type *k)
 	{
 		if (!k || k->is_black())
@@ -514,7 +531,6 @@ namespace ft
 		return ;
 	}
 
-	//WILL REQUIRE A LOT OF OPTIMIZATION INSTEAD OF ALL THOSE TERNARIES
 	template <class T, class Alloc, class Compare>
 	void													red_black_tree<T, Alloc, Compare>::_fix_insertion(node_type *k)
 	{
@@ -539,8 +555,8 @@ namespace ft
 					k = parent;
 					is_left ? this->_left_rotate(k) : this->_right_rotate(k);
 				}
-				parent->set_color(RBT_BLACK); //probably a problem here since k can change and pseudo code is about k.parent and k.parent.parent
-				gparent->set_color(RBT_RED); //same
+				parent->set_color(RBT_BLACK);
+				gparent->set_color(RBT_RED);
 				is_left ? this->_right_rotate(gparent) : this->_left_rotate(gparent); //same
 			}
 		}
@@ -548,7 +564,6 @@ namespace ft
 		return ;
 	}
 
-	//WILL REQUIRE A LOT OF OPTIMIZATION INSTEAD OF ALL THOSE TERNARIES
 	template <class T, class Alloc, class Compare>
 	void													red_black_tree<T, Alloc, Compare>::_fix_deletion(node_type *k)
 	{
@@ -557,37 +572,37 @@ namespace ft
 			node_type	*parent = k->get_parent();
 			bool		is_left = (k == k->get_parent()->get_left());
 			node_type	*brother = is_left ? parent->get_right() : parent->get_left();
-			
-			if (this->_is_red(brother)) //Case1
+
+			if (this->_is_red(brother))
 			{
-				brother->set_color(RBT_BLACK); //color w black
-				parent->set_color(RBT_RED); //color p[x] red
-				is_left ? this->_left_rotate(parent) : this->_right_rotate(parent); //left rotate on p[x]
-				parent = k->get_parent(); //logical deduction (maybe, not sure)
-				is_left ? brother = parent->get_right() : parent->get_left(); //move pointer w to right[p[x]]
+				brother->set_color(RBT_BLACK);
+				parent->set_color(RBT_RED);
+				is_left ? this->_left_rotate(parent) : this->_right_rotate(parent);
+				parent = k->get_parent();
+				is_left ? brother = parent->get_right() : parent->get_left();
 			}
-			if (this->_is_black(brother) && this->_is_black(brother->get_left()) && this->_is_black(brother->get_right())) //Case 2
+			if (this->_is_black(brother) && this->_is_black(brother->get_left()) && this->_is_black(brother->get_right()))
 			{
-				brother->set_color(RBT_RED); //color w red
-				k = parent; //move pointer x up to p[x]
-				parent = parent->get_parent(); //logical deduction (for sure)
+				brother->set_color(RBT_RED);
+				k = parent;
+				parent = parent->get_parent();
 			}
 			else
 			{
 				if ( (is_left && this->_is_black(brother) && this->_is_black(brother->get_right()) && this->_is_red(brother->get_left()))
-					|| (!is_left && this->_is_black(brother) && this->_is_black(brother->get_left()) && this->_is_red(brother->get_right())) ) //Case3
+					|| (!is_left && this->_is_black(brother) && this->_is_black(brother->get_left()) && this->_is_red(brother->get_right())) )
 				{
-					is_left ? brother->get_left()->set_color(RBT_BLACK) : brother->get_right()->set_color(RBT_BLACK); //color w left child black
-					brother->set_color(RBT_RED); //color w red
-					is_left ? this->_right_rotate(brother) : this->_left_rotate(brother); //right rotate on w
-					parent = k->get_parent(); //logical deduction (not for sure)
-					brother = ( is_left ? parent->get_right() : parent->get_left() ); //move w to p[x]'s right child
+					is_left ? brother->get_left()->set_color(RBT_BLACK) : brother->get_right()->set_color(RBT_BLACK);
+					brother->set_color(RBT_RED);
+					is_left ? this->_right_rotate(brother) : this->_left_rotate(brother);
+					parent = k->get_parent();
+					brother = ( is_left ? parent->get_right() : parent->get_left() );
 				}
-				//Case4
-				brother->set_color(parent->get_color()); //color w to be the same as p[x]
-				parent->set_color(RBT_BLACK); //color p[x] black
-				brother->get_right()->set_color(RBT_BLACK); //color w's right child black
-				is_left ? this->_left_rotate(parent) : this->_right_rotate(parent); //left rotate on p[x]
+			
+				brother->set_color(parent->get_color());
+				parent->set_color(RBT_BLACK);
+				is_left ? brother->get_right()->set_color(RBT_BLACK) : brother->get_left()->set_color(RBT_BLACK);
+				is_left ? this->_left_rotate(parent) : this->_right_rotate(parent);
 				k = this->_root;
 			}
 		}
