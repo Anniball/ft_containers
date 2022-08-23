@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 16:02:21 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/23 16:25:32 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/23 16:27:13 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,8 +108,6 @@ namespace ft
 			void					_right_rotate(node_type *k);
 			void					_fix_insertion(node_type *k);
 			void					_fix_deletion(node_type *k);
-			void					_print_tree(void);
-			void					_print_node(node_type *k);
 	};
 	
 	
@@ -345,13 +343,13 @@ namespace ft
 		{
 			node_type	*smallest = node_type::get_smallest(right);
 			color = smallest->get_color();
-			check = this->_create_child(smallest, false); //we create a null leaf right child to 27 (smallest)
+			check = this->_create_child(smallest, false);
 			if (k == smallest->get_parent())
 				check.first->set_parent(smallest);
 			else
 			{
-				this->_transplant_node(smallest->get_parent(), smallest, smallest->get_right()); //27 is replaced by NULL
-				smallest->set_right(right); //27's right is replaced by 
+				this->_transplant_node(smallest->get_parent(), smallest, smallest->get_right());
+				smallest->set_right(right);
 				smallest->get_right()->set_parent(smallest);
 			}
 			this->_replace_node(k->get_parent(), k, smallest);
@@ -359,7 +357,6 @@ namespace ft
 			smallest->get_left()->set_parent(smallest);
 			smallest->set_color(k->get_color());
 		}
-		// this->_print_tree();
 		if (color == RBT_BLACK)
 			this->_fix_deletion(check.first);
 		if (check.second)
@@ -371,7 +368,6 @@ namespace ft
 			this->_node_alloc.destroy(check.first);
 			this->_node_alloc.deallocate(check.first, 1);
 		}
-		// this->_print_tree();
 		return true;
 	}
 
@@ -595,33 +591,6 @@ namespace ft
 			}
 		}
 		k->set_color(RBT_BLACK);
-	}
-
-	//DELETE ME
-	template <class T, class Alloc, class Compare>
-	void	red_black_tree<T, Alloc, Compare>::_print_tree(void)
-	{
-		std:: cout << "Starting printing tree :" << std::endl;
-		node_type *z = red_black_node<T, Compare>::get_smallest(this->_root);
-		while (z != this->_end)
-		{
-			std::cout << "\tkey : " << z->get_value().first << " | value : " << z->get_value().second << " | "  << (z->is_black() ? "BLACK" : "RED") << std::endl;
-			this->_print_node(z);
-			z = z->iterate();
-		}
-		std:: cout << "Ending printing tree" << std::endl << std::endl;
-	}
-
-	//DELETE ME
-	template <class T, class Alloc, class Compare>
-	void	red_black_tree<T, Alloc, Compare>::_print_node(node_type *k)
-	{
-		if (k->get_parent())
-			std::cout << "\t\tparent key : " << k->get_parent()->get_value().first << std::endl;
-		if (k->get_left())
-			std::cout << "\t\tleft key : " << k->get_left()->get_value().first << std::endl;
-		if (k->get_right())
-			std::cout << "\t\tright key : " << k->get_right()->get_value().first << std::endl;
 	}
 }
 
