@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 10:12:44 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/22 17:08:25 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/23 16:31:06 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,7 +177,9 @@ namespace ft
 	/*
 		MEMBER FUNCTIONS
 	*/
+	
 	/*Iterators*/ 
+
 	template <class Key, class T, class Compare, class Alloc>
 	typename map<Key, T, Compare, Alloc>::iterator					map<Key, T, Compare, Alloc>::begin(void)
 	{
@@ -232,6 +234,7 @@ namespace ft
 	}
 
 	/*Capacity*/
+
 	template <class Key, class T, class Compare, class Alloc>
 	bool															map<Key, T, Compare, Alloc>::empty(void) const
 	{
@@ -269,7 +272,7 @@ namespace ft
 	template <class Key, class T, class Compare, class Alloc>
 	pair<typename map<Key, T, Compare, Alloc>::iterator,bool>		map<Key, T, Compare, Alloc>::insert(const value_type& val)
 	{
-		pair<red_black_node<value_type, value_compare>*, bool> tmp = this->_tree.insert(val); //find a solution to not call rbnode directly in map
+		pair<red_black_node<value_type, value_compare>*, bool> tmp = this->_tree.insert(val);
 		pair<iterator, bool> itp(iterator(tmp.first), tmp.second);
 		if (itp.second)
 			this->_size++;
@@ -279,7 +282,7 @@ namespace ft
 	template <class Key, class T, class Compare, class Alloc>
 	typename map<Key, T, Compare, Alloc>::iterator					map<Key, T, Compare, Alloc>::insert(iterator position, const value_type& val)
 	{
-		pair<red_black_node<value_type, value_compare>*, bool> tmp; //find a solution to not call rbnode directly in map
+		pair<red_black_node<value_type, value_compare>*, bool> tmp;
 		if (position != this->begin() && position != this->end() && this->_val_comp(*(--position), val) && this->_val_comp(val, *(++position)))
 			tmp = this->_tree.insert(val, position);
 		else

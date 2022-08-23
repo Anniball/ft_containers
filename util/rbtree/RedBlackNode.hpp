@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 13:56:12 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/23 14:01:09 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/23 16:30:07 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ namespace ft
 			pointer				_left;
 			pointer				_right;
 			pointer				_parent;
-			pointer				_end; //lead to the end of the tree except for the end node itself that lead to the root
+			pointer				_end;
 			const value_compare &_comp;
 	};
 
