@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 16:02:21 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/23 15:59:17 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/23 16:25:32 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ namespace ft
 			node_type				*search(value_type &val) const;
 			node_type				*search_lower_bound(value_type &val) const;
 			node_type				*search_upper_bound(value_type &val) const;
+			pair<node_type*, bool>	insert(node_type &node, node_type *z);
 			pair<node_type*, bool>	insert(const value_type &val);
 			pair<node_type*, bool>	insert(const value_type &val, node_type *hint);
 			bool					erase(value_type &val);
@@ -271,27 +272,24 @@ namespace ft
 	}
 
 	template <class T, class Alloc, class Compare>
-	pair<typename red_black_tree<T, Alloc, Compare>::node_type*, bool>	red_black_tree<T, Alloc, Compare>::insert(const value_type &value)
+	pair<typename red_black_tree<T, Alloc, Compare>::node_type*, bool>	red_black_tree<T, Alloc, Compare>::insert(node_type &node, node_type *z)
 	{
-		node_type	*z = this->_root;
-		node_type	tmp(value, this->_end, this->_comp);
 		node_type	*previous = nullptr;
-	
 		while (z)
 		{
 			previous = z;
-			if (tmp == *z)
+			if (node == *z)
 				return pair<node_type*, bool>(z, false);
-			if (tmp < *z)
+			if (node < *z)
 				z = z->get_left();
 			else
 				z = z->get_right();
 		}
 		node_type *new_node = this->_node_alloc.allocate(1);
-		this->_node_alloc.construct(new_node, node_type(value, nullptr, nullptr, previous, this->_end, this->_comp));
+		this->_node_alloc.construct(new_node, node_type(node.get_value(), nullptr, nullptr, previous, this->_end, this->_comp));
 		if (!previous)
 			this->set_root(new_node);
-		else if (tmp < *previous)
+		else if (node < *previous)
 			previous->set_left(new_node);
 		else
 			previous->set_right(new_node);
@@ -299,31 +297,21 @@ namespace ft
 		return pair<node_type*, bool>(new_node, true);
 	}
 
-	//FUUUUUH
+	template <class T, class Alloc, class Compare>
+	pair<typename red_black_tree<T, Alloc, Compare>::node_type*, bool>	red_black_tree<T, Alloc, Compare>::insert(const value_type &value)
+	{
+		node_type	tmp(value, this->_end, this->_comp);
+		return this->insert(tmp, this->_root);
+	}
+
 	template <class T, class Alloc, class Compare>
 	pair<typename red_black_tree<T, Alloc, Compare>::node_type*, bool>	red_black_tree<T, Alloc, Compare>::insert(const value_type &val, node_type *hint)
 	{
-		// TEMPORARY SOLUTION
-		(void)hint;
-		return this->insert(val);
-		// //CASE 1 : PARENT : position - 1, LEFT CHILD : position
-		// node_type *parent = hint->get_parent();
-		// if(val > hint->get_value() && val ))
-		// {
-		// 	node_type *new_node = this->_tree.create_node(parent, parent->get_left(), nullptr, val);
-		// 	pos.set_parent(new_node);
-		// 	previous.set_left(new_node);
-		// 	return new_node;
-		// }
-		// //CASE 2 : RIGHT CHILD : position -  1, PARENT : position
-		// else if (parent.get_right()->get_value() == hint)
-		// {
-		// 	node_type *new_node = this->_tree.create_node(parent, nullptr, position, val);
-		// 	pos.set_parent(new_node);
-		// 	previous.set_right(new_node);
-		// 	return new_node;
-		// }
-		// return nullptr;
+		node_type	tmp(val, this->_end, this->_comp);
+		if (*hint < tmp && *(hint->iterate()) > tmp)
+			return this->insert(tmp, hint);
+		else
+			return this->insert(tmp, this->_root);
 	}
 
 	template <class T, class Alloc, class Compare>
