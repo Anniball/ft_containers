@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 16:02:21 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/22 17:18:19 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/23 13:47:31 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -340,10 +340,9 @@ namespace ft
 		pair<node_type*, bool>	check = pair<node_type*, bool>(k, true);
 		bool					color = k->get_color();
 	
-		// this->_print_tree();
 		if (k == this->_end)
 			return false;
-		if (!right) //if only left child
+		if (!right) //if only left child/no children
 		{
 			check = this->_create_child(k, true);
 			this->_replace_node(k->get_parent(), k, check.first);
@@ -587,10 +586,10 @@ namespace ft
 				parent->set_color(RBT_BLACK); //color p[x] black
 				brother->get_right()->set_color(RBT_BLACK); //color w's right child black
 				is_left ? this->_left_rotate(parent) : this->_right_rotate(parent); //left rotate on p[x]
-				break ; //break the loop
+				k = this->_root;
 			}
 		}
-		this->_root->set_color(RBT_BLACK);
+		k->set_color(RBT_BLACK);
 	}
 
 	//DELETE ME
@@ -601,7 +600,7 @@ namespace ft
 		node_type *z = red_black_node<T, Compare>::get_smallest(this->_root);
 		while (z != this->_end)
 		{
-			std::cout << "\tkey : " << z->get_value().first << " | value : " << z->get_value().second << std::endl;
+			std::cout << "\tkey : " << z->get_value().first << " | value : " << z->get_value().second << " | "  << (z->is_black() ? "BLACK" : "RED") << std::endl;
 			this->_print_node(z);
 			z = z->iterate();
 		}
