@@ -6,14 +6,20 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/23 16:35:11 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/29 14:17:20 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/29 14:24:15 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SET_HPP
 # define SET_HPP
 
-#include <memory>
+# include <memory>
+# include "../iter/IteratorsTraits.hpp"
+# include "../iter/ReverseIterator.hpp"
+# include "../iter/TreeIterator.hpp"
+# include "../util/Pair.hpp"
+# include "../util/rbtree/RedBlackTree.hpp"
+# include "../util/rbtree/RedBlackNode.hpp"
 # include "../util/Utilities.hpp"
 
 namespace ft
@@ -45,6 +51,11 @@ namespace ft
 			set(InputIterator first, InputIterator last, const key_compare &comp = key_compare(), const allocator_type &alloc = allocator_type());
 			set(const set &x);
 			~set(void);
+
+			/*
+				OPERATOR OVERLOADS
+			*/
+			set	&operator=(const set &other);
 
 			/*
 				MEMBERS METHODS
@@ -88,6 +99,11 @@ namespace ft
 			const_iterator								upper_bound(const Key &key) const;
 			/*Allocator*/
 			allocator_type								get_allocator(void) const;
+
+		private :
+			red_black_tree<value_type, Alloc, value_compare>	_tree;
+			size_type											_size;
+			key_compare											_key_comp;
 	};
 	
 	/*

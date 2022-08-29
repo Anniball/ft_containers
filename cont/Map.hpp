@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 10:12:44 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/23 16:31:06 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/29 14:21:34 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ namespace ft
 			/*
 				OPERATOR OVERLOADS
 			*/
-			map &operator=(const map &x);
+			map	&operator=(const map &x);
 
 			
 			/*
