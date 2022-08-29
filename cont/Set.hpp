@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/23 16:35:11 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/29 14:51:07 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/29 15:02:28 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ namespace ft
 			typedef T																												key_type;
 			typedef T																												value_type;
 			typedef Compare																											key_compare;
+			typedef Compare																											value_compare;
 			typedef Alloc																											allocator_type;
 			typedef typename allocator_type::reference																				reference;
 			typedef typename allocator_type::const_reference																		const_reference;
@@ -310,11 +311,25 @@ namespace ft
 	}
 	
 	template <class T, class Compare, class Alloc>
-	void															set<T, Compare, Alloc>::clear()
+	void															set<T, Compare, Alloc>::clear(void)
 	{
 		this->_tree.clear();
 		this->_size = 0;
 		return ;
+	}
+
+	/*Observers*/
+
+	template <class T, class Compare, class Alloc>
+	typename set<T, Compare, Alloc>::key_compare					set<T, Compare, Alloc>::key_comp(void) const
+	{
+		return this->_key_comp;
+	}
+	
+	template <class T, class Compare, class Alloc>
+	typename set<T, Compare, Alloc>::value_compare					set<T, Compare, Alloc>::value_comp(void) const
+	{
+		return this->_key_comp;
 	}
 	
 		

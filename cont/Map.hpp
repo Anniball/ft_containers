@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 10:12:44 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/29 14:30:12 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/29 15:02:55 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -357,14 +357,15 @@ namespace ft
 	}
 	
 	/*Observers*/
+
 	template <class Key, class T, class Compare, class Alloc>
-	typename map<Key, T, Compare, Alloc>::key_compare				map<Key, T, Compare, Alloc>::key_comp() const
+	typename map<Key, T, Compare, Alloc>::key_compare				map<Key, T, Compare, Alloc>::key_comp(void) const
 	{
 		return this->_key_comp;
 	}
 	
 	template <class Key, class T, class Compare, class Alloc>
-	typename map<Key, T, Compare, Alloc>::value_compare				map<Key, T, Compare, Alloc>::value_comp() const
+	typename map<Key, T, Compare, Alloc>::value_compare				map<Key, T, Compare, Alloc>::value_comp(void) const
 	{
 		return this->_val_comp;
 	}
