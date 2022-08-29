@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/23 16:35:11 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/29 14:15:55 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/29 14:17:20 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,46 @@ namespace ft
 			/*Allocator*/
 			allocator_type								get_allocator(void) const;
 	};
+	
+	/*
+		NON MEMBER OPERATOR OVERLOADS
+	*/
+	
+	template<class T, class Compare, class Alloc>
+	bool	operator==(const ft::set<T,Compare,Alloc> &lhs, const ft::set<T,Compare,Alloc> &rhs)
+	{
+		return ft::equal(lhs.begin(), lhs.end(), rhs.begin()) && lhs.size() == rhs.size();
+	}
+
+	template<class T, class Compare, class Alloc>
+	bool	operator!=(const ft::set<T,Compare,Alloc> &lhs, const ft::set<T,Compare,Alloc> &rhs)
+	{
+		return !(lhs == rhs);
+	}
+
+	template<class T, class Compare, class Alloc>
+	bool	operator<(const ft::set<T,Compare,Alloc> &lhs, const ft::set<T,Compare,Alloc> &rhs)
+	{
+		return ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
+	}
+
+	template<class T, class Compare, class Alloc>
+	bool	operator<=(const ft::set<T,Compare,Alloc> &lhs, const ft::set<T,Compare,Alloc> &rhs)
+	{
+		return !(rhs < lhs);
+	}
+
+	template<class T, class Compare, class Alloc>
+	bool	operator>(const ft::set<T,Compare,Alloc> &lhs, const ft::set<T,Compare,Alloc> &rhs)
+	{
+		return rhs < lhs;
+	}
+
+	template<class T, class Compare, class Alloc>
+	bool	operator>=(const ft::set<T,Compare,Alloc> &lhs, const ft::set<T,Compare,Alloc> &rhs)
+	{
+		return !(lhs < rhs);
+	}
 }
 
 #endif
