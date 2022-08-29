@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/23 16:35:11 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/29 15:29:25 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/29 15:31:01 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -387,6 +387,13 @@ namespace ft
 	pair<typename set<T, Compare, Alloc>::iterator,typename set<T, Compare, Alloc>::iterator>				set<T, Compare, Alloc>::equal_range (const key_type &k)
 	{
 		return pair<iterator, iterator>(this->_tree.search_lower_bound(k), this->_tree.search_upper_bound(k));
+	}
+	
+	/*Allocator*/
+	template <class T, class Compare, class Alloc>
+	typename set<T, Compare, Alloc>::allocator_type			set<T, Compare, Alloc>::get_allocator(void) const
+	{
+		return allocator_type();
 	}
 	
 		
