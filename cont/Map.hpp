@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 10:12:44 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/29 15:02:55 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/29 15:05:20 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -371,6 +371,7 @@ namespace ft
 	}
 	
 	/*Operations*/
+
 	template <class Key, class T, class Compare, class Alloc>
 	typename map<Key, T, Compare, Alloc>::iterator					map<Key, T, Compare, Alloc>::find(const key_type& k)
 	{

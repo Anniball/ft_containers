@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/23 16:35:11 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/29 15:02:28 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/29 15:29:25 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,16 +88,15 @@ namespace ft
 			key_compare									key_comp(void) const;
 			value_compare								value_comp(void) const;
 			/*Operations*/
-			size_type									count(const Key &key) const;
-			iterator									find(const Key &key);
-			iterator 									lower_bound (const value_type &val) const;
-			const_iterator								find(const Key &key) const;
-			std::pair<iterator,iterator>				equal_range(const Key &key);
-			std::pair<const_iterator,const_iterator>	equal_range(const Key &key) const;
-			iterator									lower_bound(const Key &key);
-			const_iterator								lower_bound(const Key &key) const;
-			iterator									upper_bound(const Key &key);
-			const_iterator								upper_bound(const Key &key) const;
+			iterator									find(const key_type &k);
+			const_iterator								find(const key_type &k) const;
+			size_type									count(const key_type &k) const;
+			iterator									lower_bound(const key_type &k);
+			const_iterator								lower_bound(const key_type &k) const;
+			iterator									upper_bound(const key_type &k);
+			const_iterator								upper_bound(const key_type &k) const;
+			ft::pair<const_iterator,const_iterator>		equal_range(const key_type &k) const;
+			ft::pair<iterator,iterator>					equal_range(const key_type &k);
 			/*Allocator*/
 			allocator_type								get_allocator(void) const;
 
@@ -311,7 +310,7 @@ namespace ft
 	}
 	
 	template <class T, class Compare, class Alloc>
-	void															set<T, Compare, Alloc>::clear(void)
+	void														set<T, Compare, Alloc>::clear(void)
 	{
 		this->_tree.clear();
 		this->_size = 0;
@@ -321,15 +320,73 @@ namespace ft
 	/*Observers*/
 
 	template <class T, class Compare, class Alloc>
-	typename set<T, Compare, Alloc>::key_compare					set<T, Compare, Alloc>::key_comp(void) const
+	typename set<T, Compare, Alloc>::key_compare				set<T, Compare, Alloc>::key_comp(void) const
 	{
 		return this->_key_comp;
 	}
 	
 	template <class T, class Compare, class Alloc>
-	typename set<T, Compare, Alloc>::value_compare					set<T, Compare, Alloc>::value_comp(void) const
+	typename set<T, Compare, Alloc>::value_compare				set<T, Compare, Alloc>::value_comp(void) const
 	{
 		return this->_key_comp;
+	}
+
+	/*Operations*/
+	
+	template <class T, class Compare, class Alloc>
+	typename set<T, Compare, Alloc>::iterator					set<T, Compare, Alloc>::find(const key_type &k)
+	{
+		return iterator(this->_tree.search(k));
+	}
+	
+	template <class T, class Compare, class Alloc>
+	typename set<T, Compare, Alloc>::const_iterator				set<T, Compare, Alloc>::find(const key_type &k) const
+	{
+		return static_cast<const_iterator>(iterator(this->_tree.search(k)));
+	}
+
+	template <class T, class Compare, class Alloc>
+	typename set<T, Compare, Alloc>::size_type					set<T, Compare, Alloc>::count(const key_type &k) const
+	{
+		if (this->_tree.search(k) == this->_tree.get_end())
+			return 0;
+		return 1;
+	}
+	
+	template <class T, class Compare, class Alloc>
+	typename set<T, Compare, Alloc>::iterator					set<T, Compare, Alloc>::lower_bound(const key_type &k)
+	{
+		return iterator(this->_tree.search_lower_bound(k));
+	}
+
+	template <class T, class Compare, class Alloc>
+	typename set<T, Compare, Alloc>::const_iterator				set<T, Compare, Alloc>::lower_bound(const key_type &k) const
+	{
+		return static_cast<const_iterator>(iterator(this->_tree.search_lower_bound(k)));
+	}
+	
+	template <class T, class Compare, class Alloc>
+	typename set<T, Compare, Alloc>::iterator					set<T, Compare, Alloc>::upper_bound(const key_type &k)
+	{
+		return iterator(this->_tree.search_upper_bound(k));
+	}
+	
+	template <class T, class Compare, class Alloc>
+	typename set<T, Compare, Alloc>::const_iterator				set<T, Compare, Alloc>::upper_bound(const key_type &k) const
+	{
+		return static_cast<const_iterator>(iterator(this->_tree.search_upper_bound(k)));
+	}
+	
+	template <class T, class Compare, class Alloc>
+	pair<typename set<T, Compare, Alloc>::const_iterator,typename set<T, Compare, Alloc>::const_iterator>	set<T, Compare, Alloc>::equal_range(const key_type &k) const
+	{
+		return pair<const_iterator, const_iterator>(iterator(this->_tree.search_lower_bound(k)), iterator(this->_tree.search_upper_bound(k)));
+	}
+	
+	template <class T, class Compare, class Alloc>
+	pair<typename set<T, Compare, Alloc>::iterator,typename set<T, Compare, Alloc>::iterator>				set<T, Compare, Alloc>::equal_range (const key_type &k)
+	{
+		return pair<iterator, iterator>(this->_tree.search_lower_bound(k), this->_tree.search_upper_bound(k));
 	}
 	
 		
