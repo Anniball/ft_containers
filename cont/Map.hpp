@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 10:12:44 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/29 14:21:34 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/29 14:30:12 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ namespace ft
 			template <class InputIterator>
   			map(InputIterator first, InputIterator last, const key_compare &comp = key_compare(), const allocator_type &alloc = allocator_type());	
 			map(const map &x);
-			~map();
+			~map(void);
 			
 			/*
 				OPERATOR OVERLOADS
@@ -158,7 +158,7 @@ namespace ft
 	}
 	
 	template <class Key, class T, class Compare, class Alloc>
-	map<Key, T, Compare, Alloc>::~map() {return ;}
+	map<Key, T, Compare, Alloc>::~map(void) {return ;}
 
 
 	/*

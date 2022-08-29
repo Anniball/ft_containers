@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/23 16:35:11 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/29 14:24:15 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/29 14:31:00 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,36 @@ namespace ft
 			size_type											_size;
 			key_compare											_key_comp;
 	};
+
+	/*
+		CONSTRUCTORS AND DESTRUCTORS
+	*/
+
+	template <class T, class Compare, class Alloc>
+	set<T, Compare, Alloc>::set(const typename set<T, Compare, Alloc>::key_compare &comp, const typename set<T, Compare, Alloc>::allocator_type &alloc)
+	: _tree(_val_comp), _size(0), _key_comp(comp), _val_comp(_key_comp)
+	{
+		(void)alloc;
+	}
+	
+	template <class T, class Compare, class Alloc>
+	template <class InputIterator>
+	set<T, Compare, Alloc>::set(InputIterator first, InputIterator last, const set<T, Compare, Alloc>::key_compare &comp, const set<T, Compare, Alloc>::allocator_type &alloc)
+	: _tree(_val_comp), _size(0), _key_comp(comp), _val_comp(_key_comp)
+	{
+		(void)alloc;
+		this->insert(first, last);
+	}
+	
+	template <class T, class Compare, class Alloc>
+	set<T, Compare, Alloc>::set(const set &x)
+	: _tree(x._tree), _size(x.size()), _key_comp(x._key_comp), _val_comp(_key_comp)
+	{
+		return ;
+	}
+	
+	template <class T, class Compare, class Alloc>
+	set<T, Compare, Alloc>::~set() {return ;}
 	
 	/*
 		NON MEMBER OPERATOR OVERLOADS
