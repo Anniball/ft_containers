@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/23 16:35:11 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/29 14:34:06 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/29 14:36:15 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,6 +140,7 @@ namespace ft
 	/*
 		OPERATOR OVERLOADS
 	*/
+
 	template <class T, class Compare, class Alloc>
 	set<T, Compare, Alloc>							&set<T, Compare, Alloc>::operator=(const set &other)
 	{
@@ -147,7 +148,67 @@ namespace ft
 		this->_size = other._size;
 	}
 	
+
+	/*
+		MEMBER FUNCTIONS
+	*/
 	
+	/*Iterators*/ 
+
+	template <class T, class Compare, class Alloc>
+	typename set<T, Compare, Alloc>::iterator					set<T, Compare, Alloc>::begin(void)
+	{
+		if (!this->_size)
+			return this->end();
+		return iterator(red_black_node<value_type, value_compare>::get_smallest(this->_tree.get_root()));
+	}
+	
+	template <class T, class Compare, class Alloc>
+	typename set<T, Compare, Alloc>::const_iterator			set<T, Compare, Alloc>::begin(void) const
+	{
+		if (!this->_size)
+			return this->end();
+		return static_cast<const_iterator>(iterator(red_black_node<value_type, value_compare>::get_smallest(this->_tree.get_root())));
+	}
+	
+	template <class T, class Compare, class Alloc>
+	typename set<T, Compare, Alloc>::iterator					set<T, Compare, Alloc>::end(void)
+	{
+		return iterator(this->_tree.get_end());
+	}
+	
+	template <class T, class Compare, class Alloc>
+	typename set<T, Compare, Alloc>::const_iterator			set<T, Compare, Alloc>::end(void) const
+	{
+		iterator it(this->_tree.get_end());
+		return static_cast<const_iterator>(iterator(it));
+	}
+	
+	template <class T, class Compare, class Alloc>
+	typename set<T, Compare, Alloc>::reverse_iterator			set<T, Compare, Alloc>::rbegin(void)
+	{
+		return reverse_iterator(this->_tree.get_end());
+	}
+	
+	template <class T, class Compare, class Alloc>
+	typename set<T, Compare, Alloc>::const_reverse_iterator	set<T, Compare, Alloc>::rbegin(void) const
+	{
+		return const_reverse_iterator(this->_tree.get_end());
+	}
+	
+	template <class T, class Compare, class Alloc>
+	typename set<T, Compare, Alloc>::reverse_iterator			set<T, Compare, Alloc>::rend(void)
+	{
+		return reverse_iterator(red_black_node<value_type, value_compare>::get_smallest(this->_tree.get_root()));
+	}
+	
+	template <class T, class Compare, class Alloc>
+	typename set<T, Compare, Alloc>::const_reverse_iterator	set<T, Compare, Alloc>::rend(void) const
+	{
+		return const_reverse_iterator(red_black_node<value_type, value_compare>::get_smallest(this->_tree.get_root()));
+	}
+	
+		
 	/*
 		NON MEMBER OPERATOR OVERLOADS
 	*/
