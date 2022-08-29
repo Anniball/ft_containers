@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/23 16:35:11 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/29 14:36:15 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/29 14:47:04 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ namespace ft
 			typedef typename ft::reverse_iterator<iterator>																			reverse_iterator;
 			typedef typename ft::reverse_iterator<const_iterator>																	const_reverse_iterator;
 			typedef typename iterator_traits<iterator>::difference_type																difference_type;
-			typedef size_t																											size_t;
+			typedef size_t																											size_type;
 
 			/*
 				CONSTRUCTORS AND DESTRUCTORS
@@ -164,7 +164,7 @@ namespace ft
 	}
 	
 	template <class T, class Compare, class Alloc>
-	typename set<T, Compare, Alloc>::const_iterator			set<T, Compare, Alloc>::begin(void) const
+	typename set<T, Compare, Alloc>::const_iterator				set<T, Compare, Alloc>::begin(void) const
 	{
 		if (!this->_size)
 			return this->end();
@@ -178,7 +178,7 @@ namespace ft
 	}
 	
 	template <class T, class Compare, class Alloc>
-	typename set<T, Compare, Alloc>::const_iterator			set<T, Compare, Alloc>::end(void) const
+	typename set<T, Compare, Alloc>::const_iterator				set<T, Compare, Alloc>::end(void) const
 	{
 		iterator it(this->_tree.get_end());
 		return static_cast<const_iterator>(iterator(it));
@@ -191,7 +191,7 @@ namespace ft
 	}
 	
 	template <class T, class Compare, class Alloc>
-	typename set<T, Compare, Alloc>::const_reverse_iterator	set<T, Compare, Alloc>::rbegin(void) const
+	typename set<T, Compare, Alloc>::const_reverse_iterator		set<T, Compare, Alloc>::rbegin(void) const
 	{
 		return const_reverse_iterator(this->_tree.get_end());
 	}
@@ -203,9 +203,29 @@ namespace ft
 	}
 	
 	template <class T, class Compare, class Alloc>
-	typename set<T, Compare, Alloc>::const_reverse_iterator	set<T, Compare, Alloc>::rend(void) const
+	typename set<T, Compare, Alloc>::const_reverse_iterator		set<T, Compare, Alloc>::rend(void) const
 	{
 		return const_reverse_iterator(red_black_node<value_type, value_compare>::get_smallest(this->_tree.get_root()));
+	}
+	
+	/*Capacity*/
+
+	template <class T, class Compare, class Alloc>
+	bool														set<T, Compare, Alloc>::empty(void) const
+	{
+		return !this->_size;
+	}
+	
+	template <class T, class Compare, class Alloc>
+	typename set<T, Compare, Alloc>::size_type					set<T, Compare, Alloc>::size(void) const
+	{
+		return this->_size;
+	}
+	
+	template <class T, class Compare, class Alloc>
+	typename set<T, Compare, Alloc>::size_type					set<T, Compare, Alloc>::max_size(void) const
+	{
+		return this->_tree.get_alloc().max_size();
 	}
 	
 		
