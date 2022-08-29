@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/23 16:35:11 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/29 14:31:00 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/29 14:34:06 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,6 +135,18 @@ namespace ft
 	
 	template <class T, class Compare, class Alloc>
 	set<T, Compare, Alloc>::~set() {return ;}
+	
+
+	/*
+		OPERATOR OVERLOADS
+	*/
+	template <class T, class Compare, class Alloc>
+	set<T, Compare, Alloc>							&set<T, Compare, Alloc>::operator=(const set &other)
+	{
+		this->_tree = other._tree;
+		this->_size = other._size;
+	}
+	
 	
 	/*
 		NON MEMBER OPERATOR OVERLOADS
