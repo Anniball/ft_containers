@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/23 16:35:11 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/29 14:47:04 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/29 14:51:07 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -226,6 +226,95 @@ namespace ft
 	typename set<T, Compare, Alloc>::size_type					set<T, Compare, Alloc>::max_size(void) const
 	{
 		return this->_tree.get_alloc().max_size();
+	}
+		
+	/*Modifiers*/
+
+	template <class T, class Compare, class Alloc>
+	pair<typename set<T, Compare, Alloc>::iterator,bool>		set<T, Compare, Alloc>::insert(const value_type& val)
+	{
+		pair<red_black_node<value_type, value_compare>*, bool> tmp = this->_tree.insert(val);
+		pair<iterator, bool> itp(iterator(tmp.first), tmp.second);
+		if (itp.second)
+			this->_size++;
+		return itp;
+	}
+	
+	template <class T, class Compare, class Alloc>
+	typename set<T, Compare, Alloc>::iterator					set<T, Compare, Alloc>::insert(iterator position, const value_type& val)
+	{
+		pair<red_black_node<value_type, value_compare>*, bool> tmp;
+		if (position != this->begin() && position != this->end() && this->_val_comp(*(--position), val) && this->_val_comp(val, *(++position)))
+			tmp = this->_tree.insert(val, position);
+		else
+			tmp = this->_tree.insert(val);
+		if (tmp.second)
+			this->_size++;
+		return iterator(tmp.first);
+	}
+	
+	template <class T, class Compare, class Alloc>
+	template <class InputIterator>
+	void 														set<T, Compare, Alloc>::insert(InputIterator first, InputIterator last)
+	{
+		while (first != last)
+		{
+			pair<red_black_node<value_type, value_compare>*, bool> tmp = this->_tree.insert(*first++);
+			if (tmp.second)
+				this->_size++;
+		}
+		return ;
+	}
+	
+	template <class T, class Compare, class Alloc>
+	void														set<T, Compare, Alloc>::erase(iterator position) 
+	{
+		if (this->_tree.erase(*position))
+			this->_size--;
+		return ;
+	}
+
+	template <class T, class Compare, class Alloc>
+	typename set<T, Compare, Alloc>::size_type					set<T, Compare, Alloc>::erase(const key_type& k)
+	{
+		value_type val(value_type(k, set<pe()));
+		if (this->_tree.erase(val))
+		{
+			this->_size--;
+			return 1;
+		}
+		return 0;
+	}
+	
+	template <class T, class Compare, class Alloc>
+	void														set<T, Compare, Alloc>::erase(iterator first, iterator last)
+	{
+		while (first != last)
+		{
+			iterator tmp = first;
+			++first;
+			if (this->_tree.erase(*tmp))
+				this->_size--;
+		}
+		return ;
+	}
+	
+	template <class T, class Compare, class Alloc>
+	void														set<T, Compare, Alloc>::swap(set &x)
+	{
+		this->_tree.swap_content(x._tree);
+		size_type tmp = x._size;
+		x._size = this->_size;
+		this->_size = tmp;
+		return ;
+	}
+	
+	template <class T, class Compare, class Alloc>
+	void															set<T, Compare, Alloc>::clear()
+	{
+		this->_tree.clear();
+		this->_size = 0;
+		return ;
 	}
 	
 		
