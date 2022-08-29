@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/23 16:35:11 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/23 16:43:18 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/29 14:15:55 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,21 +21,73 @@ namespace ft
 	template < class T, class Compare = ft::less<T>, class Alloc = std::allocator<T> >
 	class set
 	{
-		typedef T																												key_type;
-		typedef T																												value_type;
-		typedef Compare																											key_compare;
-		typedef Alloc																											allocator_type;
-		typedef typename allocator_type::reference																				reference;
-		typedef typename allocator_type::const_reference																		const_reference;
-		typedef typename allocator_type::pointer																				pointer;
-		typedef typename allocator_type::const_pointer																			const_pointer;
-		typedef	typename ft::tree_iterator<value_type, value_compare, red_black_node<value_type, value_compare> >				iterator;
-		typedef typename ft::tree_iterator<const value_type, value_compare, red_black_node<const value_type, value_compare> >	const_iterator;
-		typedef typename ft::reverse_iterator<iterator>																			reverse_iterator;
-		typedef typename ft::reverse_iterator<const_iterator>																	const_reverse_iterator;
-		typedef typename iterator_traits<iterator>::difference_type																difference_type;
-		typedef size_t																											size_t;
+		public :
+			typedef T																												key_type;
+			typedef T																												value_type;
+			typedef Compare																											key_compare;
+			typedef Alloc																											allocator_type;
+			typedef typename allocator_type::reference																				reference;
+			typedef typename allocator_type::const_reference																		const_reference;
+			typedef typename allocator_type::pointer																				pointer;
+			typedef typename allocator_type::const_pointer																			const_pointer;
+			typedef	typename ft::tree_iterator<value_type, value_compare, red_black_node<value_type, value_compare> >				iterator;
+			typedef typename ft::tree_iterator<const value_type, value_compare, red_black_node<const value_type, value_compare> >	const_iterator;
+			typedef typename ft::reverse_iterator<iterator>																			reverse_iterator;
+			typedef typename ft::reverse_iterator<const_iterator>																	const_reverse_iterator;
+			typedef typename iterator_traits<iterator>::difference_type																difference_type;
+			typedef size_t																											size_t;
 
+			/*
+				CONSTRUCTORS AND DESTRUCTORS
+			*/
+			explicit set(const key_compare& comp = key_compare(), const allocator_type &alloc = allocator_type());
+			template <class InputIterator>
+			set(InputIterator first, InputIterator last, const key_compare &comp = key_compare(), const allocator_type &alloc = allocator_type());
+			set(const set &x);
+			~set(void);
+
+			/*
+				MEMBERS METHODS
+			*/
+			/*Iterators*/
+			iterator									begin(void);
+			const_iterator								begin(void) const;
+			iterator									end(void);
+			const_iterator								end(void) const;
+			reverse_iterator							rbegin(void);
+			const_reverse_iterator						rbegin(void) const;
+			reverse_iterator 							rend(void);
+			const_reverse_iterator						rend(void) const;
+			/*Capacity*/
+			bool										empty(void) const;
+			size_type									size(void) const;
+			size_type									max_size(void) const;
+			/*Modifiers*/
+			pair<iterator,bool>							insert(const value_type &val);
+			iterator									insert(iterator position, const value_type &val);
+			template <class InputIterator>
+			void 										insert(InputIterator first, InputIterator last);
+			void										erase(iterator position);
+			size_type									erase(const value_type& val);
+			void										erase(iterator first, iterator last);
+			void										clear(void);
+			void										swap(set &x);
+			/*Observers*/
+			key_compare									key_comp(void) const;
+			value_compare								value_comp(void) const;
+			/*Operations*/
+			size_type									count(const Key &key) const;
+			iterator									find(const Key &key);
+			iterator 									lower_bound (const value_type &val) const;
+			const_iterator								find(const Key &key) const;
+			std::pair<iterator,iterator>				equal_range(const Key &key);
+			std::pair<const_iterator,const_iterator>	equal_range(const Key &key) const;
+			iterator									lower_bound(const Key &key);
+			const_iterator								lower_bound(const Key &key) const;
+			iterator									upper_bound(const Key &key);
+			const_iterator								upper_bound(const Key &key) const;
+			/*Allocator*/
+			allocator_type								get_allocator(void) const;
 	};
 }
 
