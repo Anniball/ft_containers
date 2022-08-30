@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/08 14:42:08 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/09 17:01:29 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/30 16:31:17 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,6 @@ namespace ft
 				return false;
 		return true;
 	}
-			  
-	//Should implement predicate equal?
-	// template <class InputIterator1, class InputIterator2, class BinaryPredicate>
-	// bool equal (InputIterator1 first1, InputIterator1 last1, InputIterator2 first2, BinaryPredicate pred)
-	// {}
 
 	template <class InputIterator1, class InputIterator2>
 	bool lexicographical_compare(InputIterator1 first1, InputIterator1 last1, InputIterator2 first2, InputIterator2 last2)
@@ -65,10 +60,6 @@ namespace ft
   		}
   		return (first2 != last2);
 	}
-
-	//Should implement compare lexico?
-	// template <class InputIterator1, class InputIterator2, class Compare>
-	// bool lexicographical_compare (InputIterator1 first1, InputIterator1 last1, InputIterator2 first2, InputIterator2 last2, Compare comp);
 
 	template <class Arg1, class Arg2, class Result>
 	struct binary_function
