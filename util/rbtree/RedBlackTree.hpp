@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 16:02:21 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/30 13:56:44 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/30 16:28:01 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -518,10 +518,12 @@ namespace ft
 				{
 					k = parent;
 					is_left ? this->_left_rotate(k) : this->_right_rotate(k);
+					parent = k->get_parent();
+					gparent = parent->get_parent();
 				}
 				parent->set_color(RBT_BLACK);
 				gparent->set_color(RBT_RED);
-				is_left ? this->_right_rotate(gparent) : this->_left_rotate(gparent); //same
+				is_left ? this->_right_rotate(gparent) : this->_left_rotate(gparent);
 			}
 		}
 		this->_root->set_color(RBT_BLACK);
@@ -533,6 +535,7 @@ namespace ft
 	{
 		while (this->_root != k && this->_is_black(k))
 		{
+
 			node_type	*parent = k->get_parent();
 			bool		is_left = (k == k->get_parent()->get_left());
 			node_type	*brother = is_left ? parent->get_right() : parent->get_left();
