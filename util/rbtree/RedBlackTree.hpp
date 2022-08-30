@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 16:02:21 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/23 16:29:33 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/30 13:56:44 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@
 # include <memory>
 # include "RedBlackNode.hpp"
 # include "../Pair.hpp"
-# include "../../iter/IteratorsTraits.hpp"
-# include "../../iter/TreeIterator.hpp"
 # include "../Utilities.hpp"
 
 # define RBT_RED true
@@ -25,10 +23,6 @@
 
 namespace ft
 {
-
-	template <class T, class Compare, class Node>
-	class tree_iterator;
-
 	template <class T, class Compare = ft::less<T> >
 	class red_black_node;
 
@@ -46,10 +40,6 @@ namespace ft
 			typedef typename allocator_type::const_reference								const_reference;
 			typedef typename allocator_type::pointer										pointer;
 			typedef typename allocator_type::const_pointer									const_pointer;
-			typedef ft::tree_iterator<value_type, value_compare, node_type>					iterator;
-			typedef ft::tree_iterator<const value_type, value_compare, node_const_type>		const_iterator;
-			typedef ft::reverse_iterator<iterator>											reverse_iterator;
-			typedef ft::reverse_iterator<const_iterator>									const_reverse_iterator;
 			typedef size_t																	size_type;
 
 		public :
@@ -68,8 +58,10 @@ namespace ft
 			/*
 				GETTERS & SETTERS
 			*/
-			node_type				*get_root(void) const;
-			node_type				*get_end(void) const;
+			node_type				*get_root(void);
+			node_const_type			*get_root(void) const;
+			node_type				*get_end(void);
+			node_const_type			*get_end(void) const;
 			value_compare const		&get_comp(void) const;
 			allocator_type const	&get_alloc(void) const;
 			void					set_root(node_type *ptr);
@@ -78,13 +70,16 @@ namespace ft
 			/*
 				MEMBER METHODS
 			*/
-			node_type				*search(value_type &val) const;
-			node_type				*search_lower_bound(value_type &val) const;
-			node_type				*search_upper_bound(value_type &val) const;
+			node_type				*search(const value_type &val);
+			node_const_type			*search(const value_type &val) const;
+			node_type				*search_lower_bound(const value_type &val);
+			node_const_type			*search_lower_bound(const value_type &val) const;
+			node_type				*search_upper_bound(const value_type &val);
+			node_const_type			*search_upper_bound(const value_type &val) const;
 			pair<node_type*, bool>	insert(node_type &node, node_type *z);
 			pair<node_type*, bool>	insert(const value_type &val);
 			pair<node_type*, bool>	insert(const value_type &val, node_type *hint);
-			bool					erase(value_type &val);
+			bool					erase(const value_type &val);
 			bool					erase(node_type *k);
 			void					clear(void);
 			node_type				*create_node(node_type *parent, node_type *left, node_type *right, value_type &content);
@@ -108,6 +103,9 @@ namespace ft
 			void					_right_rotate(node_type *k);
 			void					_fix_insertion(node_type *k);
 			void					_fix_deletion(node_type *k);
+			node_type				*_search(const value_type &val) const;
+			node_type				*_search_lower_bound(const value_type &val) const;
+			node_type				*_search_upper_bound(const value_type &val) const;
 	};
 	
 	
@@ -161,15 +159,27 @@ namespace ft
 	*/
 	
 	template <class T, class Alloc, class Compare>
-	typename red_black_tree<T, Alloc, Compare>::node_type				*red_black_tree<T, Alloc, Compare>::get_root(void) const
+	typename red_black_tree<T, Alloc, Compare>::node_type				*red_black_tree<T, Alloc, Compare>::get_root(void)
 	{
 		return this->_root;
 	}
+
+	template <class T, class Alloc, class Compare>
+	typename red_black_tree<T, Alloc, Compare>::node_const_type			*red_black_tree<T, Alloc, Compare>::get_root(void) const
+	{
+		return reinterpret_cast<node_const_type*>(this->_root);
+	}
 	
 	template <class T, class Alloc, class Compare>
-	typename red_black_tree<T, Alloc, Compare>::node_type				*red_black_tree<T, Alloc, Compare>::get_end(void) const
+	typename red_black_tree<T, Alloc, Compare>::node_type				*red_black_tree<T, Alloc, Compare>::get_end(void)
 	{
 		return this->_end;
+	}
+
+	template <class T, class Alloc, class Compare>
+	typename red_black_tree<T, Alloc, Compare>::node_const_type			*red_black_tree<T, Alloc, Compare>::get_end(void) const
+	{
+		return reinterpret_cast<node_const_type*>(this->_end);
 	}
 
 	template <class T, class Alloc, class Compare>
@@ -204,69 +214,39 @@ namespace ft
 	*/
 
 	template <class T, class Alloc, class Compare>
-	typename red_black_tree<T, Alloc, Compare>::node_type			*red_black_tree<T, Alloc, Compare>::search(value_type &val) const
+	typename red_black_tree<T, Alloc, Compare>::node_type			*red_black_tree<T, Alloc, Compare>::search(const value_type &val)
 	{
-		node_type	*z = this->_root;
-		node_type	tmp(val, this->_end, this->_comp);
-	
-		while (z)
-		{
-			if (*z == tmp)
-				return z;
-			else if (tmp > *z)
-				z = z->get_right();
-			else
-				z = z->get_left();
-		}
-		return this->_end;
+		return this->_search(val);
 	}
 
 	template <class T, class Alloc, class Compare>
-	typename red_black_tree<T, Alloc, Compare>::node_type			*red_black_tree<T, Alloc, Compare>::search_lower_bound(value_type &val) const
+	typename red_black_tree<T, Alloc, Compare>::node_const_type		*red_black_tree<T, Alloc, Compare>::search(const value_type &val) const
 	{
-		node_type	*z = this->_root;
-		node_type	tmp(val, this->_end, this->_comp);
-		node_type	*previous = nullptr;
-	
-		while (z)
-		{
-			previous = z;
-			if (*z == tmp)
-				return z;
-			else if (tmp > *z)
-				z = z->get_right();
-			else
-				z = z->get_left();
-		}
-		if (!previous)
-			return this->_end;
-		else if (tmp > *previous)
-			return previous->iterate();
-		return previous;
+		return reinterpret_cast<node_const_type*>(this->_search(val));
 	}
 
 	template <class T, class Alloc, class Compare>
-	typename red_black_tree<T, Alloc, Compare>::node_type			*red_black_tree<T, Alloc, Compare>::search_upper_bound(value_type &val) const
+	typename red_black_tree<T, Alloc, Compare>::node_type			*red_black_tree<T, Alloc, Compare>::search_lower_bound(const value_type &val)
 	{
-		node_type	*z = this->_root;
-		node_type	tmp(val, this->_end, this->_comp);
-		node_type	*previous = nullptr;
-	
-		while (z)
-		{
-			previous = z;
-			if (*z == tmp)
-				return z->iterate();
-			else if (tmp > *z)
-				z = z->get_right();
-			else
-				z = z->get_left();
-		}
-		if (!previous)
-			return this->_end;
-		else if (tmp > *previous)
-			return previous->iterate();
-		return previous;
+		return this->_search_lower_bound(val);
+	}
+
+	template <class T, class Alloc, class Compare>
+	typename red_black_tree<T, Alloc, Compare>::node_const_type		*red_black_tree<T, Alloc, Compare>::search_lower_bound(const value_type &val) const
+	{
+		return reinterpret_cast<node_const_type*>(this->_search_lower_bound(val));
+	}
+
+	template <class T, class Alloc, class Compare>
+	typename red_black_tree<T, Alloc, Compare>::node_type			*red_black_tree<T, Alloc, Compare>::search_upper_bound(const value_type &val)
+	{
+		return this->_search_upper_bound(val);
+	}
+
+	template <class T, class Alloc, class Compare>
+	typename red_black_tree<T, Alloc, Compare>::node_const_type			*red_black_tree<T, Alloc, Compare>::search_upper_bound(const value_type &val) const
+	{
+		return reinterpret_cast<node_const_type*>(this->_search_upper_bound(val));
 	}
 
 	template <class T, class Alloc, class Compare>
@@ -313,7 +293,7 @@ namespace ft
 	}
 
 	template <class T, class Alloc, class Compare>
-	bool													red_black_tree<T, Alloc, Compare>::erase(value_type &val)
+	bool													red_black_tree<T, Alloc, Compare>::erase(const value_type &val)
 	{
 		node_type	*z = this->search(val);
 		return this->erase(z);
@@ -591,6 +571,72 @@ namespace ft
 			}
 		}
 		k->set_color(RBT_BLACK);
+	}
+
+	template <class T, class Alloc, class Compare>
+	typename red_black_tree<T, Alloc, Compare>::node_type			*red_black_tree<T, Alloc, Compare>::_search(const value_type &val) const
+	{
+		node_type	*z = this->_root;
+		node_type	tmp(val, this->_end, this->_comp);
+	
+		while (z)
+		{
+			if (*z == tmp)
+				return z;
+			else if (tmp > *z)
+				z = z->get_right();
+			else
+				z = z->get_left();
+		}
+		return this->_end;
+	}
+
+	template <class T, class Alloc, class Compare>
+	typename red_black_tree<T, Alloc, Compare>::node_type			*red_black_tree<T, Alloc, Compare>::_search_lower_bound(const value_type &val) const
+	{
+		node_type	*z = this->_root;
+		node_type	tmp(val, this->_end, this->_comp);
+		node_type	*previous = nullptr;
+	
+		while (z)
+		{
+			previous = z;
+			if (*z == tmp)
+				return z;
+			else if (tmp > *z)
+				z = z->get_right();
+			else
+				z = z->get_left();
+		}
+		if (!previous)
+			return this->_end;
+		else if (tmp > *previous)
+			return previous->iterate();
+		return previous;
+	}
+
+	template <class T, class Alloc, class Compare>
+	typename red_black_tree<T, Alloc, Compare>::node_type			*red_black_tree<T, Alloc, Compare>::_search_upper_bound(const value_type &val) const
+	{
+		node_type	*z = this->_root;
+		node_type	tmp(val, this->_end, this->_comp);
+		node_type	*previous = nullptr;
+	
+		while (z)
+		{
+			previous = z;
+			if (*z == tmp)
+				return z->iterate();
+			else if (tmp > *z)
+				z = z->get_right();
+			else
+				z = z->get_left();
+		}
+		if (!previous)
+			return this->_end;
+		else if (tmp > *previous)
+			return previous->iterate();
+		return previous;
 	}
 }
 

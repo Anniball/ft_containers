@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/23 16:35:11 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/29 15:31:01 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/30 14:15:49 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ namespace ft
 			typedef typename allocator_type::const_reference																		const_reference;
 			typedef typename allocator_type::pointer																				pointer;
 			typedef typename allocator_type::const_pointer																			const_pointer;
-			typedef	typename ft::tree_iterator<value_type, value_compare, red_black_node<value_type, value_compare> >				iterator;
+			typedef	typename ft::tree_iterator<const value_type, value_compare, red_black_node<const value_type, value_compare> >	iterator;
 			typedef typename ft::tree_iterator<const value_type, value_compare, red_black_node<const value_type, value_compare> >	const_iterator;
 			typedef typename ft::reverse_iterator<iterator>																			reverse_iterator;
 			typedef typename ft::reverse_iterator<const_iterator>																	const_reverse_iterator;
@@ -62,14 +62,10 @@ namespace ft
 				MEMBERS METHODS
 			*/
 			/*Iterators*/
-			iterator									begin(void);
-			const_iterator								begin(void) const;
-			iterator									end(void);
-			const_iterator								end(void) const;
-			reverse_iterator							rbegin(void);
-			const_reverse_iterator						rbegin(void) const;
-			reverse_iterator 							rend(void);
-			const_reverse_iterator						rend(void) const;
+			iterator									begin(void) const ;
+			iterator									end(void) const ;
+			reverse_iterator							rbegin(void) const;
+			reverse_iterator 							rend(void) const;
 			/*Capacity*/
 			bool										empty(void) const;
 			size_type									size(void) const;
@@ -88,22 +84,18 @@ namespace ft
 			key_compare									key_comp(void) const;
 			value_compare								value_comp(void) const;
 			/*Operations*/
-			iterator									find(const key_type &k);
-			const_iterator								find(const key_type &k) const;
+			iterator									find(const key_type &k) const;
 			size_type									count(const key_type &k) const;
-			iterator									lower_bound(const key_type &k);
-			const_iterator								lower_bound(const key_type &k) const;
-			iterator									upper_bound(const key_type &k);
-			const_iterator								upper_bound(const key_type &k) const;
-			ft::pair<const_iterator,const_iterator>		equal_range(const key_type &k) const;
-			ft::pair<iterator,iterator>					equal_range(const key_type &k);
+			iterator									lower_bound(const key_type &k) const;
+			iterator									upper_bound(const key_type &k) const;
+			ft::pair<iterator,iterator>					equal_range(const key_type &k) const;
 			/*Allocator*/
 			allocator_type								get_allocator(void) const;
 
 		private :
-			red_black_tree<value_type, Alloc, value_compare>	_tree;
-			size_type											_size;
-			key_compare											_key_comp;
+			red_black_tree<const value_type, Alloc, value_compare>	_tree;
+			size_type												_size;
+			key_compare												_key_comp;
 	};
 
 	/*
@@ -112,7 +104,7 @@ namespace ft
 
 	template <class T, class Compare, class Alloc>
 	set<T, Compare, Alloc>::set(const typename set<T, Compare, Alloc>::key_compare &comp, const typename set<T, Compare, Alloc>::allocator_type &alloc)
-	: _tree(_val_comp), _size(0), _key_comp(comp), _val_comp(_key_comp)
+	: _tree(_key_comp), _size(0), _key_comp(comp)
 	{
 		(void)alloc;
 	}
@@ -120,7 +112,7 @@ namespace ft
 	template <class T, class Compare, class Alloc>
 	template <class InputIterator>
 	set<T, Compare, Alloc>::set(InputIterator first, InputIterator last, const set<T, Compare, Alloc>::key_compare &comp, const set<T, Compare, Alloc>::allocator_type &alloc)
-	: _tree(_val_comp), _size(0), _key_comp(comp), _val_comp(_key_comp)
+	: _tree(_key_comp), _size(0), _key_comp(comp)
 	{
 		(void)alloc;
 		this->insert(first, last);
@@ -128,7 +120,7 @@ namespace ft
 	
 	template <class T, class Compare, class Alloc>
 	set<T, Compare, Alloc>::set(const set &x)
-	: _tree(x._tree), _size(x.size()), _key_comp(x._key_comp), _val_comp(_key_comp)
+	: _tree(x._tree), _size(x.size()), _key_comp(x._key_comp)
 	{
 		return ;
 	}
@@ -146,6 +138,7 @@ namespace ft
 	{
 		this->_tree = other._tree;
 		this->_size = other._size;
+		return *this;
 	}
 	
 
@@ -156,58 +149,31 @@ namespace ft
 	/*Iterators*/ 
 
 	template <class T, class Compare, class Alloc>
-	typename set<T, Compare, Alloc>::iterator					set<T, Compare, Alloc>::begin(void)
+	typename set<T, Compare, Alloc>::iterator					set<T, Compare, Alloc>::begin(void) const
 	{
 		if (!this->_size)
 			return this->end();
-		return iterator(red_black_node<value_type, value_compare>::get_smallest(this->_tree.get_root()));
+		return iterator(red_black_node<const value_type, value_compare>::get_smallest(this->_tree.get_root()));
 	}
 	
 	template <class T, class Compare, class Alloc>
-	typename set<T, Compare, Alloc>::const_iterator				set<T, Compare, Alloc>::begin(void) const
-	{
-		if (!this->_size)
-			return this->end();
-		return static_cast<const_iterator>(iterator(red_black_node<value_type, value_compare>::get_smallest(this->_tree.get_root())));
-	}
-	
-	template <class T, class Compare, class Alloc>
-	typename set<T, Compare, Alloc>::iterator					set<T, Compare, Alloc>::end(void)
+	typename set<T, Compare, Alloc>::iterator					set<T, Compare, Alloc>::end(void) const
 	{
 		return iterator(this->_tree.get_end());
 	}
 	
 	template <class T, class Compare, class Alloc>
-	typename set<T, Compare, Alloc>::const_iterator				set<T, Compare, Alloc>::end(void) const
-	{
-		iterator it(this->_tree.get_end());
-		return static_cast<const_iterator>(iterator(it));
-	}
-	
-	template <class T, class Compare, class Alloc>
-	typename set<T, Compare, Alloc>::reverse_iterator			set<T, Compare, Alloc>::rbegin(void)
+	typename set<T, Compare, Alloc>::reverse_iterator			set<T, Compare, Alloc>::rbegin(void) const
 	{
 		return reverse_iterator(this->_tree.get_end());
 	}
 	
 	template <class T, class Compare, class Alloc>
-	typename set<T, Compare, Alloc>::const_reverse_iterator		set<T, Compare, Alloc>::rbegin(void) const
+	typename set<T, Compare, Alloc>::reverse_iterator			set<T, Compare, Alloc>::rend(void) const
 	{
-		return const_reverse_iterator(this->_tree.get_end());
+		return reverse_iterator(red_black_node<const value_type, value_compare>::get_smallest(this->_tree.get_root()));
 	}
-	
-	template <class T, class Compare, class Alloc>
-	typename set<T, Compare, Alloc>::reverse_iterator			set<T, Compare, Alloc>::rend(void)
-	{
-		return reverse_iterator(red_black_node<value_type, value_compare>::get_smallest(this->_tree.get_root()));
-	}
-	
-	template <class T, class Compare, class Alloc>
-	typename set<T, Compare, Alloc>::const_reverse_iterator		set<T, Compare, Alloc>::rend(void) const
-	{
-		return const_reverse_iterator(red_black_node<value_type, value_compare>::get_smallest(this->_tree.get_root()));
-	}
-	
+
 	/*Capacity*/
 
 	template <class T, class Compare, class Alloc>
@@ -233,7 +199,7 @@ namespace ft
 	template <class T, class Compare, class Alloc>
 	pair<typename set<T, Compare, Alloc>::iterator,bool>		set<T, Compare, Alloc>::insert(const value_type& val)
 	{
-		pair<red_black_node<value_type, value_compare>*, bool> tmp = this->_tree.insert(val);
+		pair<red_black_node<const value_type, value_compare>*, bool> tmp = this->_tree.insert(val);
 		pair<iterator, bool> itp(iterator(tmp.first), tmp.second);
 		if (itp.second)
 			this->_size++;
@@ -243,8 +209,8 @@ namespace ft
 	template <class T, class Compare, class Alloc>
 	typename set<T, Compare, Alloc>::iterator					set<T, Compare, Alloc>::insert(iterator position, const value_type& val)
 	{
-		pair<red_black_node<value_type, value_compare>*, bool> tmp;
-		if (position != this->begin() && position != this->end() && this->_val_comp(*(--position), val) && this->_val_comp(val, *(++position)))
+		pair<red_black_node<const value_type, value_compare>*, bool> tmp;
+		if (position != this->begin() && position != this->end() && this->_key_comp(*(--position), val) && this->_key_comp(val, *(++position)))
 			tmp = this->_tree.insert(val, position);
 		else
 			tmp = this->_tree.insert(val);
@@ -259,7 +225,7 @@ namespace ft
 	{
 		while (first != last)
 		{
-			pair<red_black_node<value_type, value_compare>*, bool> tmp = this->_tree.insert(*first++);
+			pair<red_black_node<const value_type, value_compare>*, bool> tmp = this->_tree.insert(*first++);
 			if (tmp.second)
 				this->_size++;
 		}
@@ -277,8 +243,7 @@ namespace ft
 	template <class T, class Compare, class Alloc>
 	typename set<T, Compare, Alloc>::size_type					set<T, Compare, Alloc>::erase(const key_type& k)
 	{
-		value_type val(value_type(k, set<pe()));
-		if (this->_tree.erase(val))
+		if (this->_tree.erase(k))
 		{
 			this->_size--;
 			return 1;
@@ -334,15 +299,9 @@ namespace ft
 	/*Operations*/
 	
 	template <class T, class Compare, class Alloc>
-	typename set<T, Compare, Alloc>::iterator					set<T, Compare, Alloc>::find(const key_type &k)
+	typename set<T, Compare, Alloc>::iterator					set<T, Compare, Alloc>::find(const key_type &k) const
 	{
 		return iterator(this->_tree.search(k));
-	}
-	
-	template <class T, class Compare, class Alloc>
-	typename set<T, Compare, Alloc>::const_iterator				set<T, Compare, Alloc>::find(const key_type &k) const
-	{
-		return static_cast<const_iterator>(iterator(this->_tree.search(k)));
 	}
 
 	template <class T, class Compare, class Alloc>
@@ -354,39 +313,21 @@ namespace ft
 	}
 	
 	template <class T, class Compare, class Alloc>
-	typename set<T, Compare, Alloc>::iterator					set<T, Compare, Alloc>::lower_bound(const key_type &k)
+	typename set<T, Compare, Alloc>::iterator					set<T, Compare, Alloc>::lower_bound(const key_type &k) const
 	{
 		return iterator(this->_tree.search_lower_bound(k));
 	}
-
-	template <class T, class Compare, class Alloc>
-	typename set<T, Compare, Alloc>::const_iterator				set<T, Compare, Alloc>::lower_bound(const key_type &k) const
-	{
-		return static_cast<const_iterator>(iterator(this->_tree.search_lower_bound(k)));
-	}
 	
 	template <class T, class Compare, class Alloc>
-	typename set<T, Compare, Alloc>::iterator					set<T, Compare, Alloc>::upper_bound(const key_type &k)
+	typename set<T, Compare, Alloc>::iterator					set<T, Compare, Alloc>::upper_bound(const key_type &k) const
 	{
 		return iterator(this->_tree.search_upper_bound(k));
 	}
 	
 	template <class T, class Compare, class Alloc>
-	typename set<T, Compare, Alloc>::const_iterator				set<T, Compare, Alloc>::upper_bound(const key_type &k) const
-	{
-		return static_cast<const_iterator>(iterator(this->_tree.search_upper_bound(k)));
-	}
-	
-	template <class T, class Compare, class Alloc>
-	pair<typename set<T, Compare, Alloc>::const_iterator,typename set<T, Compare, Alloc>::const_iterator>	set<T, Compare, Alloc>::equal_range(const key_type &k) const
+	pair<typename set<T, Compare, Alloc>::iterator,typename set<T, Compare, Alloc>::iterator>	set<T, Compare, Alloc>::equal_range(const key_type &k) const
 	{
 		return pair<const_iterator, const_iterator>(iterator(this->_tree.search_lower_bound(k)), iterator(this->_tree.search_upper_bound(k)));
-	}
-	
-	template <class T, class Compare, class Alloc>
-	pair<typename set<T, Compare, Alloc>::iterator,typename set<T, Compare, Alloc>::iterator>				set<T, Compare, Alloc>::equal_range (const key_type &k)
-	{
-		return pair<iterator, iterator>(this->_tree.search_lower_bound(k), this->_tree.search_upper_bound(k));
 	}
 	
 	/*Allocator*/

@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 10:12:44 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/29 15:05:20 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/30 14:02:43 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,7 +193,7 @@ namespace ft
 	{
 		if (!this->_size)
 			return this->end();
-		return static_cast<const_iterator>(iterator(red_black_node<value_type, value_compare>::get_smallest(this->_tree.get_root())));
+		return static_cast<const_iterator>(red_black_node<const value_type, value_compare>::get_smallest(this->_tree.get_root()));
 	}
 	
 	template <class Key, class T, class Compare, class Alloc>
@@ -205,8 +205,7 @@ namespace ft
 	template <class Key, class T, class Compare, class Alloc>
 	typename map<Key, T, Compare, Alloc>::const_iterator			map<Key, T, Compare, Alloc>::end(void) const
 	{
-		iterator it(this->_tree.get_end());
-		return static_cast<const_iterator>(iterator(it));
+		return static_cast<const_iterator>(this->_tree.get_end());
 	}
 	
 	template <class Key, class T, class Compare, class Alloc>
@@ -230,7 +229,7 @@ namespace ft
 	template <class Key, class T, class Compare, class Alloc>
 	typename map<Key, T, Compare, Alloc>::const_reverse_iterator	map<Key, T, Compare, Alloc>::rend(void) const
 	{
-		return const_reverse_iterator(red_black_node<value_type, value_compare>::get_smallest(this->_tree.get_root()));
+		return const_reverse_iterator(red_black_node<const value_type, value_compare>::get_smallest(this->_tree.get_root()));
 	}
 
 	/*Capacity*/
@@ -383,7 +382,7 @@ namespace ft
 	typename map<Key, T, Compare, Alloc>::const_iterator			map<Key, T, Compare, Alloc>::find(const key_type& k) const
 	{
 		value_type val(k, mapped_type());
-		return static_cast<const_iterator>(iterator(this->_tree.search(val)));
+		return static_cast<const_iterator>(this->_tree.search(val));
 	}
 
 	template <class Key, class T, class Compare, class Alloc>
@@ -406,7 +405,7 @@ namespace ft
 	typename map<Key, T, Compare, Alloc>::const_iterator			map<Key, T, Compare, Alloc>::lower_bound(const key_type& k) const
 	{
 		value_type val(k, mapped_type());
-		return static_cast<const_iterator>(iterator(this->_tree.search_lower_bound(val)));
+		return static_cast<const_iterator>(this->_tree.search_lower_bound(val));
 	}
 	
 	template <class Key, class T, class Compare, class Alloc>
@@ -420,14 +419,14 @@ namespace ft
 	typename map<Key, T, Compare, Alloc>::const_iterator			map<Key, T, Compare, Alloc>::upper_bound(const key_type& k) const
 	{
 		value_type val(k, mapped_type());
-		return static_cast<const_iterator>(iterator(this->_tree.search_upper_bound(val)));
+		return static_cast<const_iterator>(this->_tree.search_upper_bound(val));
 	}
 	
 	template <class Key, class T, class Compare, class Alloc>
 	pair<typename map<Key, T, Compare, Alloc>::const_iterator,typename map<Key, T, Compare, Alloc>::const_iterator>	map<Key, T, Compare, Alloc>::equal_range(const key_type& k) const
 	{
 		value_type	val(k, mapped_type());
-		return pair<const_iterator, const_iterator>(iterator(this->_tree.search_lower_bound(val)), iterator(this->_tree.search_upper_bound(val)));
+		return pair<const_iterator, const_iterator>(this->_tree.search_lower_bound(val), this->_tree.search_upper_bound(val));
 	}
 	
 	template <class Key, class T, class Compare, class Alloc>

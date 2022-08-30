@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 13:56:12 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/23 16:30:07 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/08/30 13:35:00 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 # define RED_BLACK_NODE_HPP
 
 # include "../Pair.hpp"
-# include "../../iter/IteratorsTraits.hpp"
-# include "../../iter/TreeIterator.hpp"
 # include "RedBlackTree.hpp"
 
 # define RBT_RED true
@@ -25,9 +23,6 @@ namespace ft
 {
 	template <class T, class Alloc, class Compare>
 	class red_black_tree;
-
-	template <class T, class Compare, class Node>
-	class tree_iterator;
 	
 	template <class T, class Compare>
 	class red_black_node
@@ -40,11 +35,6 @@ namespace ft
 			typedef Compare																value_compare;
 			typedef node_type*															pointer;
 			typedef const node_type*													const_pointer;
-			typedef ft::tree_iterator<value_type, value_compare, node_type>				iterator;
-			typedef ft::tree_iterator<const value_type, value_compare, node_const_type>	const_iterator;
-			typedef ft::reverse_iterator<iterator>										reverse_iterator;
-			typedef ft::reverse_iterator<const_iterator>								const_reverse_iterator;
-			typedef typename iterator_traits<iterator>::difference_type					difference_type;
 			typedef size_t																size_type;
 
 		public :
