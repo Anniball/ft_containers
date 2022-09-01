@@ -6,14 +6,14 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 11:31:47 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/31 14:39:09 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/09/01 16:12:34 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <iostream>
 #include <string>
 #include <deque>
-#if 0 //CREATE A REAL STL EXAMPLE
+#if 1 //CREATE A REAL STL EXAMPLE
 	#include <map>
 	#include <stack>
 	#include <vector>
@@ -78,6 +78,7 @@ int main(int argc, char** argv) {
 	{
 		vector_buffer.push_back(Buffer());
 	}
+
 
 	for (int i = 0; i < COUNT; i++)
 	{

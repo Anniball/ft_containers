@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 10:13:41 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/22 09:34:48 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/09/01 17:15:45 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,11 @@
 # include <iostream>
 # include <stdexcept>
 # include <cmath>
-#include "../iter/RandomAccessIterator.hpp"
+# include "../iter/RandomAccessIterator.hpp"
 # include "../iter/IteratorsTraits.hpp"
 # include "../iter/ReverseIterator.hpp"
 # include "../util/TypeTraits.hpp"
-#include "../util/Utilities.hpp"
+# include "../util/Utilities.hpp"
 
 namespace ft
 {
@@ -110,12 +110,13 @@ namespace ft
 			allocator_type			get_allocator(void) const;
 	};
 
+
 	/*
 		CONSTRUCTORS AND DESTRUCTORS
 	*/
 
 	template<typename T, class Alloc>
-	vector<T, Alloc>::vector(const allocator_type& alloc) : _container(nullptr), _size(0), _capacity(0), _alloc(alloc) {}
+	vector<T, Alloc>::vector(const allocator_type& alloc) : _container(nullptr), _size(0), _capacity(0), _alloc(alloc) {return ;}
 
 	template<typename T, class Alloc>
 	vector<T, Alloc>::vector(size_type n, const value_type& val, const allocator_type& alloc) : _size(n), _capacity(n), _alloc(alloc)
@@ -246,12 +247,10 @@ namespace ft
 		return (this->_size);
 	}
 
-	//STILL TO CHANGE
 	template<typename T, class Alloc>
 	typename vector<T, Alloc>::size_type					vector<T, Alloc>::max_size(void) const
 	{
 		return this->_alloc.max_size();
-		// return (static_cast<size_type>((pow(2, 64) / static_cast<double>(sizeof(value_type))) - 1));
 	}
 
 	template<typename T, class Alloc>
@@ -487,19 +486,19 @@ namespace ft
 	template<typename T, class Alloc>
 	typename vector<T, Alloc>::iterator						vector<T, Alloc>::erase(typename vector<T, Alloc>::iterator position)
 	{
+		iterator it = position;
 		this->_alloc.destroy(position.base());
-		typename vector<T, Alloc>::iterator it = position;
-		typename vector<T, Alloc>::iterator itp = vector<T, Alloc>::iterator(position + 1);
-		for (; itp != this->end(); it++, itp++)
-			*it = *itp;
-		this->_size -= 1;
+		iterator ite = this->end();
+		for (iterator tmp = it + 1; tmp != ite; ++it, ++tmp)
+			*it = *tmp;
+		--this->_size;
 		return (position);
 	}
 
 	template<typename T, class Alloc>
 	typename vector<T, Alloc>::iterator						vector<T, Alloc>::erase(typename vector<T, Alloc>::iterator first, typename vector<T, Alloc>::iterator last)
 	{
-		for (vector<T, Alloc>::iterator it = first; it != last; it++)
+		for (vector<T, Alloc>::iterator it = first; it != last; ++it)
 			this->_alloc.destroy(it.base());
 		typename vector<T, Alloc>::iterator it = first;
 		typename vector<T, Alloc>::iterator itp = last;
