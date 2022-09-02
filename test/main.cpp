@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 16:30:15 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/09/02 11:44:44 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/09/02 14:27:25 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,11 +84,17 @@ static int	compare_files(std::string std, std::string ft, std::string method)
 static void	print_global_timing(void)
 {
 	Color::Modifier def(Color::FG_DEFAULT);
-	std::cout << "Global ratio (FT / STD) :\t";
+	Color::Modifier red(Color::FG_RED);
+	Color::Modifier green(Color::FG_GREEN);
+	std::cout << def << "Global ratio (FT / STD) :\t";
 	double total = 0;
 	for (std::list<double>::iterator it  = ratios.begin(); it != ratios.end(); it++)
 		total += *it;
-	std::cout << total / ratios.size() << std::endl << std::endl;
+	total /= ratios.size();
+	if (total > 20)
+		std::cout << red << total << std::endl << std::endl;
+	else
+		std::cout << green << total << std::endl << std::endl;
 	ratios.clear();
 }
 
@@ -107,6 +113,13 @@ int			main(void)
 	compare_files("std_assign_vector", "ft_assign_vector", "Assign");
 	compare_files("std_iter_vector", "ft_iter_vector", "Iter");
 	compare_files("std_size_vector", "ft_size_vector", "Size");
+	print_global_timing();
+
+	print_class_header("STACK");
+	if (execute_tester("./Stack/ft_stk_test", std::to_string(seed))) return 1;
+	if (execute_tester("./Stack/std_stk_test", std::to_string(seed))) return 1;
+	compare_files("std_insert_stack", "ft_insert_stack", "Insert");
+	compare_files("std_erase_stack", "ft_erase_stack", "Erase");
 	print_global_timing();
 	
 	return 0;

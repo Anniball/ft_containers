@@ -6,7 +6,7 @@
 #    By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/31 14:52:42 by ldelmas           #+#    #+#              #
-#    Updated: 2022/09/01 14:06:35 by ldelmas          ###   ########.fr        #
+#    Updated: 2022/09/02 14:09:11 by ldelmas          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,7 +52,7 @@ FT_SET_OBJ = ${SET_SRC:cpp=b}
 %.b: %.cpp
 	@${CC} ${CFLAGS} -c $< -o $@ 
 
-all : ${TEST_NAME} ${FT_VEC_NAME} ${STD_VEC_NAME} clean#${STK_NAME} ${MAP_NAME} ${SET_NAME}
+all : ${TEST_NAME} ${FT_VEC_NAME} ${STD_VEC_NAME} ${FT_STK_NAME} ${STD_STK_NAME} clean #${MAP_NAME} ${SET_NAME}
 
 ${TEST_NAME}: ${TEST_OBJ}
 	@${CC} ${CFLAGS} -o ${TEST_NAME} ${TEST_OBJ}
@@ -77,10 +77,12 @@ ${STD_SET_NAME}:  ${STD_SET_OBJ}
 
 	
 clean :
-	@rm -f ${TEST_OBJ} ${FT_VEC_OBJ} ${FT_STK_OBJ} ${FT_MAP_OBJ} ${FT_SET_OBJ} ${STD_VEC_OBJ} ${STD_STK_OBJ} ${STD_MAP_OBJ} ${STD_SET_OBJ}
+	@rm -f ${TEST_OBJ} ${FT_VEC_OBJ} ${FT_STK_OBJ} ${FT_MAP_OBJ} ${FT_SET_OBJ} \
+	${STD_VEC_OBJ} ${STD_STK_OBJ} ${STD_MAP_OBJ} ${STD_SET_OBJ}
 
 fclean : clean
-	@rm -f ${TEST_NAME} ${FT_VEC_NAME} ${FT_STK_NAME} ${FT_MAP_NAME} ${FT_SET_NAME} ${STD_VEC_NAME} ${STD_STK_NAME} ${STD_MAP_NAME} ${STD_SET_NAME}
+	@rm -f ${TEST_NAME} ${FT_VEC_NAME} ${FT_STK_NAME} ${FT_MAP_NAME} ${FT_SET_NAME} \
+	${STD_VEC_NAME} ${STD_STK_NAME} ${STD_MAP_NAME} ${STD_SET_NAME}
 
 .PHONY: all clean fclean
 
