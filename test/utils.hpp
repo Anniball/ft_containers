@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 14:47:03 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/09/01 16:12:57 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/09/02 11:39:29 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <string>
 #include <cstdio>
 #include <ostream>
+#include <list>
 
 #ifdef TESTED_NAMESPACE
 # define FILE_NAME "std"
@@ -31,7 +32,8 @@
 typedef struct timeval t_timeval;
 typedef TESTED_NAMESPACE::vector<int> int_vector;
 
-extern t_timeval current_time;
+extern t_timeval			current_time;
+extern std::list<double>	ratios;
 
 namespace Color
 {

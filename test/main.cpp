@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 16:30:15 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/09/01 17:17:03 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/09/02 11:44:44 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,9 @@
 #include <sys/wait.h>
 #include <time.h>
 #include "utils.hpp"
+#include <list>
+
+std::list<double>	ratios;
 
 static int	execute_tester(std::string str, std::string seed)
 {
@@ -46,6 +49,7 @@ static void	print_timing(std::string ft_time, std::string std_time)
 	Color::Modifier red(Color::FG_RED);
 	Color::Modifier green(Color::FG_GREEN);
 	double ratio = std::stod(ft_time) / std::stod(std_time);
+	ratios.push_back(ratio);
 	if (ratio < 20) std::cout << green << ratio  << std::endl;
 	else std::cout << red << ratio  << std::endl;
 }
@@ -77,6 +81,17 @@ static int	compare_files(std::string std, std::string ft, std::string method)
 	return 0;
 }
 
+static void	print_global_timing(void)
+{
+	Color::Modifier def(Color::FG_DEFAULT);
+	std::cout << "Global ratio (FT / STD) :\t";
+	double total = 0;
+	for (std::list<double>::iterator it  = ratios.begin(); it != ratios.end(); it++)
+		total += *it;
+	std::cout << total / ratios.size() << std::endl << std::endl;
+	ratios.clear();
+}
+
 int			main(void)
 {
 	srand(time(NULL));
@@ -89,5 +104,10 @@ int			main(void)
 	compare_files("std_access_vector", "ft_access_vector", "Access");
 	compare_files("std_insert_vector", "ft_insert_vector", "Insert");
 	compare_files("std_erase_vector", "ft_erase_vector", "Erase");
+	compare_files("std_assign_vector", "ft_assign_vector", "Assign");
+	compare_files("std_iter_vector", "ft_iter_vector", "Iter");
+	compare_files("std_size_vector", "ft_size_vector", "Size");
+	print_global_timing();
+	
 	return 0;
 }
