@@ -6,7 +6,7 @@
 #    By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/31 14:52:42 by ldelmas           #+#    #+#              #
-#    Updated: 2022/09/02 14:09:11 by ldelmas          ###   ########.fr        #
+#    Updated: 2022/09/02 15:01:43 by ldelmas          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,7 +52,7 @@ FT_SET_OBJ = ${SET_SRC:cpp=b}
 %.b: %.cpp
 	@${CC} ${CFLAGS} -c $< -o $@ 
 
-all : ${TEST_NAME} ${FT_VEC_NAME} ${STD_VEC_NAME} ${FT_STK_NAME} ${STD_STK_NAME} clean #${MAP_NAME} ${SET_NAME}
+all : ${TEST_NAME} ${FT_VEC_NAME} ${STD_VEC_NAME} ${FT_STK_NAME} ${STD_STK_NAME} ${FT_MAP_NAME} ${STD_MAP_NAME} clean#${SET_NAME}
 
 ${TEST_NAME}: ${TEST_OBJ}
 	@${CC} ${CFLAGS} -o ${TEST_NAME} ${TEST_OBJ}

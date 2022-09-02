@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 16:30:15 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/09/02 14:27:25 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/09/02 15:06:09 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,12 @@ int			main(void)
 	if (execute_tester("./Stack/std_stk_test", std::to_string(seed))) return 1;
 	compare_files("std_insert_stack", "ft_insert_stack", "Insert");
 	compare_files("std_erase_stack", "ft_erase_stack", "Erase");
+	print_global_timing();
+
+	print_class_header("MAP");
+	if (execute_tester("./Map/ft_map_test", std::to_string(seed))) return 1;
+	if (execute_tester("./MAp/std_map_test", std::to_string(seed))) return 1;
+	compare_files("std_insert_map", "ft_insert_map", "Insert");
 	print_global_timing();
 	
 	return 0;

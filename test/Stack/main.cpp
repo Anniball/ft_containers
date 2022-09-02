@@ -6,17 +6,11 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/02 11:49:23 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/09/02 14:21:03 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/09/02 14:30:09 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../utils.hpp"
-
-/*
-			friend bool operator==(const stack<T1, Container1> &lhs, const stack<T1, Container1> &rhs);
- 			friend bool operator<(const stack<T1, Container1> &lhs, const stack<T1, Container1> &rhs);
-
-*/
 
 t_timeval current_time;
 
