@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   utils.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lucas <lucas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 14:47:03 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/09/05 15:33:28 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/09/05 16:54:33 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <sys/time.h>
 #include <iostream>
+#include <sstream>
 #include <cstdlib>
 #include <string>
 #include <cstdio>

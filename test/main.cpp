@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lucas <lucas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 16:30:15 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/09/05 15:49:58 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/09/05 17:00:36 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static void	print_timing(std::string ft_time, std::string std_time)
 {
 	Color::Modifier red(Color::FG_RED);
 	Color::Modifier green(Color::FG_GREEN);
-	double ratio = std::stod(ft_time) / std::stod(std_time);
+	double ratio = atof(ft_time.c_str()) / atof(std_time.c_str());
 	ratios.push_back(ratio);
 	if (ratio < 20) std::cout << green << ratio  << std::endl;
 	else std::cout << red << ratio  << std::endl;
@@ -67,8 +67,8 @@ static int	compare_files(std::string std, std::string ft, std::string method)
 	Color::Modifier green(Color::FG_GREEN);
 	try
 	{
-		std::ifstream ifs_std(std);
-		std::ifstream ifs_ft(ft);
+		std::ifstream ifs_std(std.c_str());
+		std::ifstream ifs_ft(ft.c_str());
 
 		std::string std_time, ft_time, std_str, ft_str;
 		std::getline(ifs_std, std_time);
@@ -111,6 +111,13 @@ static void	print_global_timing(void)
 	ratios.clear();
 }
 
+static std::string itos(int n)
+{
+	std::ostringstream convert;
+	convert << n;
+	return convert.str(); 
+}
+
 int			main(void)
 {
 	srand(time(NULL));
@@ -118,8 +125,8 @@ int			main(void)
 	std::cout << "\t\t*****SEED : " << seed << " *****\t\t" << std::endl << std::endl;
 
 	print_class_header("VECTOR");
-	if (!execute_tester("./Vector/ft_vec_test", std::to_string(seed))
-		&& !execute_tester("./Vector/std_vec_test", std::to_string(seed)))
+	if (!execute_tester("./Vector/ft_vec_test", itos(seed))
+		&& !execute_tester("./Vector/std_vec_test", itos(seed)))
 	{
 		compare_files("std_construct_vector", "ft_construct_vector", "Constr");
 		compare_files("std_access_vector", "ft_access_vector", "Access");
@@ -133,8 +140,8 @@ int			main(void)
 	}
 
 	print_class_header("STACK");
-	if (!execute_tester("./Stack/ft_stk_test", std::to_string(seed))
-		&& !execute_tester("./Stack/std_stk_test", std::to_string(seed)))
+	if (!execute_tester("./Stack/ft_stk_test", itos(seed))
+		&& !execute_tester("./Stack/std_stk_test", itos(seed)))
 	{
 		compare_files("std_insert_stack", "ft_insert_stack", "Insert");
 		compare_files("std_erase_stack", "ft_erase_stack", "Erase");
@@ -142,8 +149,8 @@ int			main(void)
 	}
 
 	print_class_header("MAP");
-	if (!execute_tester("./Map/std_map_test", std::to_string(seed))
-		&& !execute_tester("./Map/ft_map_test", std::to_string(seed)))
+	if (!execute_tester("./Map/std_map_test", itos(seed))
+		&& !execute_tester("./Map/ft_map_test", itos(seed)))
 	{
 		compare_files("std_construct_map", "ft_construct_map", "Constr");
 		compare_files("std_insert_map", "ft_insert_map", "Insert");
@@ -157,8 +164,8 @@ int			main(void)
 	}
 
 	print_class_header("SET");
-	if (!execute_tester("./Set/std_set_test", std::to_string(seed))
-		&& !execute_tester("./Set/ft_set_test", std::to_string(seed)))
+	if (!execute_tester("./Set/std_set_test", itos(seed))
+		&& !execute_tester("./Set/ft_set_test", itos(seed)))
 	{
 		compare_files("std_construct_set", "ft_construct_set", "Constr");
 		compare_files("std_insert_set", "ft_insert_set", "Insert");
