@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   TypeTraits.hpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lucas <lucas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:18:21 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/07/11 14:49:57 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/09/05 17:49:25 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,6 @@ namespace ft
 
 	template<>
 	struct is_integral<bool> : true_type {};
-	
-	template<>
-	struct is_integral<char16_t> : true_type {};
-	
-	template<>
-	struct is_integral<char32_t> : true_type {};
 	
 	template<>
 	struct is_integral<wchar_t> : true_type {};

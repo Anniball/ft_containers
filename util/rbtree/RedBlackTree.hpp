@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   RedBlackTree.hpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lucas <lucas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 16:02:21 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/09/05 14:21:39 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/09/05 17:03:56 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ namespace ft
 	*/
 
 	template <class T, class Alloc, class Compare>
-	red_black_tree<T, Alloc, Compare>::red_black_tree(value_compare &comp) : _root(nullptr), _node_alloc(), _comp(comp)
+	red_black_tree<T, Alloc, Compare>::red_black_tree(value_compare &comp) : _root(NULL), _node_alloc(), _comp(comp)
 	{
 		this->_end = _node_alloc.allocate(1);
 		this->_node_alloc.construct(this->_end, node_type(this->_root, this->_comp));
@@ -122,7 +122,7 @@ namespace ft
 	}
 	
 	template <class T, class Alloc, class Compare>
-	red_black_tree<T, Alloc, Compare>::red_black_tree(const red_black_tree<T, Alloc, Compare> &src) :  _root(nullptr), _node_alloc(src._node_alloc), _comp(src._comp)
+	red_black_tree<T, Alloc, Compare>::red_black_tree(const red_black_tree<T, Alloc, Compare> &src) :  _root(NULL), _node_alloc(src._node_alloc), _comp(src._comp)
 	{
 		this->_end = _node_alloc.allocate(1);
 		this->_node_alloc.construct(this->_end, node_type(this->_root, this->_comp));
@@ -253,7 +253,7 @@ namespace ft
 	template <class T, class Alloc, class Compare>
 	pair<typename red_black_tree<T, Alloc, Compare>::node_type*, bool>	red_black_tree<T, Alloc, Compare>::insert(node_type &node, node_type *z)
 	{
-		node_type	*previous = nullptr;
+		node_type	*previous = NULL;
 		while (z)
 		{
 			previous = z;
@@ -265,7 +265,7 @@ namespace ft
 				z = z->get_right();
 		}
 		node_type *new_node = this->_node_alloc.allocate(1);
-		this->_node_alloc.construct(new_node, node_type(node.get_value(), nullptr, nullptr, previous, this->_end, this->_comp));
+		this->_node_alloc.construct(new_node, node_type(node.get_value(), NULL, NULL, previous, this->_end, this->_comp));
 		if (!previous)
 			this->set_root(new_node);
 		else if (node < *previous)
@@ -343,9 +343,9 @@ namespace ft
 		if (check.second)
 		{
 			if (check.first->get_parent())
-				check.first == check.first->get_parent()->get_left() ? check.first->get_parent()->set_left(nullptr) : check.first->get_parent()->set_right(nullptr);
+				check.first == check.first->get_parent()->get_left() ? check.first->get_parent()->set_left(NULL) : check.first->get_parent()->set_right(NULL);
 			if (check.first == this->_root)
-				this->set_root(nullptr);
+				this->set_root(NULL);
 			this->_node_alloc.destroy(check.first);
 			this->_node_alloc.deallocate(check.first, 1);
 		}
@@ -362,7 +362,7 @@ namespace ft
 			this->erase(nd);
 			nd = tmp;
 		}
-		this->_root = nullptr;
+		this->_root = NULL;
 		return ;
 	}
 
@@ -397,7 +397,7 @@ namespace ft
 		if (child)
 			return pair<node_type*, bool>(child, false);
 		node_type	*new_node = this->_node_alloc.allocate(1);
-		this->_node_alloc.construct(new_node, node_type(value_type(), nullptr, nullptr, parent, this->_end, this->_comp));
+		this->_node_alloc.construct(new_node, node_type(value_type(), NULL, NULL, parent, this->_end, this->_comp));
 		new_node->set_color(RBT_BLACK);
 		is_left ? parent->set_left(new_node) : parent->set_right(new_node);
 		return pair<node_type*, bool>(new_node, true);
@@ -595,7 +595,7 @@ namespace ft
 	{
 		node_type	*z = this->_root;
 		node_type	tmp(val, this->_end, this->_comp);
-		node_type	*previous = nullptr;
+		node_type	*previous = NULL;
 	
 		while (z)
 		{
@@ -619,7 +619,7 @@ namespace ft
 	{
 		node_type	*z = this->_root;
 		node_type	tmp(val, this->_end, this->_comp);
-		node_type	*previous = nullptr;
+		node_type	*previous = NULL;
 	
 		while (z)
 		{

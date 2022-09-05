@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   RedBlackNode.hpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lucas <lucas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 13:56:12 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/30 13:35:00 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/09/05 17:03:36 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,14 +41,14 @@ namespace ft
 			/*
 				CONSTRUCTORS AND DESTRUCTORS
 			*/
-			explicit red_black_node(const pointer ptr = nullptr, const value_compare &comp = value_compare());
-			red_black_node(const value_type &val, const pointer ptr = nullptr, const value_compare &comp = value_compare());
-			red_black_node(const pointer parent, const pointer ptr = nullptr, const value_compare &comp = value_compare());
+			explicit red_black_node(const pointer ptr = NULL, const value_compare &comp = value_compare());
+			red_black_node(const value_type &val, const pointer ptr = NULL, const value_compare &comp = value_compare());
+			red_black_node(const pointer parent, const pointer ptr = NULL, const value_compare &comp = value_compare());
 			red_black_node(const value_type &val, 
 							const pointer left, 
 							const pointer right,
-							const pointer parent = nullptr,
-							const pointer end = nullptr, 
+							const pointer parent = NULL,
+							const pointer end = NULL, 
 							const value_compare &comp = value_compare());
 			red_black_node(const node_type &src);
 			~red_black_node(void);
@@ -113,15 +113,15 @@ namespace ft
 	
 	template <class T, class Compare>
 	red_black_node<T, Compare>::red_black_node(const pointer ptr, const value_compare &comp) :
-	_content(), _color(RBT_RED), _left(nullptr), _right(nullptr), _parent(nullptr), _end(ptr), _comp(comp) {return ;}
+	_content(), _color(RBT_RED), _left(NULL), _right(NULL), _parent(NULL), _end(ptr), _comp(comp) {return ;}
 
 	template <class T, class Compare>
 	red_black_node<T, Compare>::red_black_node(const value_type &val, const pointer ptr, const value_compare &comp) :
-	_content(val), _color(RBT_RED), _left(nullptr), _right(nullptr), _parent(nullptr), _end(ptr), _comp(comp) {return ;}
+	_content(val), _color(RBT_RED), _left(NULL), _right(NULL), _parent(NULL), _end(ptr), _comp(comp) {return ;}
 
 	template <class T, class Compare>
 	red_black_node<T, Compare>::red_black_node(const pointer parent, const pointer ptr, const value_compare &comp) :
-	_content(), _color(RBT_BLACK), _left(nullptr), _right(nullptr), _parent(parent), _end(ptr), _comp(comp) {return ;}
+	_content(), _color(RBT_BLACK), _left(NULL), _right(NULL), _parent(parent), _end(ptr), _comp(comp) {return ;}
 	
 	template <class T, class Compare>
 	red_black_node<T, Compare>::red_black_node(const value_type &val, const pointer left, const pointer right, const pointer parent, const pointer end, const value_compare &comp) :
@@ -165,7 +165,7 @@ namespace ft
 		pointer	parent = this->_parent;
 		pointer	grand_parent = parent->_parent;
 		if (!grand_parent)
-			return nullptr;
+			return NULL;
 		else if (grand_parent->_left == parent)
 			return grand_parent->_right;
 		else

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lucas <lucas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 14:46:08 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/09/02 15:01:26 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/09/05 17:50:40 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	tester_setup(char *seed)
 {
 	gettimeofday(&current_time, NULL);
-	srand(std::stoi(seed));
+	srand(std::atoi(seed));
 }
 
 void	print_delta_time(void)

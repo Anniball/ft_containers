@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Vector.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lucas <lucas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 10:13:41 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/09/05 15:52:34 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/09/05 17:03:15 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ namespace ft
 	*/
 
 	template<typename T, class Alloc>
-	vector<T, Alloc>::vector(const allocator_type& alloc) : _container(nullptr), _size(0), _capacity(0), _alloc(alloc) {return ;}
+	vector<T, Alloc>::vector(const allocator_type& alloc) : _container(NULL), _size(0), _capacity(0), _alloc(alloc) {return ;}
 
 	template<typename T, class Alloc>
 	vector<T, Alloc>::vector(size_type n, const value_type& val, const allocator_type& alloc) : _size(n), _capacity(n), _alloc(alloc)
