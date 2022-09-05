@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 16:30:15 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/09/05 14:20:52 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/09/05 14:59:40 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,7 @@ int			main(void)
 {
 	srand(time(NULL));
 	int seed = rand() % 1000000;
+	std::cout << "\t\t*****SEED : " << seed << " *****\t\t" << std::endl << std::endl;
 
 	print_class_header("VECTOR");
 	if (!execute_tester("./Vector/ft_vec_test", std::to_string(seed))
@@ -127,6 +128,7 @@ int			main(void)
 		compare_files("std_assign_vector", "ft_assign_vector", "Assign");
 		compare_files("std_iter_vector", "ft_iter_vector", "Iter");
 		compare_files("std_size_vector", "ft_size_vector", "Size");
+		compare_files("std_compar_vector", "ft_compar_vector", "Compar");
 		print_global_timing();
 	}
 
@@ -148,7 +150,9 @@ int			main(void)
 		compare_files("std_erase_map", "ft_erase_map", "Erase");
 		compare_files("std_access_map", "ft_access_map", "Access");
 		compare_files("std_lookup_map", "ft_lookup_map", "Lookup");
+		compare_files("std_iter_map", "ft_iter_map", "Iter");
 		compare_files("std_size_map", "ft_size_map", "Size");
+		compare_files("std_compar_map", "ft_compar_map", "Compar");
 		print_global_timing();
 	}
 	return 0;

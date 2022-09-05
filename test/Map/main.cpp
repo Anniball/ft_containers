@@ -6,24 +6,13 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/02 14:29:59 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/09/05 14:21:12 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/09/05 14:56:48 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../utils.hpp"
 
 t_timeval current_time;
-
-/*
-			iterator							begin(void);
-			const_iterator						begin(void) const;
-			iterator							end(void);
-			const_iterator						end(void) const;
-			reverse_iterator					rbegin(void);
-			const_reverse_iterator				rbegin(void) const;
-			reverse_iterator					rend(void);
-			const_reverse_iterator				rend(void) const;
-*/
 
 static int test_construct(void)
 {
@@ -83,10 +72,8 @@ static int test_erase(void)
 	m2 = m;
 	m3 = m;
 
-	int_map::iterator itb = m.end();
+	int_map::iterator itb = ++(++(++(m.begin())));
 	int_map::iterator itb2, itb3;
-	while (itb == m.end())
-		itb = m.find(rand() % 100);
 	
 	initialize__time();
 	while (itb != m.end())
@@ -107,7 +94,7 @@ static int test_erase(void)
 		std::cout << itb->first << " " << itb->second << std::endl;
 	for (; itb2 != m2.end(); itb2++)
 		std::cout << itb2->first << " " << itb2->second << std::endl;
-		std::cout << m3.size() << std::endl;
+	std::cout << m3.size() << std::endl;
 	return 0;
 }
 
@@ -191,6 +178,54 @@ static int test_size(void)
 	return 0;
 }
 
+static int test_iterator(void)
+{
+	std::string filename = std::string(FILE_NAME) + "_iter_map";
+	freopen(filename.c_str(), "w", stdout);
+
+	int_map m;
+	for (int i = 0; i < 10000; i++)
+		m.insert(int_pair(rand() % 100000, rand() % 10000));
+
+	int_map::iterator itb = m.begin();
+	int_map::iterator ite = m.end();
+	int_map::reverse_iterator ritb = m.rbegin();
+	int_map::reverse_iterator rite = m.rend();
+	std::cout << (*itb).first << std::endl;
+	std::cout << (*(--ite)).first<< std::endl;
+	std::cout << (*(++itb)).first << std::endl;
+	std::cout << (*(ritb)).first << std::endl;
+	std::cout << (*(--rite)).first << std::endl;
+	std::cout << (*(++ritb)).first << std::endl;
+	std::cout << (ite == itb) << std::endl;
+	std::cout << (ite != itb) << std::endl;
+	return 0;
+}
+
+static int test_comparison(void)
+{
+	std::string filename = std::string(FILE_NAME) + "_compar_map";
+	freopen(filename.c_str(), "w", stdout);
+
+	int_map m, m2, m3;
+	for (int i = 0; i < 100; i++)
+		m.insert(int_pair(rand() % 100, rand() % 100));
+	for (int i = 0; i < 100; i++)
+		m2.insert(int_pair(rand() % 100, rand() % 100));
+	for (int i = 0; i < 100; i++)
+		m3.insert(int_pair(rand() % 100, rand() % 100));
+	
+	std::cout << "1" << std::endl;
+	std::cout << (m == m2) << (m2 == m3) << (m == m3) << std::endl;
+	std::cout << (m != m2) << (m2 != m3) << (m != m3) << std::endl;
+	std::cout << (m < m2) << (m2 < m3) << (m < m3) << std::endl;
+	std::cout << (m <= m2) << (m2 <= m3) << (m <= m3) << std::endl;
+	std::cout << (m > m2) << (m2 > m3) << (m > m3) << std::endl;
+	std::cout << (m >= m2) << (m2 >= m3) << (m >= m3) << std::endl;
+
+	return 0;
+}
+
 int main(int ac, char **av)
 {
 	if (ac != 2)
@@ -205,5 +240,7 @@ int main(int ac, char **av)
 	test_access();
 	test_lookup();
 	test_size();
+	test_iterator();
+	test_comparison();
 	return 0;
 }

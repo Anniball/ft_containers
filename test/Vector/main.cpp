@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 12:13:30 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/09/02 14:09:03 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/09/05 14:43:37 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,6 +199,30 @@ static int test_size(void)
 	return 0;
 }
 
+static int test_comparison(void)
+{
+	std::string filename = std::string(FILE_NAME) + "_compar_vector";
+	freopen(filename.c_str(), "w", stdout);
+
+	int_vector vec, vec2, vec3;
+	for (int i = 0; i < 100; i++)
+		vec.push_back(rand() % 100);
+	for (int i = 0; i < 100; i++)
+		vec2.push_back(rand() % 100);
+	for (int i = 0; i < 100; i++)
+		vec3.push_back(rand() % 100);
+	
+	std::cout << "1" << std::endl;
+	std::cout << (vec == vec2) << (vec2 == vec3) << (vec == vec3) << std::endl;
+	std::cout << (vec != vec2) << (vec2 != vec3) << (vec != vec3) << std::endl;
+	std::cout << (vec < vec2) << (vec2 < vec3) << (vec < vec3) << std::endl;
+	std::cout << (vec <= vec2) << (vec2 <= vec3) << (vec <= vec3) << std::endl;
+	std::cout << (vec > vec2) << (vec2 > vec3) << (vec > vec3) << std::endl;
+	std::cout << (vec >= vec2) << (vec2 >= vec3) << (vec >= vec3) << std::endl;
+
+	return 0;
+}
+
 int main(int ac, char **av)
 {
 	if (ac != 2)
@@ -214,5 +238,6 @@ int main(int ac, char **av)
 	test_assign();
 	test_iterator();
 	test_size();
+	test_comparison();
 	return 0;
 }
