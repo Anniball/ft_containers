@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 16:02:21 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/08/30 16:28:01 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/09/05 14:21:39 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -206,6 +206,7 @@ namespace ft
 	void																red_black_tree<T, Alloc, Compare>::set_end(node_type *ptr)
 	{
 		this->_end = ptr;
+		this->_end->set_end(this->_root);
 	}
 	
 
@@ -378,15 +379,10 @@ namespace ft
 	{
 		node_type *tmp_root = tree.get_root();
 		node_type *tmp_end = tree.get_end();
-	
-		tree.set_root(this->get_root());
-		tree.set_end(this->get_end());
-		this->set_root(tmp_root);
-		this->set_end(tmp_end);
-		for (node_type *k = this->get_root(); k != this->get_end(); k = k->iterate())
-			k->set_end(this->_end);
-		for (node_type *k = tree.get_root(); k != tree.get_end(); k = k->iterate())
-			k->set_end(tree.get_end());
+		tree._root = this->get_root();
+		tree._end = this->get_end();
+		this->_root = tmp_root;
+		this->_end = tmp_end;
 		return ;
 	}
 

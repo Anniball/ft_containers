@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 16:30:15 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/09/05 11:50:50 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/09/05 14:20:52 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,12 +140,15 @@ int			main(void)
 	}
 
 	print_class_header("MAP");
-	if (!execute_tester("./Map/ft_map_test", std::to_string(seed))
-		&& !execute_tester("./Map/std_map_test", std::to_string(seed)))
+	if (!execute_tester("./Map/std_map_test", std::to_string(seed))
+		&& !execute_tester("./Map/ft_map_test", std::to_string(seed)))
 	{
 		compare_files("std_construct_map", "ft_construct_map", "Constr");
 		compare_files("std_insert_map", "ft_insert_map", "Insert");
 		compare_files("std_erase_map", "ft_erase_map", "Erase");
+		compare_files("std_access_map", "ft_access_map", "Access");
+		compare_files("std_lookup_map", "ft_lookup_map", "Lookup");
+		compare_files("std_size_map", "ft_size_map", "Size");
 		print_global_timing();
 	}
 	return 0;

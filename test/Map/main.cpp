@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/02 14:29:59 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/09/05 11:50:27 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/09/05 14:21:12 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 t_timeval current_time;
 
 /*
-			map	&operator=(const map &x);
 			iterator							begin(void);
 			const_iterator						begin(void) const;
 			iterator							end(void);
@@ -24,23 +23,6 @@ t_timeval current_time;
 			const_reverse_iterator				rbegin(void) const;
 			reverse_iterator					rend(void);
 			const_reverse_iterator				rend(void) const;
-			bool								empty(void) const;
-			size_type							size(void) const;
-			size_type							max_size(void) const;
-			mapped_type							&operator[](const key_type& k);
-			void								swap(map& x);
-			void								clear(void);
-			key_compare							key_comp(void) const;
-			value_compare						value_comp(void) const;
-			iterator							find(const key_type& k);
-			const_iterator						find(const key_type& k) const;
-			size_type							count(const key_type& k) const;
-			iterator							lower_bound(const key_type& k);
-			const_iterator						lower_bound(const key_type& k) const;
-			iterator							upper_bound(const key_type& k);
-			const_iterator						upper_bound(const key_type& k) const;
-			pair<const_iterator,const_iterator>	equal_range(const key_type& k) const;
-			pair<iterator,iterator>				equal_range(const key_type& k);
 */
 
 static int test_construct(void)
@@ -129,6 +111,86 @@ static int test_erase(void)
 	return 0;
 }
 
+static int test_access(void)
+{
+	std::string filename = std::string(FILE_NAME) + "_access_map";
+	freopen(filename.c_str(), "w", stdout);
+
+	int_map m;
+	initialize__time();
+	for (int i = 0; i < 10000; i++)
+		m[rand() % 10000] = rand() % 10000;
+	print_delta_time();
+
+	int_map::iterator it =  m.begin();
+	for (; it != m.end(); it++)
+		std::cout << it->first << " " << it->second << std::endl;
+	return 0;
+}
+
+static int test_lookup(void)
+{
+	std::string filename = std::string(FILE_NAME) + "_lookup_map";
+	freopen(filename.c_str(), "w", stdout);
+	
+	int_map m;
+	int random_size =  rand() % 100000;
+	for (int i = 0; i < random_size; i++)
+		m.insert(int_pair(rand() % 100000, rand() % 10000));
+	int_map::iterator it = m.begin();
+
+	initialize__time();
+	for (; it != m.end(); it++)
+	{
+		m.count(it->first);
+		m.find(it->first);
+		m.equal_range(it->first);
+		m.lower_bound(it->first);
+		m.upper_bound(it->first);
+	}
+	print_delta_time();
+
+	it = m.begin();
+	for (; it != m.end(); it++)
+	{
+		std::cout << m.count(it->first) << " ";
+		std::cout << (m.find(it->first))->second << " ";
+		std::cout << (m.equal_range(it->first).first)->second << " ";
+		std::cout << (m.lower_bound(it->first))->second << " ";
+		if (++it != m.end())
+			std::cout << (m.upper_bound((--it)->first))->second << std::endl;
+		else --it;
+	}
+	return 0;
+}
+
+static int test_size(void)
+{
+	std::string filename = std::string(FILE_NAME) + "_size_map";
+	freopen(filename.c_str(), "w", stdout);
+	
+	int_map m, m2, m3;
+	for (int i = 0; i < 100000; i++)
+		m.insert(int_pair(rand() % 100000, rand() % 10000));
+	m2 = m;
+	m.swap(m3);
+
+	std::cout << m.empty() << std::endl;
+	std::cout << m.size() << std::endl;
+	std::cout << m2.empty() << " " << m2.size() << std::endl;
+	std::cout << m3.empty() << " " << m3.size() << std::endl;
+	int_map::iterator it = m.begin();
+	for (; it != m.end(); it++)
+		std::cout << it->first << " " << it->second << std::endl;
+	it = m2.begin();
+	for (; it != m2.end(); it++)
+		std::cout << it->first << " " << it->second << std::endl;
+	it = m3.begin();
+	for (; it != m3.end(); it++)
+		std::cout << it->first << " " << it->second << std::endl;
+	return 0;
+}
+
 int main(int ac, char **av)
 {
 	if (ac != 2)
@@ -140,5 +202,8 @@ int main(int ac, char **av)
 	test_construct();
 	test_insert();
 	test_erase();
+	test_access();
+	test_lookup();
+	test_size();
 	return 0;
 }
