@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 10:13:41 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/09/01 17:15:45 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/09/05 15:52:34 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define VECTOR_HPP
 
 # include <memory>
-# include <iostream>
 # include <stdexcept>
 # include <cmath>
 # include "../iter/RandomAccessIterator.hpp"

@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 16:30:15 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/09/05 14:59:40 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/09/05 15:49:58 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,6 +153,20 @@ int			main(void)
 		compare_files("std_iter_map", "ft_iter_map", "Iter");
 		compare_files("std_size_map", "ft_size_map", "Size");
 		compare_files("std_compar_map", "ft_compar_map", "Compar");
+		print_global_timing();
+	}
+
+	print_class_header("SET");
+	if (!execute_tester("./Set/std_set_test", std::to_string(seed))
+		&& !execute_tester("./Set/ft_set_test", std::to_string(seed)))
+	{
+		compare_files("std_construct_set", "ft_construct_set", "Constr");
+		compare_files("std_insert_set", "ft_insert_set", "Insert");
+		compare_files("std_erase_set", "ft_erase_set", "Erase");
+		compare_files("std_lookup_set", "ft_lookup_set", "Lookup");
+		compare_files("std_iter_set", "ft_iter_set", "Iter");
+		compare_files("std_size_set", "ft_size_set", "Size");
+		compare_files("std_compar_set", "ft_compar_set", "Compar");
 		print_global_timing();
 	}
 	return 0;
