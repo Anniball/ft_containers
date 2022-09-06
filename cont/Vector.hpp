@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Vector.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucas <lucas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 10:13:41 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/09/05 17:03:15 by lucas            ###   ########.fr       */
+/*   Updated: 2022/09/06 14:20:18 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -431,9 +431,9 @@ namespace ft
 		}
 		else
 		{
-			for (size_type i = this->_size - 1; i >= pos; i--)
+			for (ssize_t i = this->_size - 1; i >= static_cast<ssize_t>(pos); i--)
 				this->_container[i+n] = this->_container[i];
-			for (size_type i = pos; i < pos+n; i++)
+			for (size_t i = pos; i < pos+n; i++)
 				this->_alloc.construct(this->_container + i, val);
 		}
 		this->_size += n;
@@ -474,9 +474,9 @@ namespace ft
 		}
 		else
 		{
-			for (size_type i = this->_size - 1; i >= pos; i--)
+			for (ssize_t i = this->_size - 1; i >= static_cast<ssize_t>(pos); i--)
 				this->_container[i + dist] = this->_container[i];
-			for (size_type i = pos; i < pos + dist; i++)
+			for (size_t i = pos; i < pos + dist; i++)
 				this->_alloc.construct(this->_container + i, *first++);
 		}
 		this->_size += dist;
