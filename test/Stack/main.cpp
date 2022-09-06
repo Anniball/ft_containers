@@ -6,13 +6,29 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/02 11:49:23 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/09/02 14:30:09 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/09/06 10:33:12 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../utils.hpp"
+#include <deque>
+#include <vector>
+#include <list>
 
 t_timeval current_time;
+
+static int	test_compat(void)
+{
+	std::string filename = std::string(FILE_NAME) + "_compat_stack";
+	freopen(filename.c_str(), "w", stdout);
+
+	TESTED_NAMESPACE::stack< int, std::vector<int> > vec_stack;
+	TESTED_NAMESPACE::stack<int, std::list<int> > list_stack;
+	TESTED_NAMESPACE::stack<int, std::deque<int> > deque_stack;
+
+	std::cout << "1\n1\n" << std::endl;
+	return 0;
+}
 
 static int	test_insert(void)
 {
@@ -71,6 +87,7 @@ int main(int ac, char **av)
 		return 1;
 	}
 	tester_setup(av[1]);
+	test_compat();
 	test_insert();
 	test_erase();
 	return 0;

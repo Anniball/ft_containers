@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucas <lucas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 16:30:15 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/09/05 17:00:36 by lucas            ###   ########.fr       */
+/*   Updated: 2022/09/06 10:30:47 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,6 +143,7 @@ int			main(void)
 	if (!execute_tester("./Stack/ft_stk_test", itos(seed))
 		&& !execute_tester("./Stack/std_stk_test", itos(seed)))
 	{
+		compare_files("std_compat_stack", "ft_compat_stack", "Compat");
 		compare_files("std_insert_stack", "ft_insert_stack", "Insert");
 		compare_files("std_erase_stack", "ft_erase_stack", "Erase");
 		print_global_timing();

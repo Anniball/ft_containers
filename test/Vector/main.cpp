@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 12:13:30 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/09/05 14:43:37 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/09/06 10:33:49 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static int	test_insert(void)
 	vec.insert(vec.begin() + (rand() % vec.size()), 10000, -1);
 	vec2.insert(vec2.begin(), vec.begin(), vec.begin() + (rand() % vec.size()));
 	print_delta_time();
-	int_vector::iterator itb = vec.begin();
+	int_vector::const_iterator itb = vec.begin();
 	int_vector::iterator ite = vec.end();
 	for (; itb != ite; itb++)
 		std::cout << *itb << std::endl;
