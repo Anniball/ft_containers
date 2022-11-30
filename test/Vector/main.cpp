@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 12:13:30 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/09/06 10:33:49 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/11/30 15:47:33 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,17 +75,18 @@ static int test_construct(void)
 	initialize__time();
 	int_vector vec;
 	int_vector vec2(100000, -5);
-	int_vector vec3(vec2.begin(), vec2.end());
-	int_vector vec4(vec3);
+	int_vector *vec3 = new int_vector(vec2.begin(), vec2.end());
+	int_vector vec4(*vec3);
 	print_delta_time();
 
 	
 	int_vector::iterator itb = vec2.begin();
 	for (; itb != vec2.end(); ++itb)
 		std::cout << *itb << std::endl;
-	itb = vec3.begin();
-	for (; itb != vec3.end(); itb++)
+	itb = vec3->begin();
+	for (; itb != vec3->end(); itb++)
 		std::cout << *itb << std::endl;
+	delete vec3;
 	itb = vec4.begin();
 	for (; itb != vec4.end(); itb++)
 		std::cout << *itb << std::endl;
