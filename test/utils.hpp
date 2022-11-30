@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucas <lucas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 14:47:03 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/09/05 16:54:33 by lucas            ###   ########.fr       */
+/*   Updated: 2022/11/30 15:03:58 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include <cstdio>
 #include <ostream>
 #include <list>
+#include <functional>
 
 #ifdef TESTED_NAMESPACE
 # define FILE_NAME "std"
@@ -40,6 +41,7 @@ typedef struct timeval						t_timeval;
 typedef TESTED_NAMESPACE::vector<int>		int_vector;
 typedef TESTED_NAMESPACE::stack<int>		int_stack;
 typedef TESTED_NAMESPACE::map<int, int>		int_map;
+typedef TESTED_NAMESPACE::map< int, int, std::greater<int> > greater_map;
 typedef TESTED_NAMESPACE::pair<int, int>	int_pair;
 typedef TESTED_NAMESPACE::set<int>			int_set;
 

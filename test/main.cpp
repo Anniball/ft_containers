@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 16:30:15 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/09/06 10:30:47 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/11/30 15:26:26 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,10 +118,12 @@ static std::string itos(int n)
 	return convert.str(); 
 }
 
-int			main(void)
+int			main(int ac, char **av)
 {
 	srand(time(NULL));
 	int seed = rand() % 1000000;
+	if (ac > 1)
+		seed = atoi(av[1]);
 	std::cout << "\t\t*****SEED : " << seed << " *****\t\t" << std::endl << std::endl;
 
 	print_class_header("VECTOR");

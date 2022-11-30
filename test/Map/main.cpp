@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/02 14:29:59 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/09/05 14:56:48 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/11/30 15:27:52 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -207,13 +207,46 @@ static int test_comparison(void)
 	std::string filename = std::string(FILE_NAME) + "_compar_map";
 	freopen(filename.c_str(), "w", stdout);
 
-	int_map m, m2, m3;
+	int_map		m, m2, m3;
+	greater_map	m4, m5, m6;
+	
+	for (int i = 0; i < 100; i++)
+		m.insert(int_pair(rand() % 100, rand() % 100));
+	for (int i = 0; i < 100; i++)
+		if (!m.empty()) m.erase(rand() % 100);
 	for (int i = 0; i < 100; i++)
 		m.insert(int_pair(rand() % 100, rand() % 100));
 	for (int i = 0; i < 100; i++)
 		m2.insert(int_pair(rand() % 100, rand() % 100));
 	for (int i = 0; i < 100; i++)
+		if (!m.empty()) m2.erase(rand() % 100);
+	for (int i = 0; i < 100; i++)
+		m2.insert(int_pair(rand() % 100, rand() % 100));
+	for (int i = 0; i < 100; i++)
 		m3.insert(int_pair(rand() % 100, rand() % 100));
+	for (int i = 0; i < 100; i++)
+		if (!m.empty()) m3.erase(rand() % 100);
+	for (int i = 0; i < 100; i++)
+		m3.insert(int_pair(rand() % 100, rand() % 100));
+	
+	for (int i = 0; i < 100; i++)
+		m4.insert(int_pair(rand() % 100, rand() % 100));
+	for (int i = 0; i < 100; i++)
+		if (!m.empty()) m4.erase(rand() % 100);
+	for (int i = 0; i < 100; i++)
+		m4.insert(int_pair(rand() % 100, rand() % 100));
+	for (int i = 0; i < 100; i++)
+		m5.insert(int_pair(rand() % 100, rand() % 100));
+	for (int i = 0; i < 100; i++)
+		if (!m.empty()) m5.erase(rand() % 100);
+	for (int i = 0; i < 100; i++)
+		m5.insert(int_pair(rand() % 100, rand() % 100));
+	for (int i = 0; i < 100; i++)
+		m6.insert(int_pair(rand() % 100, rand() % 100));
+	for (int i = 0; i < 100; i++)
+		if (!m.empty()) m6.erase(rand() % 100);
+	for (int i = 0; i < 100; i++)
+		m6.insert(int_pair(rand() % 100, rand() % 100));
 	
 	std::cout << "1" << std::endl;
 	std::cout << (m == m2) << (m2 == m3) << (m == m3) << std::endl;
@@ -222,6 +255,52 @@ static int test_comparison(void)
 	std::cout << (m <= m2) << (m2 <= m3) << (m <= m3) << std::endl;
 	std::cout << (m > m2) << (m2 > m3) << (m > m3) << std::endl;
 	std::cout << (m >= m2) << (m2 >= m3) << (m >= m3) << std::endl;
+
+	std::cout << (m == m2) << (m2 == m3) << (m == m3) << std::endl;
+	std::cout << (m != m2) << (m2 != m3) << (m != m3) << std::endl;
+	std::cout << (m < m2) << (m2 < m3) << (m < m3) << std::endl;
+	std::cout << (m <= m2) << (m2 <= m3) << (m <= m3) << std::endl;
+	std::cout << (m > m2) << (m2 > m3) << (m > m3) << std::endl;
+	std::cout << (m >= m2) << (m2 >= m3) << (m >= m3) << std::endl;
+	
+	int i = 0;
+	for (int_map::iterator it = m.begin(); i < 10 ;i++, it++)
+		std::cout << it->first << " " << it->second << std::endl;
+	i = 0;
+	for (int_map::iterator it = m2.begin(); i < 10 ;i++, it++)
+		std::cout << it->first << " " << it->second << std::endl;
+	i = 0;
+	for (int_map::iterator it = m3.begin(); i < 10 ;i++, it++)
+		std::cout << it->first << " " << it->second << std::endl;
+	i = 0;
+	for (int_map::iterator it = --m.end(); i < 10 ;i++, it--)
+		std::cout << it->first << " " << it->second << std::endl;
+	i = 0;
+	for (int_map::iterator it = --m2.end(); i < 10 ;i++, it--)
+		std::cout << it->first << " " << it->second << std::endl;
+	i = 0;
+	for (int_map::iterator it = --m3.end(); i < 10 ;i++, it--)
+		std::cout << it->first << " " << it->second << std::endl;
+
+ 	i = 0;
+	for (greater_map::iterator it = m4.begin(); i < 10 ;i++, it++)
+		std::cout << it->first << " " << it->second << std::endl;
+	i = 0;
+	for (greater_map::iterator it = m5.begin(); i < 10 ;i++, it++)
+		std::cout << it->first << " " << it->second << std::endl;
+	i = 0;
+	for (greater_map::iterator it = m6.begin(); i < 10 ;i++, it++)
+		std::cout << it->first << " " << it->second << std::endl;
+	i = 0;
+	for (greater_map::iterator it = --m4.end(); i < 10 ;i++, it--)
+		std::cout << it->first << " " << it->second << std::endl;
+	i = 0;
+	for (greater_map::iterator it = --m5.end(); i < 10 ;i++, it--)
+		std::cout << it->first << " " << it->second << std::endl;
+	i = 0;
+	for (greater_map::iterator it = --m6.end(); i < 10 ;i++, it--)
+		std::cout << it->first << " " << it->second << std::endl;
+
 
 	return 0;
 }
