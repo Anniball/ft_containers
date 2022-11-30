@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   RedBlackTree.hpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucas <lucas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 16:02:21 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/09/05 17:03:56 by lucas            ###   ########.fr       */
+/*   Updated: 2022/11/30 14:38:23 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -542,7 +542,7 @@ namespace ft
 				parent->set_color(RBT_RED);
 				is_left ? this->_left_rotate(parent) : this->_right_rotate(parent);
 				parent = k->get_parent();
-				is_left ? brother = parent->get_right() : parent->get_left();
+				brother = is_left ? parent->get_right() : parent->get_left();
 			}
 			if (this->_is_black(brother) && this->_is_black(brother->get_left()) && this->_is_black(brother->get_right()))
 			{

@@ -6,7 +6,7 @@
 /*   By: ldelmas <ldelmas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 13:42:10 by ldelmas           #+#    #+#             */
-/*   Updated: 2022/09/06 14:18:07 by ldelmas          ###   ########.fr       */
+/*   Updated: 2022/09/19 14:30:50 by ldelmas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,7 +162,6 @@ namespace ft
 	{
 		return (*(this->_content + val));
 	}
-
 
 	/*
 		PUBLIC METHOD
